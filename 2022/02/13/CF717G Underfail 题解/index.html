@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css">
+<script src="/live2d-widget/autoload.js"></script>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.10.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+  <meta name="description" content="此题我们可以考虑费用流 我们考虑建出一张 $n+2$ 个点的图（本文字符串下标从 $1$ 开始）">
+<meta property="og:type" content="website">
+<meta property="og:title" content="CF717G Underfail 题解">
+<meta property="og:url" content="http://example.com/2022/02/13/CF717G%20Underfail%20%E9%A2%98%E8%A7%A3/index.html">
+<meta property="og:site_name" content="paulzrm 的小窝">
+<meta property="og:description" content="此题我们可以考虑费用流 我们考虑建出一张 $n+2$ 个点的图（本文字符串下标从 $1$ 开始）">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.luogu.com.cn/upload/image_hosting/e8ircc2w.png">
+<meta property="article:published_time" content="2022-02-12T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-02-16T12:42:37.591Z">
+<meta property="article:author" content="paulzrm">
+<meta property="article:tag" content="题解">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.luogu.com.cn/upload/image_hosting/e8ircc2w.png">
+
+
+<link rel="canonical" href="http://example.com/2022/02/13/CF717G%20Underfail%20%E9%A2%98%E8%A7%A3/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2022/02/13/CF717G%20Underfail%20%E9%A2%98%E8%A7%A3/","path":"2022/02/13/CF717G Underfail 题解/","title":"CF717G Underfail 题解"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>CF717G Underfail 题解 | paulzrm 的小窝</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">paulzrm 的小窝</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+        <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=320 height=260 src="//music.163.com/outchain/player?type=0&id=7075775876&auto=1&height=430"></iframe>
+        <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">paulzrm</p>
+  <div class="site-description" itemprop="description">一个存一些奇奇怪怪的东西的地方</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">5</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/13/CF717G%20Underfail%20%E9%A2%98%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="paulzrm">
+      <meta itemprop="description" content="一个存一些奇奇怪怪的东西的地方">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="paulzrm 的小窝">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CF717G Underfail 题解
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2022-02-13 00:00:00" itemprop="dateCreated datePublished" datetime="2022-02-13T00:00:00+08:00">2022-02-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2022-02-16 20:42:37" itemprop="dateModified" datetime="2022-02-16T20:42:37+08:00">2022-02-16</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>此题我们可以考虑费用流</p>
+<p>我们考虑建出一张 $n+2$ 个点的图（本文字符串下标从 $1$ 开始）</p>
+<span id="more"></span>
+<p>首先对于 $s$ 的一个子串 $s_{l\dots r}$，如果它可以和一个权值为 $w$  的串匹配上，那么就建立一条从 $l$ 个点出发，连向第 $r+1$ 个点，流量为1，费用为 $w$ 的边；</p>
+<p>然后，我们对于所有的 $1 \le i \le n+1$，建立一条从 $i$ 号点 出发，连向 $i+1$ 号点，流量为 $x$ （如题目所给，一个字符能被覆盖的最大次数），费用为0。</p>
+<p>然后以 $1$ 号点为源点，$n+2$ 号点为汇点，跑最大费用最大流就可以了。</p>
+<p>然后解释一下为什么这么建图是正确的：</p>
+<p>建立从 $l$ 到 $r$，流量为 $1$ 的边很好理解，就是为了满足题目中所给的“每个串在每个位置只能匹配一次”的条件；</p>
+<p>那么为什么建立从 $i$ 到 $i+1$，流量为 $x$ 的边就可以满足题目中要求“一个字符能被覆盖的最大次数为 $x$ ”的条件呢？</p>
+<p>我们考虑一下，把那 $n+1$ 个点平铺在一个坐标轴上，这张流量网络大概长成什么样：（样例，边的方向都是从前往后，绿色为费用，蓝色为流量）</p>
+<p><img src="https://cdn.luogu.com.cn/upload/image_hosting/e8ircc2w.png" alt=""></p>
+<p>然后我们再尝试着把这张图拍扁。</p>
+<p>如果对于一个点，它对应的字符出现了多于 $x$ 次，会出现什么情况？</p>
+<p>它上面那些“高速公路”上的流量，最终一定会都流到“主路”上！</p>
+<p>然而，如果他对应了多余 $x$ 次，那么它上方的“高速公路”上的流量就会大于 $x$，就超过了主路上相邻两点之间流量 $\le x$ 的限制。</p>
+<p>那么为什么要建立这看似多余的第 $n+2$ 个节点呢？</p>
+<p>其实很简单，万一有很多高速公路在 $n+1$ 号节点上才下来，这就不会受到主路的流量限制了啊！我们再连一条从 $n+1$ 号点通往 $n+2$ 号点的边，流量为 $x$，就正好处理了这种特殊情况。</p>
+<hr>
+<p>Code:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> mp make_pair</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> pii pair<span class="string">&lt;int,int&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> mxv=<span class="number">5005</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> mxn=<span class="number">50005</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> inf=<span class="number">1000000007</span>;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">edge</span>&#123;<span class="type">int</span> to,cap,cost,rev;&#125;;</span><br><span class="line"><span class="type">int</span> V,m,s,t;</span><br><span class="line">vector&lt;edge&gt;g[mxv],tmpg[mxv];</span><br><span class="line"><span class="type">int</span> h[mxv],dist[mxv],prevv[mxv],preve[mxv];</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">add_edge</span><span class="params">(<span class="type">int</span> from,<span class="type">int</span> to,<span class="type">int</span> cap,<span class="type">int</span> cost)</span></span>&#123;</span><br><span class="line">	g[from].<span class="built_in">push_back</span>((edge)&#123;to,cap,cost,g[to].<span class="built_in">size</span>()&#125;);</span><br><span class="line">	g[to].<span class="built_in">push_back</span>((edge)&#123;from,<span class="number">0</span>,-cost,g[from].<span class="built_in">size</span>()<span class="number">-1</span>&#125;);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">int</span> <span class="title">min_cost_flow</span><span class="params">(<span class="type">int</span> f)</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> res=<span class="number">0</span>;</span><br><span class="line">	<span class="built_in">fill</span>(h,h+V+<span class="number">1</span>,<span class="number">0</span>);</span><br><span class="line">	<span class="keyword">while</span>(f&gt;<span class="number">0</span>)&#123;</span><br><span class="line">		priority_queue&lt;pii,vector&lt;pii&gt;,greater&lt;pii&gt; &gt;que;</span><br><span class="line">		<span class="built_in">fill</span>(dist,dist+V+<span class="number">1</span>,inf);</span><br><span class="line">		dist[s]=<span class="number">0</span>;</span><br><span class="line">		que.<span class="built_in">push</span>(<span class="built_in">mp</span>(<span class="number">0</span>,s));</span><br><span class="line">		<span class="keyword">for</span>(;!que.<span class="built_in">empty</span>();)&#123;</span><br><span class="line">			pii p=que.<span class="built_in">top</span>();</span><br><span class="line">			que.<span class="built_in">pop</span>();</span><br><span class="line">			<span class="type">int</span> v=p.second;</span><br><span class="line">			<span class="keyword">if</span>(dist[v]&lt;p.first)<span class="keyword">continue</span>;</span><br><span class="line">			<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;g[v].<span class="built_in">size</span>();++i)&#123;</span><br><span class="line">				edge&amp;e=g[v][i];</span><br><span class="line">				<span class="keyword">if</span>(e.cap&gt;<span class="number">0</span> <span class="keyword">and</span> dist[e.to]&gt;dist[v]+e.cost+h[v]-h[e.to])&#123;</span><br><span class="line">					dist[e.to]=dist[v]+e.cost+h[v]-h[e.to];</span><br><span class="line">					prevv[e.to]=v;</span><br><span class="line">					preve[e.to]=i;</span><br><span class="line">					que.<span class="built_in">push</span>(<span class="built_in">mp</span>(dist[e.to],e.to));</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span>(dist[t]==inf) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> v=<span class="number">1</span>;v&lt;=V;++v) h[v]+=dist[v];</span><br><span class="line">		<span class="type">int</span> d=f;</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> v=t;v!=s;v=prevv[v]) d=<span class="built_in">min</span>(d,g[prevv[v]][preve[v]].cap);</span><br><span class="line">		f-=d;</span><br><span class="line">		res+=d*h[t];</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> v=t;v!=s;v=prevv[v])&#123;</span><br><span class="line">			edge&amp;e=g[prevv[v]][preve[v]];</span><br><span class="line">			e.cap-=d;</span><br><span class="line">			g[v][e.rev].cap+=d; </span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br><span class="line"><span class="type">int</span> lev[mxn],iter[mxn];</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">bfs</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="built_in">memset</span>(lev,<span class="number">-1</span>,<span class="built_in">sizeof</span>(lev));</span><br><span class="line">	queue&lt;<span class="type">int</span>&gt;q;</span><br><span class="line">	lev[s]=<span class="number">0</span>;</span><br><span class="line">	q.<span class="built_in">push</span>(s);</span><br><span class="line">	<span class="keyword">for</span>(;q.<span class="built_in">size</span>();)&#123;</span><br><span class="line">		<span class="type">int</span> v=q.<span class="built_in">front</span>();q.<span class="built_in">pop</span>();</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;g[v].<span class="built_in">size</span>();++i)&#123;</span><br><span class="line">			edge&amp;e=g[v][i];</span><br><span class="line">			<span class="keyword">if</span>(e.cap&gt;<span class="number">0</span> <span class="keyword">and</span> lev[e.to]&lt;<span class="number">0</span>)&#123;</span><br><span class="line">				lev[e.to]=lev[v]+<span class="number">1</span>;</span><br><span class="line">				q.<span class="built_in">push</span>(e.to);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">dfs</span><span class="params">(<span class="type">int</span> v,<span class="type">int</span> t,<span class="type">int</span> f)</span></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(v==t)<span class="keyword">return</span> f;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span>&amp;i=iter[v];i&lt;g[v].<span class="built_in">size</span>();++i)&#123;</span><br><span class="line">		edge&amp;e=g[v][i];</span><br><span class="line">		<span class="keyword">if</span>(e.cap&gt;<span class="number">0</span> <span class="keyword">and</span> lev[v]&lt;lev[e.to])&#123;</span><br><span class="line">			<span class="type">int</span> d=<span class="built_in">dfs</span>(e.to,t,<span class="built_in">min</span>(f,e.cap));</span><br><span class="line">			<span class="keyword">if</span>(d&gt;<span class="number">0</span>)&#123;</span><br><span class="line">				e.cap-=d;</span><br><span class="line">				g[e.to][e.rev].cap+=d;</span><br><span class="line">				<span class="keyword">return</span> d;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>; </span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">int</span> <span class="title">max_flow</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> flow=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(;;)&#123;</span><br><span class="line">		<span class="built_in">bfs</span>();</span><br><span class="line">		<span class="keyword">if</span>(lev[t]==<span class="number">-1</span>)<span class="keyword">return</span> flow;</span><br><span class="line">		<span class="built_in">memset</span>(iter,<span class="number">0</span>,<span class="built_in">sizeof</span>(iter));</span><br><span class="line">		<span class="type">int</span> f=<span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span>(;;)&#123;</span><br><span class="line">			f=<span class="built_in">dfs</span>(s,t,inf);</span><br><span class="line">			<span class="keyword">if</span>(f==<span class="number">0</span>) <span class="keyword">break</span>;</span><br><span class="line">			flow+=f;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> flow;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">prep</span><span class="params">()</span></span>&#123;<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=V;++i)tmpg[i]=g[i];&#125;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">updg</span><span class="params">()</span></span>&#123;<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=V;++i)g[i]=tmpg[i];&#125;</span><br><span class="line"><span class="type">int</span> n,w,x;string ss;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">read</span><span class="params">()</span></span>&#123;</span><br><span class="line">	cin&gt;&gt;n&gt;&gt;ss&gt;&gt;w;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=w;++i)&#123;</span><br><span class="line">		string tt;<span class="type">int</span> v;</span><br><span class="line">		cin&gt;&gt;tt&gt;&gt;v;</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;j&lt;ss.<span class="built_in">size</span>()-tt.<span class="built_in">size</span>()+<span class="number">1</span>;++j)&#123;</span><br><span class="line">			<span class="type">bool</span> fit=<span class="number">1</span>;</span><br><span class="line">			<span class="keyword">for</span>(<span class="type">int</span> k=<span class="number">0</span>;k&lt;tt.<span class="built_in">size</span>();++k)&#123;</span><br><span class="line">				<span class="keyword">if</span>(tt[k]!=ss[j+k])&#123;</span><br><span class="line">					fit=<span class="number">0</span>;</span><br><span class="line">					<span class="keyword">break</span>;</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="keyword">if</span>(fit==<span class="number">1</span>)<span class="built_in">add_edge</span>(j+<span class="number">1</span>,j+tt.<span class="built_in">size</span>()+<span class="number">1</span>,<span class="number">1</span>,-v);<span class="comment">//这是最小费用最大流的板子，要处理最大费用流的话，就要将边权取负，跑最小费用流，再将答案取负就可以了</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	s=<span class="number">1</span>,t=n+<span class="number">2</span>;</span><br><span class="line">	V=n+<span class="number">2</span>;</span><br><span class="line">	cin&gt;&gt;x;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n+<span class="number">1</span>;++i)<span class="built_in">add_edge</span>(i,i+<span class="number">1</span>,x,<span class="number">0</span>);</span><br><span class="line">	<span class="built_in">prep</span>();</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="built_in">read</span>();</span><br><span class="line">	<span class="type">int</span> MaxFlow=<span class="built_in">max_flow</span>();</span><br><span class="line">	<span class="built_in">updg</span>();</span><br><span class="line">	cout&lt;&lt;-<span class="built_in">min_cost_flow</span>(MaxFlow)&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E9%A2%98%E8%A7%A3/" rel="tag"># 题解</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/02/12/2017-2018%20ACM-ICPC,%20Asia%20Daejeon%20Regional%20Contest%20%E9%A2%98%E8%A7%A3/" rel="prev" title="2017-2018 ACM-ICPC, Asia Daejeon Regional Contest 题解">
+                  <i class="fa fa-chevron-left"></i> 2017-2018 ACM-ICPC, Asia Daejeon Regional Contest 题解
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/02/13/CF1634D%20Finding%20Zero%20%E9%A2%98%E8%A7%A3/" rel="next" title="CF1634D Finding Zero 题解">
+                  CF1634D Finding Zero 题解 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">paulzrm</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
