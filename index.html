@@ -231,6 +231,91 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/19/CF1383E%20Strange%20Operation%20%E9%A2%98%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="paulzrm">
+      <meta itemprop="description" content="一个存一些奇奇怪怪的东西的地方">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="paulzrm 的小窝">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/02/19/CF1383E%20Strange%20Operation%20%E9%A2%98%E8%A7%A3/" class="post-title-link" itemprop="url">CF1634D Finding Zero 题解</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2022-02-19 00:00:00 / Modified: 18:55:52" itemprop="dateCreated datePublished" datetime="2022-02-19T00:00:00+08:00">2022-02-19</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>题目大意：</p>
+<p>给你一个长度为 $n$ 的字符串 $s$。</p>
+<p>每一次操作，可以选择一个位置（不为最后一位），然后删除它和它后面一位，在原来的位置上填上他们的或。每次操作会使 $n-1$。</p>
+<p>问你执行最多 $n-1$ 次操作后能得到多少不同的串。</p>
+<p>题解：</p>
+<p>根据套路，就可以把相同的数分成一段一段的。又因为是或，所以我们可以认为 $1$ 永远比 $0$ 强，就统计相邻两个 $1$ 之间 $0$ 的个数。（记第 $i$ 段为 $cnt_i$，有 $m$段）</p>
+<p>考虑操作过程：</p>
+<p>如果选择的是两个 $1$，那么段数会 $-1$，但由于反正间隔都是 $0$ 个 $0$了，我们就可以不用管了。<strong>（有问题，后面会提到）</strong></p>
+<p>反之，删除的肯定是一个 $0$，就当那一段的 $0$ 个数 $-1$。</p>
+<p>然后我们就相当于：统计数组 $a$ 的个数，满足 $a_i \le cnt_i$ 了</p>
+<p>吗？</p>
+<p>不，这题不会这么简单，因为很显然会重复计算。</p>
+<p>所以，我们考虑怎么去重：</p>
+<p><strong>前面推的时候，对于选择了两个 $1$ 的情况，很难自圆其说是不是？</strong></p>
+<p>我们对这一块重新考虑下。</p>
+<p>令 $dp_i$ 表示考虑到 $cnt_i$ 时的方案数。</p>
+<p>为了去重，当 $dp_i$ 由 $dp_k$ 转移过来的时候，需要满足对于所有的 $k+1 \le j \le i-1,cnt_j&lt;cnt_i$，这样就限制了多次转移的情况，而且不会使答案遗漏。</p>
+<p>处理 $k$ 的话，打个标记就好了。</p>
+<p>最后用前缀和优化把复杂度从 $O(n^2)$ 降到 $O(n)$</p>
+<p>Code:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">string s;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> mxn=<span class="number">1e6</span>+<span class="number">6</span>;</span><br><span class="line"><span class="type">int</span> cnt[mxn],m,n;</span><br><span class="line"><span class="type">const</span> ll md=<span class="number">1000000007</span>;</span><br><span class="line">ll sum[mxn],dp[mxn];</span><br><span class="line"><span class="type">int</span> pos[mxn];</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">add</span><span class="params">(ll&amp;x,ll y)</span></span>&#123;</span><br><span class="line">	x+=y;</span><br><span class="line">	<span class="keyword">if</span>(x&gt;=md)x-=md;</span><br><span class="line">	<span class="keyword">if</span>(x&lt;<span class="number">0</span>)x+=md;</span><br><span class="line">	<span class="keyword">if</span>(x&gt;=md)x-=md;</span><br><span class="line">	<span class="keyword">if</span>(x&lt;<span class="number">0</span>)x+=md;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">solve</span><span class="params">()</span></span>&#123;</span><br><span class="line">	cin&gt;&gt;s;n=s.<span class="built_in">size</span>();</span><br><span class="line">	s=s+<span class="string">&quot;1&quot;</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>,j=<span class="number">0</span>;i&lt;s.<span class="built_in">size</span>();++i)&#123;</span><br><span class="line">		<span class="keyword">for</span>(;j&lt;s.<span class="built_in">size</span>() <span class="keyword">and</span> s[j]==<span class="string">&#x27;0&#x27;</span>;)++j;</span><br><span class="line"><span class="comment">//		cerr&lt;&lt;&quot;? &quot;&lt;&lt;i&lt;&lt;&#x27; &#x27;&lt;&lt;j&lt;&lt;&#x27;\n&#x27;;</span></span><br><span class="line">		cnt[++m]=j-i;</span><br><span class="line">		i=j;</span><br><span class="line">		j=i+<span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(m==<span class="number">1</span>)&#123;</span><br><span class="line">		cout&lt;&lt;n&lt;&lt;<span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="comment">//	for(int i=1;i&lt;=m;++i)cerr&lt;&lt;cnt[i]&lt;&lt;&#x27; &#x27;;cerr&lt;&lt;&#x27;\n&#x27;;</span></span><br><span class="line">	ll ans=(cnt[<span class="number">1</span>]+<span class="number">1</span>)*<span class="number">1ll</span>*(cnt[m]+<span class="number">1</span>)%md;</span><br><span class="line">	sum[<span class="number">1</span>]=<span class="number">1</span>,dp[<span class="number">1</span>]=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;++i)pos[i]=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">2</span>;i&lt;m;++i)&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;j&lt;=cnt[i];++j)<span class="built_in">add</span>(dp[i],sum[i<span class="number">-1</span>]-sum[pos[j]<span class="number">-1</span>]);</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;j&lt;=cnt[i];++j)pos[j]=i;</span><br><span class="line">		<span class="built_in">add</span>(sum[i],sum[i<span class="number">-1</span>]+dp[i]);</span><br><span class="line">	&#125;</span><br><span class="line">	cout&lt;&lt;(ans*<span class="number">1ll</span>*sum[m<span class="number">-1</span>])%md&lt;&lt;<span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	ios_base::<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>);</span><br><span class="line">	cin.<span class="built_in">tie</span>(<span class="number">0</span>),cout.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">	<span class="type">int</span> T=<span class="number">1</span>;</span><br><span class="line">	<span class="comment">//cin&gt;&gt;T;</span></span><br><span class="line">	<span class="keyword">for</span>(;T--;)<span class="built_in">solve</span>();</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/13/2021%20NSFZ%20TCS%20%E6%B8%B8%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -394,7 +479,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/13/CF1383E%20Strange%20Operation%20%E9%A2%98%E8%A7%A3/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/13/CF717G%20Underfail%20%E9%A2%98%E8%A7%A3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -407,7 +492,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/02/13/CF1383E%20Strange%20Operation%20%E9%A2%98%E8%A7%A3/" class="post-title-link" itemprop="url">CF1634D Finding Zero 题解</a>
+          <a href="/2022/02/13/CF717G%20Underfail%20%E9%A2%98%E8%A7%A3/" class="post-title-link" itemprop="url">CF717G Underfail 题解</a>
         </h2>
 
         <div class="post-meta-container">
@@ -425,7 +510,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2022-02-19 18:52:52" itemprop="dateModified" datetime="2022-02-19T18:52:52+08:00">2022-02-19</time>
+      <time title="Modified: 2022-02-16 20:42:37" itemprop="dateModified" datetime="2022-02-16T20:42:37+08:00">2022-02-16</time>
     </span>
 
   
@@ -438,27 +523,16 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <p>题目大意：</p>
-<p>给你一个长度为 $n$ 的字符串 $s$。</p>
-<p>每一次操作，可以选择一个位置（不为最后一位），然后删除它和它后面一位，在原来的位置上填上他们的或。每次操作会使 $n-1$。</p>
-<p>问你执行最多 $n-1$ 次操作后能得到多少不同的串。</p>
-<p>题解：</p>
-<p>根据套路，就可以把相同的数分成一段一段的。又因为是或，所以我们可以认为 $1$ 永远比 $0$ 强，就统计相邻两个 $1$ 之间 $0$ 的个数。（记第 $i$ 段为 $cnt_i$，有 $m$段）</p>
-<p>考虑操作过程：</p>
-<p>如果选择的是两个 $1$，那么段数会 $-1$，但由于反正间隔都是 $0$ 个 $0$了，我们就可以不用管了。<strong>（有问题，后面会提到）</strong></p>
-<p>反之，删除的肯定是一个 $0$，就当那一段的 $0$ 个数 $-1$。</p>
-<p>然后我们就相当于：统计数组 $a$ 的个数，满足 $a_i \le cnt_i$ 了</p>
-<p>吗？</p>
-<p>不，这题不会这么简单，因为很显然会重复计算。</p>
-<p>所以，我们考虑怎么去重：</p>
-<p><strong>前面推的时候，对于选择了两个 $1$ 的情况，很难自圆其说是不是？</strong></p>
-<p>我们对这一块重新考虑下。</p>
-<p>令 $dp_i$ 表示考虑到 $cnt_i$ 时的方案数。</p>
-<p>为了去重，当 $dp_i$ 由 $dp_k$ 转移过来的时候，需要满足对于所有的 $k+1 \le j \le i-1,cnt_j&lt;cnt_i$，这样就限制了多次转移的情况，而且不会使答案遗漏。</p>
-<p>处理 $k$ 的话，打个标记就好了。</p>
-<p>最后用前缀和优化把复杂度从 $O(n^2)$ 降到 $O(n)$</p>
-<p>Code:</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">string s;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> mxn=<span class="number">1e6</span>+<span class="number">6</span>;</span><br><span class="line"><span class="type">int</span> cnt[mxn],m,n;</span><br><span class="line"><span class="type">const</span> ll md=<span class="number">1000000007</span>;</span><br><span class="line">ll sum[mxn],dp[mxn];</span><br><span class="line"><span class="type">int</span> pos[mxn];</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">add</span><span class="params">(ll&amp;x,ll y)</span></span>&#123;</span><br><span class="line">	x+=y;</span><br><span class="line">	<span class="keyword">if</span>(x&gt;=md)x-=md;</span><br><span class="line">	<span class="keyword">if</span>(x&lt;<span class="number">0</span>)x+=md;</span><br><span class="line">	<span class="keyword">if</span>(x&gt;=md)x-=md;</span><br><span class="line">	<span class="keyword">if</span>(x&lt;<span class="number">0</span>)x+=md;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">solve</span><span class="params">()</span></span>&#123;</span><br><span class="line">	cin&gt;&gt;s;n=s.<span class="built_in">size</span>();</span><br><span class="line">	s=s+<span class="string">&quot;1&quot;</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>,j=<span class="number">0</span>;i&lt;s.<span class="built_in">size</span>();++i)&#123;</span><br><span class="line">		<span class="keyword">for</span>(;j&lt;s.<span class="built_in">size</span>() <span class="keyword">and</span> s[j]==<span class="string">&#x27;0&#x27;</span>;)++j;</span><br><span class="line"><span class="comment">//		cerr&lt;&lt;&quot;? &quot;&lt;&lt;i&lt;&lt;&#x27; &#x27;&lt;&lt;j&lt;&lt;&#x27;\n&#x27;;</span></span><br><span class="line">		cnt[++m]=j-i;</span><br><span class="line">		i=j;</span><br><span class="line">		j=i+<span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(m==<span class="number">1</span>)&#123;</span><br><span class="line">		cout&lt;&lt;n&lt;&lt;<span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="comment">//	for(int i=1;i&lt;=m;++i)cerr&lt;&lt;cnt[i]&lt;&lt;&#x27; &#x27;;cerr&lt;&lt;&#x27;\n&#x27;;</span></span><br><span class="line">	ll ans=(cnt[<span class="number">1</span>]+<span class="number">1</span>)*<span class="number">1ll</span>*(cnt[m]+<span class="number">1</span>)%md;</span><br><span class="line">	sum[<span class="number">1</span>]=<span class="number">1</span>,dp[<span class="number">1</span>]=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;++i)pos[i]=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">2</span>;i&lt;m;++i)&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;j&lt;=cnt[i];++j)<span class="built_in">add</span>(dp[i],sum[i<span class="number">-1</span>]-sum[pos[j]<span class="number">-1</span>]);</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;j&lt;=cnt[i];++j)pos[j]=i;</span><br><span class="line">		<span class="built_in">add</span>(sum[i],sum[i<span class="number">-1</span>]+dp[i]);</span><br><span class="line">	&#125;</span><br><span class="line">	cout&lt;&lt;(ans*<span class="number">1ll</span>*sum[m<span class="number">-1</span>])%md&lt;&lt;<span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	ios_base::<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>);</span><br><span class="line">	cin.<span class="built_in">tie</span>(<span class="number">0</span>),cout.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">	<span class="type">int</span> T=<span class="number">1</span>;</span><br><span class="line">	<span class="comment">//cin&gt;&gt;T;</span></span><br><span class="line">	<span class="keyword">for</span>(;T--;)<span class="built_in">solve</span>();</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+          <p>此题我们可以考虑费用流</p>
+<p>我们考虑建出一张 $n+2$ 个点的图（本文字符串下标从 $1$ 开始）</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/02/13/CF717G%20Underfail%20%E9%A2%98%E8%A7%A3/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -533,85 +607,6 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2022/02/13/CF1634D%20Finding%20Zero%20%E9%A2%98%E8%A7%A3/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/13/CF717G%20Underfail%20%E9%A2%98%E8%A7%A3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="paulzrm">
-      <meta itemprop="description" content="一个存一些奇奇怪怪的东西的地方">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="paulzrm 的小窝">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/02/13/CF717G%20Underfail%20%E9%A2%98%E8%A7%A3/" class="post-title-link" itemprop="url">CF717G Underfail 题解</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2022-02-13 00:00:00" itemprop="dateCreated datePublished" datetime="2022-02-13T00:00:00+08:00">2022-02-13</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2022-02-16 20:42:37" itemprop="dateModified" datetime="2022-02-16T20:42:37+08:00">2022-02-16</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>此题我们可以考虑费用流</p>
-<p>我们考虑建出一张 $n+2$ 个点的图（本文字符串下标从 $1$ 开始）</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/02/13/CF717G%20Underfail%20%E9%A2%98%E8%A7%A3/#more" rel="contents">
                 Read more &raquo;
               </a>
             </div>
