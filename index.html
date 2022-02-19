@@ -313,6 +313,87 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/13/CF1555F%20Good%20Graph%20%E9%A2%98%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="paulzrm">
+      <meta itemprop="description" content="一个存一些奇奇怪怪的东西的地方">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="paulzrm 的小窝">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/02/13/CF1555F%20Good%20Graph%20%E9%A2%98%E8%A7%A3/" class="post-title-link" itemprop="url">CF1555F Good Graph 题解</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2022-02-13 00:00:00" itemprop="dateCreated datePublished" datetime="2022-02-13T00:00:00+08:00">2022-02-13</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2022-02-16 20:42:41" itemprop="dateModified" datetime="2022-02-16T20:42:41+08:00">2022-02-16</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>晚上有点累就没打Edu，感觉亏大本了<img src="http://啧.tk/tuu" alt=""></p>
+<hr>
+<p>首先，我们需要一个性质：</p>
+<p>合法的图中不存在两个有着公共边的环</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/02/13/CF1555F%20Good%20Graph%20%E9%A2%98%E8%A7%A3/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/13/CF1383E%20Strange%20Operation%20%E9%A2%98%E8%A7%A3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -378,87 +459,6 @@
 <p>最后用前缀和优化把复杂度从 $O(n^2)$ 降到 $O(n)$</p>
 <p>Code:</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line">string s;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> mxn=<span class="number">1e6</span>+<span class="number">6</span>;</span><br><span class="line"><span class="type">int</span> cnt[mxn],m,n;</span><br><span class="line"><span class="type">const</span> ll md=<span class="number">1000000007</span>;</span><br><span class="line">ll sum[mxn],dp[mxn];</span><br><span class="line"><span class="type">int</span> pos[mxn];</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">add</span><span class="params">(ll&amp;x,ll y)</span></span>&#123;</span><br><span class="line">	x+=y;</span><br><span class="line">	<span class="keyword">if</span>(x&gt;=md)x-=md;</span><br><span class="line">	<span class="keyword">if</span>(x&lt;<span class="number">0</span>)x+=md;</span><br><span class="line">	<span class="keyword">if</span>(x&gt;=md)x-=md;</span><br><span class="line">	<span class="keyword">if</span>(x&lt;<span class="number">0</span>)x+=md;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">solve</span><span class="params">()</span></span>&#123;</span><br><span class="line">	cin&gt;&gt;s;n=s.<span class="built_in">size</span>();</span><br><span class="line">	s=s+<span class="string">&quot;1&quot;</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>,j=<span class="number">0</span>;i&lt;s.<span class="built_in">size</span>();++i)&#123;</span><br><span class="line">		<span class="keyword">for</span>(;j&lt;s.<span class="built_in">size</span>() <span class="keyword">and</span> s[j]==<span class="string">&#x27;0&#x27;</span>;)++j;</span><br><span class="line"><span class="comment">//		cerr&lt;&lt;&quot;? &quot;&lt;&lt;i&lt;&lt;&#x27; &#x27;&lt;&lt;j&lt;&lt;&#x27;\n&#x27;;</span></span><br><span class="line">		cnt[++m]=j-i;</span><br><span class="line">		i=j;</span><br><span class="line">		j=i+<span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(m==<span class="number">1</span>)&#123;</span><br><span class="line">		cout&lt;&lt;n&lt;&lt;<span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line"><span class="comment">//	for(int i=1;i&lt;=m;++i)cerr&lt;&lt;cnt[i]&lt;&lt;&#x27; &#x27;;cerr&lt;&lt;&#x27;\n&#x27;;</span></span><br><span class="line">	ll ans=(cnt[<span class="number">1</span>]+<span class="number">1</span>)*<span class="number">1ll</span>*(cnt[m]+<span class="number">1</span>)%md;</span><br><span class="line">	sum[<span class="number">1</span>]=<span class="number">1</span>,dp[<span class="number">1</span>]=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;++i)pos[i]=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">2</span>;i&lt;m;++i)&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;j&lt;=cnt[i];++j)<span class="built_in">add</span>(dp[i],sum[i<span class="number">-1</span>]-sum[pos[j]<span class="number">-1</span>]);</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;j&lt;=cnt[i];++j)pos[j]=i;</span><br><span class="line">		<span class="built_in">add</span>(sum[i],sum[i<span class="number">-1</span>]+dp[i]);</span><br><span class="line">	&#125;</span><br><span class="line">	cout&lt;&lt;(ans*<span class="number">1ll</span>*sum[m<span class="number">-1</span>])%md&lt;&lt;<span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	ios_base::<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>);</span><br><span class="line">	cin.<span class="built_in">tie</span>(<span class="number">0</span>),cout.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">	<span class="type">int</span> T=<span class="number">1</span>;</span><br><span class="line">	<span class="comment">//cin&gt;&gt;T;</span></span><br><span class="line">	<span class="keyword">for</span>(;T--;)<span class="built_in">solve</span>();</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/13/CF1555F%20Good%20Graph%20%E9%A2%98%E8%A7%A3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="paulzrm">
-      <meta itemprop="description" content="一个存一些奇奇怪怪的东西的地方">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="paulzrm 的小窝">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2022/02/13/CF1555F%20Good%20Graph%20%E9%A2%98%E8%A7%A3/" class="post-title-link" itemprop="url">CF1555F Good Graph 题解</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2022-02-13 00:00:00" itemprop="dateCreated datePublished" datetime="2022-02-13T00:00:00+08:00">2022-02-13</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar-check"></i>
-      </span>
-      <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2022-02-16 20:42:41" itemprop="dateModified" datetime="2022-02-16T20:42:41+08:00">2022-02-16</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>晚上有点累就没打Edu，感觉亏大本了<img src="http://啧.tk/tuu" alt=""></p>
-<hr>
-<p>首先，我们需要一个性质：</p>
-<p>合法的图中不存在两个有着公共边的环</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2022/02/13/CF1555F%20Good%20Graph%20%E9%A2%98%E8%A7%A3/#more" rel="contents">
-                Read more &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
       
     </div>
 
