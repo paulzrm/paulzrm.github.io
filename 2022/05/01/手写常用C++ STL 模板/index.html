@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css">
+<script src="/live2d-widget/autoload.js"></script>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.10.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+  <meta name="description" content="栈，pair，队列，分数类，vector">
+<meta property="og:type" content="website">
+<meta property="og:title" content="手写常用C++ STL 模板">
+<meta property="og:url" content="http://example.com/2022/05/01/%E6%89%8B%E5%86%99%E5%B8%B8%E7%94%A8C++%20STL%20%E6%A8%A1%E6%9D%BF/index.html">
+<meta property="og:site_name" content="paulzrm 的小窝">
+<meta property="og:description" content="栈，pair，队列，分数类，vector">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-04-30T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-05-01T14:36:56.987Z">
+<meta property="article:author" content="paulzrm">
+<meta property="article:tag" content="技巧">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2022/05/01/%E6%89%8B%E5%86%99%E5%B8%B8%E7%94%A8C++%20STL%20%E6%A8%A1%E6%9D%BF/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2022/05/01/%E6%89%8B%E5%86%99%E5%B8%B8%E7%94%A8C++%20STL%20%E6%A8%A1%E6%9D%BF/","path":"2022/05/01/手写常用C++ STL 模板/","title":"手写常用C++ STL 模板"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>手写常用C++ STL 模板 | paulzrm 的小窝</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">paulzrm 的小窝</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+		<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=110 src="//music.163.com/outchain/player?type=0&id=7300011593&auto=1&height=90"></iframe>
+        <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">paulzrm</p>
+  <div class="site-description" itemprop="description">一个存一些奇奇怪怪的东西的地方</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/01/%E6%89%8B%E5%86%99%E5%B8%B8%E7%94%A8C++%20STL%20%E6%A8%A1%E6%9D%BF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="paulzrm">
+      <meta itemprop="description" content="一个存一些奇奇怪怪的东西的地方">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="paulzrm 的小窝">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          手写常用C++ STL 模板
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2022-05-01 00:00:00 / Modified: 22:36:56" itemprop="dateCreated datePublished" datetime="2022-05-01T00:00:00+08:00">2022-05-01</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>栈，pair，队列，分数类，vector </p>
+<span id="more"></span>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ll long long </span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> MaxSn=<span class="number">1e6</span>+<span class="number">6</span>;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Stack</span>&#123;</span><br><span class="line">	<span class="type">int</span> sta[MaxSn],Top;</span><br><span class="line">	<span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">init</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="built_in">memset</span>(sta,<span class="number">0</span>,<span class="built_in">sizeof</span>(sta));</span><br><span class="line">		Top=<span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">push</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;sta[++Top]=x;&#125;</span><br><span class="line">	<span class="function"><span class="keyword">inline</span> <span class="type">int</span> <span class="title">top</span><span class="params">()</span></span>&#123;<span class="keyword">return</span> sta[Top];&#125;</span><br><span class="line">	<span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">pop</span><span class="params">()</span></span>&#123;--Top;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Pair</span>&#123;</span><br><span class="line">	<span class="type">int</span> x,y;</span><br><span class="line">	<span class="keyword">inline</span> <span class="type">bool</span> <span class="keyword">operator</span> &lt;(<span class="type">const</span> Pair a)<span class="type">const</span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(x!=a.x)<span class="keyword">return</span> x&lt;a.x;</span><br><span class="line">		<span class="keyword">return</span> <span class="built_in">y</span>&lt;a.y;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">inline</span> <span class="type">bool</span> <span class="keyword">operator</span> ==(<span class="type">const</span> Pair a)<span class="type">const</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> x==a.x <span class="keyword">and</span> y==a.y;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">inline</span> <span class="type">bool</span> <span class="keyword">operator</span> &gt;(<span class="type">const</span> Pair a)<span class="type">const</span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(x!=a.x)<span class="keyword">return</span> x&gt;a.x;</span><br><span class="line">		<span class="keyword">return</span> y&gt;a.y;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">inline</span> <span class="type">bool</span> <span class="keyword">operator</span> !=(<span class="type">const</span> Pair a)<span class="type">const</span>&#123;</span><br><span class="line">		<span class="keyword">return</span> x!=a.x <span class="keyword">or</span> y!=a.y;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> Pair <span class="title">MakePair</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> y)</span></span>&#123;Pair tmp;tmp.x=x,tmp.y=y;<span class="keyword">return</span> tmp;&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> MaxQn=<span class="number">262144</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> Mod=<span class="number">262143</span>;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Queue</span>&#123;</span><br><span class="line">	<span class="type">int</span> q[MaxQn],head,tail;</span><br><span class="line">	<span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">init</span><span class="params">()</span></span>&#123;</span><br><span class="line">		head=<span class="number">262141</span>,tail=<span class="number">262141</span>;</span><br><span class="line">		<span class="built_in">memset</span>(q,<span class="number">0</span>,<span class="built_in">sizeof</span>(q));</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">inline</span> <span class="type">bool</span> <span class="title">empty</span><span class="params">()</span></span>&#123;<span class="keyword">return</span> head==tail;&#125;</span><br><span class="line">	<span class="function"><span class="keyword">inline</span> <span class="type">int</span> <span class="title">getNext</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;<span class="keyword">return</span> (x+<span class="number">1</span>)&amp;Mod;&#125;</span><br><span class="line">	<span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">push</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;</span><br><span class="line">		q[tail]=x;</span><br><span class="line">		tail=<span class="built_in">getNext</span>(tail);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">inline</span> <span class="type">int</span> <span class="title">front</span><span class="params">()</span></span>&#123;<span class="keyword">return</span> q[head];&#125;</span><br><span class="line">	<span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">pop</span><span class="params">()</span></span>&#123;head=<span class="built_in">getNext</span>(head);&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">frac</span>&#123;</span><br><span class="line">	ll num,den;</span><br><span class="line">	<span class="built_in">frac</span>(ll num=<span class="number">0</span>,ll den=<span class="number">1</span>)&#123;</span><br><span class="line">		<span class="keyword">if</span>(den&lt;<span class="number">0</span>)&#123;</span><br><span class="line">			num=-num;</span><br><span class="line">			den=-den;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="built_in">assert</span>(den!=<span class="number">0</span>);</span><br><span class="line">		ll g=__gcd(<span class="built_in">abs</span>(num),den);</span><br><span class="line">		<span class="keyword">this</span>-&gt;num=num/g;</span><br><span class="line">		<span class="keyword">this</span>-&gt;den=den/g;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function">frac <span class="title">init</span><span class="params">(<span class="type">int</span> _n,<span class="type">int</span> _d)</span></span>&#123;num=_n,den=_d;&#125;</span><br><span class="line">	<span class="function">frac <span class="title">init0</span><span class="params">()</span></span>&#123;num=<span class="number">0</span>,den=<span class="number">1</span>;&#125;</span><br><span class="line">	<span class="function">frac <span class="title">init1</span><span class="params">()</span></span>&#123;num=<span class="number">1</span>,den=<span class="number">1</span>;&#125;</span><br><span class="line">	</span><br><span class="line">	frac <span class="keyword">operator</span> +(<span class="type">const</span> frac &amp;o)<span class="type">const</span>&#123;<span class="keyword">return</span> <span class="built_in">frac</span>(num*o.den+den*o.num,den*o.den);&#125;</span><br><span class="line">	frac <span class="keyword">operator</span> -(<span class="type">const</span> frac &amp;o)<span class="type">const</span>&#123;<span class="keyword">return</span> <span class="built_in">frac</span>(num*o.den-den*o.num,den*o.den);&#125;</span><br><span class="line">	frac <span class="keyword">operator</span> *(<span class="type">const</span> frac &amp;o)<span class="type">const</span>&#123;<span class="keyword">return</span> <span class="built_in">frac</span>(num*o.num,den*o.den);&#125;</span><br><span class="line">	frac <span class="keyword">operator</span> /(<span class="type">const</span> frac &amp;o)<span class="type">const</span>&#123;<span class="keyword">return</span> <span class="built_in">frac</span>(num*o.den,den*o.num);&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="type">bool</span> <span class="keyword">operator</span> &lt;(<span class="type">const</span> frac &amp;o)<span class="type">const</span>&#123;<span class="keyword">return</span> num*o.<span class="built_in">den</span>&lt;den*o.num;&#125;</span><br><span class="line">	<span class="type">bool</span> <span class="keyword">operator</span> &gt;(<span class="type">const</span> frac &amp;o)<span class="type">const</span>&#123;<span class="keyword">return</span> num*o.den&gt;den*o.num;&#125;</span><br><span class="line">	<span class="type">bool</span> <span class="keyword">operator</span> ==(<span class="type">const</span> frac &amp;o)<span class="type">const</span>&#123;<span class="keyword">return</span> num*o.den==den*o.num;&#125;</span><br><span class="line">	<span class="type">bool</span> <span class="keyword">operator</span> !=(<span class="type">const</span> frac &amp;o)<span class="type">const</span>&#123;<span class="keyword">return</span> num*o.den!=den*o.num;&#125;</span><br><span class="line">	<span class="type">bool</span> <span class="keyword">operator</span> =(<span class="type">const</span> frac &amp;o)&#123;den=o.den,num=o.num;<span class="keyword">return</span> <span class="number">1</span>;&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="type">void</span> <span class="title">print</span><span class="params">()</span></span>&#123;<span class="built_in">printf</span>(<span class="string">&quot;%d/%d&quot;</span>,num,den);&#125;</span><br><span class="line">	<span class="function"><span class="type">void</span> <span class="title">println</span><span class="params">()</span></span>&#123;<span class="built_in">printf</span>(<span class="string">&quot;%d/%d\n&quot;</span>,num,den);&#125;</span><br><span class="line">	<span class="function"><span class="type">void</span> <span class="title">printspace</span><span class="params">()</span></span>&#123;<span class="built_in">printf</span>(<span class="string">&quot;%d/%d &quot;</span>,num,den);&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="type">void</span> <span class="title">read</span><span class="params">()</span></span>&#123;<span class="built_in">scanf</span>(<span class="string">&quot;%I64d/%I64d&quot;</span>,&amp;num,&amp;den);&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">T</span>&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Vector</span>&#123;</span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">        T* data;</span><br><span class="line">        <span class="type">int</span> len;</span><br><span class="line">        <span class="type">int</span> size;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="built_in">Vector</span>()&#123;</span><br><span class="line">            data=<span class="literal">NULL</span>;</span><br><span class="line">            len=size=<span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="function"><span class="type">void</span> <span class="title">clear</span><span class="params">()</span></span>&#123;</span><br><span class="line">            data=<span class="literal">NULL</span>;</span><br><span class="line">            len=size=<span class="number">0</span>;</span><br><span class="line">		&#125;</span><br><span class="line">        <span class="built_in">Vector</span>(<span class="type">int</span> _len)&#123;</span><br><span class="line">            data=<span class="keyword">new</span> T[_len];</span><br><span class="line">            len=_len;</span><br><span class="line">            size=<span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        T&amp; <span class="keyword">operator</span>[](<span class="type">int</span> index)&#123;<span class="keyword">return</span> data[index];&#125;</span><br><span class="line">        <span class="function"><span class="type">const</span> Vector&amp; <span class="title">push_back</span><span class="params">(<span class="type">const</span> T tmp)</span></span>&#123;</span><br><span class="line">            <span class="keyword">if</span>(size&gt;=len)&#123;</span><br><span class="line">                T* newData=<span class="keyword">new</span> T[len*<span class="number">2</span>+<span class="number">1</span>];</span><br><span class="line">                <span class="built_in">memcpy</span>(newData,data,len*<span class="built_in">sizeof</span>(T));</span><br><span class="line">                <span class="keyword">delete</span> []data;</span><br><span class="line">                data=newData;</span><br><span class="line">                len=<span class="number">2</span>*len+<span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            data[size++]=tmp;</span><br><span class="line">            <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="function"><span class="type">int</span> <span class="title">getSize</span><span class="params">()</span></span>&#123;<span class="keyword">return</span> size;&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%8A%80%E5%B7%A7/" rel="tag"># 技巧</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/04/23/%E7%AC%AC46%E5%B1%8AICPC%E4%BA%9A%E6%B4%B2%E5%8C%BA%E5%9F%9F%E8%B5%9B%EF%BC%88%E6%98%86%E6%98%8E%EF%BC%89(%E6%AD%A3%E5%BC%8F%E8%B5%9B%EF%BC%89%20E.%20Easy%20String%20Problem/" rel="prev" title="第46届ICPC亚洲区域赛（昆明）(正式赛） E.Easy String Problem 题解">
+                  <i class="fa fa-chevron-left"></i> 第46届ICPC亚洲区域赛（昆明）(正式赛） E.Easy String Problem 题解
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/05/01/%E5%86%85%E5%AD%98%E8%BF%9E%E7%BB%AD%E8%AE%BF%E9%97%AE/" rel="next" title="内存连续/随机访问">
+                  内存连续/随机访问 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">paulzrm</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"paulzrm","repo":"BlogComment","client_id":"3b7c67d15a0a361eff6a","client_secret":"41e9b7f21522101e5cb2ea601b8a452b639e4828","admin_user":"paulzrm","distraction_free_mode":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"b1f808333f59547f265721b260f051e3"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>
