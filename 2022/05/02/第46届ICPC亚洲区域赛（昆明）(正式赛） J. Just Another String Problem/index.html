@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css">
+<script src="/live2d-widget/autoload.js"></script>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.10.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+  <meta name="description" content="link 题目大意： 定义一个好集合 $T$：  所有元素均为字符串  $T$ 中不包含两个串 $p,q$，满足 $p$ 是 $q$  的后缀   先给你一个长度为 $n$ 的字符串$s$，和一个长度为 $n$ 的数组 $v$。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="第46届ICPC亚洲区域赛（昆明）(正式赛） J.Just Another String Problem 题解">
+<meta property="og:url" content="http://example.com/2022/05/02/%E7%AC%AC46%E5%B1%8AICPC%E4%BA%9A%E6%B4%B2%E5%8C%BA%E5%9F%9F%E8%B5%9B%EF%BC%88%E6%98%86%E6%98%8E%EF%BC%89(%E6%AD%A3%E5%BC%8F%E8%B5%9B%EF%BC%89%20J.%20Just%20Another%20String%20Problem/index.html">
+<meta property="og:site_name" content="paulzrm 的小窝">
+<meta property="og:description" content="link 题目大意： 定义一个好集合 $T$：  所有元素均为字符串  $T$ 中不包含两个串 $p,q$，满足 $p$ 是 $q$  的后缀   先给你一个长度为 $n$ 的字符串$s$，和一个长度为 $n$ 的数组 $v$。">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-05-01T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-05-02T09:32:44.107Z">
+<meta property="article:author" content="paulzrm">
+<meta property="article:tag" content="题解">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2022/05/02/%E7%AC%AC46%E5%B1%8AICPC%E4%BA%9A%E6%B4%B2%E5%8C%BA%E5%9F%9F%E8%B5%9B%EF%BC%88%E6%98%86%E6%98%8E%EF%BC%89(%E6%AD%A3%E5%BC%8F%E8%B5%9B%EF%BC%89%20J.%20Just%20Another%20String%20Problem/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2022/05/02/%E7%AC%AC46%E5%B1%8AICPC%E4%BA%9A%E6%B4%B2%E5%8C%BA%E5%9F%9F%E8%B5%9B%EF%BC%88%E6%98%86%E6%98%8E%EF%BC%89(%E6%AD%A3%E5%BC%8F%E8%B5%9B%EF%BC%89%20J.%20Just%20Another%20String%20Problem/","path":"2022/05/02/第46届ICPC亚洲区域赛（昆明）(正式赛） J. Just Another String Problem/","title":"第46届ICPC亚洲区域赛（昆明）(正式赛） J.Just Another String Problem 题解"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>第46届ICPC亚洲区域赛（昆明）(正式赛） J.Just Another String Problem 题解 | paulzrm 的小窝</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">paulzrm 的小窝</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+		<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=110 src="//music.163.com/outchain/player?type=0&id=7300011593&auto=1&height=90"></iframe>
+        <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">paulzrm</p>
+  <div class="site-description" itemprop="description">一个存一些奇奇怪怪的东西的地方</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/02/%E7%AC%AC46%E5%B1%8AICPC%E4%BA%9A%E6%B4%B2%E5%8C%BA%E5%9F%9F%E8%B5%9B%EF%BC%88%E6%98%86%E6%98%8E%EF%BC%89(%E6%AD%A3%E5%BC%8F%E8%B5%9B%EF%BC%89%20J.%20Just%20Another%20String%20Problem/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="paulzrm">
+      <meta itemprop="description" content="一个存一些奇奇怪怪的东西的地方">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="paulzrm 的小窝">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          第46届ICPC亚洲区域赛（昆明）(正式赛） J.Just Another String Problem 题解
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2022-05-02 00:00:00 / Modified: 17:32:44" itemprop="dateCreated datePublished" datetime="2022-05-02T00:00:00+08:00">2022-05-02</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><a target="_blank" rel="noopener" href="https://ac.nowcoder.com/acm/contest/32708/J">link</a></p>
+<p>题目大意：</p>
+<p>定义一个好集合 $T$：</p>
+<ul>
+<li><p>所有元素均为字符串</p>
+</li>
+<li><p>$T$ 中不包含两个串 $p,q$，满足 $p$ 是 $q$  的后缀</p>
+</li>
+</ul>
+<p>先给你一个长度为 $n$ 的字符串$s$，和一个长度为 $n$ 的数组 $v$。</p>
+<span id="more"></span>
+<p>一个好的集合 $T$ 的权值定义为 $\sum\limits_{s \in T} v_{|s|}$，其中 $|s|$ 表示字符串 $s$ 的长度。</p>
+<p>然后 $q$ 次询问，每次给定两个数 $l,k$，问你当好集合 $T$ 的元素均为 $s_{1\dots l}$ 的子串，且 $T$ 的大小 $\le k$ 时，$T$ 的最大权值是多少。</p>
+<hr>
+<ul>
+<li><strong>Lema 1. 最优情况下的 $T$ 中的所有串都是 $s$ 的前缀</strong></li>
+</ul>
+<p>可以反证。</p>
+<p>如果其中有一个串 $p$ 不是 $s$  的前缀，设 $p=s_{l\dots r}$，那么我们让 $p=s_{1\dots r}$ 答案一定不会劣。</p>
+<p>首先，题目中保证了 $v_i$ 单调增，所以这个新 $T’$ 的权值一定会更大。</p>
+<p>然后，我们来说明这个 $T’$ 是合法的。</p>
+<p>还是反证，假设这个 $p’=s_{1 \dots r}$ 是某个串 $q$ 的后缀。</p>
+<p>那么显然，由于 $p$ 是 $p’$ 的后缀，$p’$ 又是 $q$ 的后缀，所以 $p$ 就是 $q$ 的后缀，然而 $p$ 和 $q$ 均在原来的 $T$ 中，故 $T$ 不合法，而原来的 $T$ 是合法的，矛盾、</p>
+<ul>
+<li><strong>Lema 2. 对于每一个 $1\le i \le n$，我们最多选择一个串满足结尾为 $i$</strong></li>
+</ul>
+<p>由引理1易证，同一个串不能出现两次。</p>
+<ul>
+<li><strong>Lema 3. 对于两个不同的 $1 \le i &lt; j \le n$，以 $j$ 结尾的串的权值一定大于 $i$ 的</strong></li>
+</ul>
+<p>引理1和2可以得到只能选择$s_{1\dots i}$ 和 $s_{1 \dots j}$，又由 $v_j\geq v_i$ 可得。</p>
+<hr>
+<p>由引理1可得，我们考虑两个前缀什么时候不能出现。</p>
+<p>考虑 kmp 建出的 fail 数组并把它拎成一棵fail树，那么对于长度为 $j$ 的前缀和长度为 $i$ 的前缀（ $i \le j$ ）不能同时出现，当且仅当 $i$ 不是 $j$ 的祖先。</p>
+<p>$fail_i$ 的定义：$fail_i&lt;i$，且 $s_{1\dots fail_i}$ 是最长的既是 $s_i$ 的前缀又是后缀的串。</p>
+<p>由定义得当 $i=fail_j$ 的时候 $i$ 和 $j$ 不能同时出现。</p>
+<p>然后我们考虑 $t=fail_{fail_{j}}$，由于$s_{1\dots t}$ 为 $s_{1\dots fail_j}$ 的前缀和后缀，而 $s_{1\dots fail_j}$ 是 $s_{1 \dots j}$ 的前缀和后缀，所以 $s_{1\dots t}$ 是 $s_{1 \dots j}$ 的前缀和后缀。递归下去就可以推出是祖先就不能出现的结论了。</p>
+<p>最后我们要做的，就是把询问离线，按照 $l$ 从小到大排序，依次加入 $s_i$ ，维护一棵线段树即可。</p>
+<p>由引理3可得，选择越靠后的串总权值越大，就可以用主席树查询区间第 $k$ 大的方法来求答案了。</p>
+<p>Code:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> mp make_pair</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> reg register</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> mxn=<span class="number">1e6</span>+<span class="number">6</span>;</span><br><span class="line"><span class="type">int</span> n,q;</span><br><span class="line"><span class="type">int</span> nxt[mxn];</span><br><span class="line">ll ans[mxn],v[mxn];</span><br><span class="line"><span class="type">char</span> s[mxn];</span><br><span class="line"><span class="type">bool</span> used[mxn];</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">kmp</span><span class="params">()</span></span>&#123;</span><br><span class="line">	nxt[<span class="number">1</span>]=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">2</span>,j=<span class="number">0</span>;i&lt;=n;++i)&#123;</span><br><span class="line">		<span class="keyword">for</span>(;j <span class="keyword">and</span> s[j+<span class="number">1</span>]!=s[i];)j=nxt[j];</span><br><span class="line">		<span class="keyword">if</span>(s[i]==s[j+<span class="number">1</span>])++j;</span><br><span class="line">		nxt[i]=j;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">ll sz[mxn&lt;&lt;<span class="number">3</span>],val[mxn&lt;&lt;<span class="number">3</span>];</span><br><span class="line">vector&lt;<span class="type">int</span>&gt;g[mxn];</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">init</span><span class="params">()</span></span>&#123;<span class="built_in">memset</span>(used,<span class="number">0</span>,<span class="built_in">sizeof</span>(used));<span class="built_in">memset</span>(sz,<span class="number">0</span>,<span class="built_in">sizeof</span>(sz)),<span class="built_in">memset</span>(val,<span class="number">0</span>,<span class="built_in">sizeof</span>(val)),<span class="built_in">memset</span>(nxt,<span class="number">0</span>,<span class="built_in">sizeof</span>(nxt)),<span class="built_in">memset</span>(ans,<span class="number">0</span>,<span class="built_in">sizeof</span>(ans)),<span class="built_in">memset</span>(g,<span class="number">0</span>,<span class="built_in">sizeof</span>(g));&#125;</span><br><span class="line"><span class="type">int</span> e[mxn],f[mxn];</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">pushup</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;</span><br><span class="line">	sz[x]=sz[x&lt;&lt;<span class="number">1</span>]+sz[x&lt;&lt;<span class="number">1</span>|<span class="number">1</span>];</span><br><span class="line">	val[x]=val[x&lt;&lt;<span class="number">1</span>]+val[x&lt;&lt;<span class="number">1</span>|<span class="number">1</span>];</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">erase</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> l,<span class="type">int</span> r,<span class="type">int</span> pos)</span></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(l==r)&#123;</span><br><span class="line">		sz[x]=<span class="number">0</span>,val[x]=<span class="number">0</span>;</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="type">int</span> md=l+r&gt;&gt;<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">if</span>(pos&lt;=md)<span class="built_in">erase</span>(x&lt;&lt;<span class="number">1</span>,l,md,pos);</span><br><span class="line">	<span class="keyword">else</span> <span class="built_in">erase</span>(x&lt;&lt;<span class="number">1</span>|<span class="number">1</span>,md+<span class="number">1</span>,r,pos);</span><br><span class="line">	<span class="built_in">pushup</span>(x);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">add</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> l,<span class="type">int</span> r,<span class="type">int</span> pos)</span></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(l==r)&#123;</span><br><span class="line">		sz[x]=<span class="number">1</span>,val[x]=v[pos];</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="type">int</span> md=l+r&gt;&gt;<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">if</span>(pos&lt;=md)<span class="built_in">add</span>(x&lt;&lt;<span class="number">1</span>,l,md,pos);</span><br><span class="line">	<span class="keyword">else</span> <span class="built_in">add</span>(x&lt;&lt;<span class="number">1</span>|<span class="number">1</span>,md+<span class="number">1</span>,r,pos);</span><br><span class="line">	<span class="built_in">pushup</span>(x);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> ll <span class="title">ask</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> l,<span class="type">int</span> r,<span class="type">int</span> k)</span></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(sz[x]&lt;=k)<span class="keyword">return</span> val[x];</span><br><span class="line">	<span class="type">int</span> md=l+r&gt;&gt;<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">if</span>(k&lt;=sz[x&lt;&lt;<span class="number">1</span>|<span class="number">1</span>])<span class="keyword">return</span> <span class="built_in">ask</span>(x&lt;&lt;<span class="number">1</span>|<span class="number">1</span>,md+<span class="number">1</span>,r,k);</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">return</span> <span class="built_in">ask</span>(x&lt;&lt;<span class="number">1</span>|<span class="number">1</span>,md+<span class="number">1</span>,r,k)+<span class="built_in">ask</span>(x&lt;&lt;<span class="number">1</span>,l,md,k-sz[x&lt;&lt;<span class="number">1</span>|<span class="number">1</span>]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">solve</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="built_in">init</span>();</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>,&amp;n,&amp;q);</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%s&quot;</span>,s+<span class="number">1</span>);s[n+<span class="number">1</span>]=<span class="number">0</span>;</span><br><span class="line">	<span class="built_in">kmp</span>();</span><br><span class="line"><span class="comment">//	for(int i=1;i&lt;=n;++i)cout&lt;&lt;nxt[i]&lt;&lt;&#x27; &#x27;;cout&lt;&lt;endl;</span></span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;++i)<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,v+i);</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=q;++i)&#123;</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>,e+i,f+i);</span><br><span class="line">		g[e[i]].<span class="built_in">push_back</span>(i);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;++i)&#123;</span><br><span class="line">		<span class="keyword">if</span>(used[nxt[i]])&#123;</span><br><span class="line">			<span class="built_in">erase</span>(<span class="number">1</span>,<span class="number">1</span>,n,nxt[i]);</span><br><span class="line">			used[nxt[i]]=<span class="number">0</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		used[i]=<span class="number">1</span>;</span><br><span class="line">		<span class="built_in">add</span>(<span class="number">1</span>,<span class="number">1</span>,n,i);</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> j:g[i])ans[j]=<span class="built_in">ask</span>(<span class="number">1</span>,<span class="number">1</span>,n,f[j]);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=q;++i)<span class="built_in">printf</span>(<span class="string">&quot;%lld\n&quot;</span>,ans[i]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	ios_base::<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>);</span><br><span class="line">	cin.<span class="built_in">tie</span>(<span class="number">0</span>),cout.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">	<span class="type">int</span> T=<span class="number">1</span>;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;T);</span><br><span class="line">	<span class="keyword">for</span>(;T--;)<span class="built_in">solve</span>();</span><br><span class="line">	<span class="keyword">return</span> (<span class="number">0</span><span class="number">-0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E9%A2%98%E8%A7%A3/" rel="tag"># 题解</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/05/01/CF1673F%20Anti-Theft%20Road%20Planning%20%E9%A2%98%E8%A7%A3/" rel="prev" title="CF1673F Anti-Theft Road Planning 题解">
+                  <i class="fa fa-chevron-left"></i> CF1673F Anti-Theft Road Planning 题解
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/05/02/%E4%B8%8D%E5%AE%9A%E6%9C%9F%E6%9B%B4%E6%96%B0%E7%9A%84%E6%9D%BF%E5%AD%90%E5%BA%93/" rel="next" title="不定期更新的板子库">
+                  不定期更新的板子库 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">paulzrm</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"paulzrm","repo":"BlogComment","client_id":"3b7c67d15a0a361eff6a","client_secret":"41e9b7f21522101e5cb2ea601b8a452b639e4828","admin_user":"paulzrm","distraction_free_mode":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"7780787c31bf2f14f29cd7098b7d0a9a"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"debug":false,"model":{"jsonPath":"/live2dw/assets/hibiki.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":false},"log":false});</script></body>
+</html>
