@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css">
+<script src="/live2d-widget/autoload.js"></script>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.10.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+  <meta property="og:type" content="website">
+<meta property="og:title" content="「JOISC 2017 Day 1」烟花棒 题解">
+<meta property="og:url" content="http://example.com/2022/07/04/%E3%80%8CJOISC%202017%20Day%201%E3%80%8D%E7%83%9F%E8%8A%B1%E6%A3%92%20%E9%A2%98%E8%A7%A3/index.html">
+<meta property="og:site_name" content="paulzrm 的小窝">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://cdn.luogu.com.cn/upload/image_hosting/rjzlc4aq.png">
+<meta property="article:published_time" content="2022-07-03T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-07-04T08:30:38.100Z">
+<meta property="article:author" content="paulzrm">
+<meta property="article:tag" content="题解">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.luogu.com.cn/upload/image_hosting/rjzlc4aq.png">
+
+
+<link rel="canonical" href="http://example.com/2022/07/04/%E3%80%8CJOISC%202017%20Day%201%E3%80%8D%E7%83%9F%E8%8A%B1%E6%A3%92%20%E9%A2%98%E8%A7%A3/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2022/07/04/%E3%80%8CJOISC%202017%20Day%201%E3%80%8D%E7%83%9F%E8%8A%B1%E6%A3%92%20%E9%A2%98%E8%A7%A3/","path":"2022/07/04/「JOISC 2017 Day 1」烟花棒 题解/","title":"「JOISC 2017 Day 1」烟花棒 题解"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>「JOISC 2017 Day 1」烟花棒 题解 | paulzrm 的小窝</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">paulzrm 的小窝</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+		<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=110 src="//music.163.com/outchain/player?type=0&id=7300011593&auto=1&height=90"></iframe>
+        <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">paulzrm</p>
+  <div class="site-description" itemprop="description">一个存一些奇奇怪怪的东西的地方</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">18</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/07/04/%E3%80%8CJOISC%202017%20Day%201%E3%80%8D%E7%83%9F%E8%8A%B1%E6%A3%92%20%E9%A2%98%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="paulzrm">
+      <meta itemprop="description" content="一个存一些奇奇怪怪的东西的地方">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="paulzrm 的小窝">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          「JOISC 2017 Day 1」烟花棒 题解
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2022-07-04 00:00:00 / Modified: 16:30:38" itemprop="dateCreated datePublished" datetime="2022-07-04T00:00:00+08:00">2022-07-04</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p><img src="https://cdn.luogu.com.cn/upload/image_hosting/rjzlc4aq.png" alt=""></p>
+<span id="more"></span>
+<p>单调性可以被感性发现。</p>
+<p>但是我们要注意一点，就是“在碰到一个人之后立刻点燃烟花棒”是不优的。</p>
+<p>显然，我们可以让上一个人一直跟着这个人跑，直到烟花棒耗完。同样，无论在耗完的路上遇到了多少人，他们都可以一起跑。可以发现，我们这么做，即等到它耗尽再传递，能够延长火种运输的时间。<del>因为你不用考虑这些人是否会累死</del></p>
+<p>然后我们贪心的考虑，肯定是 $1\dots k-1$ 号人向右跑，$k+1 \dots n$ 号人向左跑。然后第 $k$ 个人每传递到一个人后就选择下一个传递到左边还是右边。</p>
+<p>如果一些人一直同向跑的话，那么他们之间的距离不会变。所以说，在这个过程中，只有 $k$ 号和他的目标之间的距离在变。（我们这种模式就保证了在一个时刻只会有一个烟花棒是点燃的，而为了方便起见我们让 $k$ 号人一直跟着这个烟花棒跑，反正也累不死）</p>
+<p>所以，这道题就可以转化成有两列人，每次一个一个撞掉开头的一个，会消耗一定的时间，如果撞掉了就可以获得 $T$ 的时间，问你能否撞完。（每撞上一个人会让这个烟花棒续命 $T$ 时间）</p>
+<p>考虑把前面的人和后面的人都分成一些连续的小段，满足每个段的所有前缀都满足 $cost&gt;T<em>c$ 而到了结束则 $cost \le T</em>c$。（$c$ 代表这一段前缀中人的个数，$cost$ 代表总消耗时间）</p>
+<p>如果这两列能够正好被分为一些小段，那么我们执行以下操作：</p>
+<p>每次选择一个段然后撞完，如果不能撞则一定不行了。</p>
+<p>如果不能被正好分完，那么就可以发现这个后缀满足 $cost &gt; T*c$。由于最后剩下的时间是可以求出的，我们就可以把后缀的 $T$ 和 $C$ 翻转过来，然后用上述方法再求一遍即可。</p>
+<p>Talk is cheap, show me the code.</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ll long long</span></span><br><span class="line"><span class="type">const</span> <span class="type">int</span> ll inf=<span class="number">1e9</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> mxn=<span class="number">1e5</span>+<span class="number">5</span>;</span><br><span class="line">ll n,k,t;</span><br><span class="line">ll a[mxn],b[mxn];</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">bool</span> <span class="title">check</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;++i)b[i]=a[i]<span class="number">-2ll</span>*t*x*i; <span class="comment">//预处理然后就可以直接比大小</span></span><br><span class="line">	<span class="keyword">if</span>(b[<span class="number">1</span>]&lt;b[n])<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	<span class="type">int</span> lx=k,rx=k;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=k<span class="number">-1</span>;i;--i)<span class="keyword">if</span>(b[i]&gt;=b[lx])lx=i;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=k+<span class="number">1</span>;i&lt;=n;++i)<span class="keyword">if</span>(b[i]&lt;=b[rx])rx=i;</span><br><span class="line">	<span class="type">int</span> l=k,r=k;</span><br><span class="line">	<span class="keyword">for</span>(;lx&lt;l <span class="keyword">or</span> r&lt;rx;)&#123;<span class="comment">//正着</span></span><br><span class="line">		<span class="type">bool</span> ok=<span class="number">0</span>,f=<span class="number">0</span>;</span><br><span class="line">		<span class="type">int</span> tl=l,tr=r;</span><br><span class="line">		<span class="keyword">for</span>(;tl&gt;lx <span class="keyword">and</span> b[tl<span class="number">-1</span>]&gt;=b[r];)<span class="keyword">if</span>(b[--tl]&gt;=b[l])&#123;</span><br><span class="line">			f=<span class="number">1</span>;</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span>(f)ok=<span class="number">1</span>,l=tl;</span><br><span class="line">		f=<span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span>(;tr&lt;rx <span class="keyword">and</span> b[tr+<span class="number">1</span>]&lt;=b[l];)<span class="keyword">if</span>(b[++tr]&lt;=b[r])&#123;</span><br><span class="line">			f=<span class="number">1</span>;</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span>(f)ok=<span class="number">1</span>,r=tr;</span><br><span class="line">		<span class="keyword">if</span>(!ok)<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	l=<span class="number">1</span>,r=n;</span><br><span class="line">	<span class="keyword">for</span>(;l&lt;lx <span class="keyword">or</span> rx&lt;r;)&#123;<span class="comment">//处理后缀</span></span><br><span class="line">		<span class="type">bool</span> ok=<span class="number">0</span>,f=<span class="number">0</span>;</span><br><span class="line">		<span class="type">int</span> tl=l,tr=r;</span><br><span class="line">		<span class="keyword">for</span>(;tl&lt;lx <span class="keyword">and</span> b[tl+<span class="number">1</span>]&gt;=b[r];)<span class="keyword">if</span>(b[++tl]&gt;=b[l])&#123;</span><br><span class="line">			f=<span class="number">1</span>;</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span>(f)ok=<span class="number">1</span>,l=tl;</span><br><span class="line">		f=<span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span>(;tr&gt;rx <span class="keyword">and</span> b[tr<span class="number">-1</span>]&lt;=b[l];)<span class="keyword">if</span>(b[--tr]&lt;=b[r])&#123;</span><br><span class="line">			f=<span class="number">1</span>;</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span>(f)ok=<span class="number">1</span>,r=tr;</span><br><span class="line">		<span class="keyword">if</span>(!ok)<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	ios_base::<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>);</span><br><span class="line">	cin.<span class="built_in">tie</span>(<span class="number">0</span>),cout.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">	cin&gt;&gt;n&gt;&gt;k&gt;&gt;t;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;++i)cin&gt;&gt;a[i];</span><br><span class="line">	<span class="type">int</span> l=<span class="number">0</span>,r=inf/t+<span class="number">1</span>,md;</span><br><span class="line">	<span class="keyword">for</span>(;l&lt;r<span class="number">-1</span>;)&#123;</span><br><span class="line">		md=l+r&gt;&gt;<span class="number">1</span>;</span><br><span class="line">		<span class="keyword">if</span>(<span class="built_in">check</span>(md))r=md;</span><br><span class="line">		<span class="keyword">else</span> l=md;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(<span class="built_in">check</span>(<span class="number">0</span>))r=<span class="number">0</span>;</span><br><span class="line">	cout&lt;&lt;r&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E9%A2%98%E8%A7%A3/" rel="tag"># 题解</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/05/02/%E7%AC%AC46%E5%B1%8AICPC%E4%BA%9A%E6%B4%B2%E5%8C%BA%E5%9F%9F%E8%B5%9B%EF%BC%88%E6%98%86%E6%98%8E%EF%BC%89(%E6%AD%A3%E5%BC%8F%E8%B5%9B%EF%BC%89%20J.%20Just%20Another%20String%20Problem/" rel="prev" title="第46届ICPC亚洲区域赛（昆明）(正式赛） J.Just Another String Problem 题解">
+                  <i class="fa fa-chevron-left"></i> 第46届ICPC亚洲区域赛（昆明）(正式赛） J.Just Another String Problem 题解
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">paulzrm</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"paulzrm","repo":"BlogComment","client_id":"3b7c67d15a0a361eff6a","client_secret":"41e9b7f21522101e5cb2ea601b8a452b639e4828","admin_user":"paulzrm","distraction_free_mode":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"df9816155fdb6ece382902244a71a0db"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>
