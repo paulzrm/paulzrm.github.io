@@ -30,7 +30,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cdn.luogu.com.cn/upload/image_hosting/rjzlc4aq.png">
 <meta property="article:published_time" content="2022-07-03T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-07-04T08:30:38.100Z">
+<meta property="article:modified_time" content="2022-07-04T08:32:33.571Z">
 <meta property="article:author" content="paulzrm">
 <meta property="article:tag" content="题解">
 <meta name="twitter:card" content="summary">
@@ -194,7 +194,7 @@
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2022-07-04 00:00:00 / Modified: 16:30:38" itemprop="dateCreated datePublished" datetime="2022-07-04T00:00:00+08:00">2022-07-04</time>
+      <time title="Created: 2022-07-04 00:00:00 / Modified: 16:32:33" itemprop="dateCreated datePublished" datetime="2022-07-04T00:00:00+08:00">2022-07-04</time>
     </span>
 
   
@@ -215,7 +215,7 @@
 <p>然后我们贪心的考虑，肯定是 $1\dots k-1$ 号人向右跑，$k+1 \dots n$ 号人向左跑。然后第 $k$ 个人每传递到一个人后就选择下一个传递到左边还是右边。</p>
 <p>如果一些人一直同向跑的话，那么他们之间的距离不会变。所以说，在这个过程中，只有 $k$ 号和他的目标之间的距离在变。（我们这种模式就保证了在一个时刻只会有一个烟花棒是点燃的，而为了方便起见我们让 $k$ 号人一直跟着这个烟花棒跑，反正也累不死）</p>
 <p>所以，这道题就可以转化成有两列人，每次一个一个撞掉开头的一个，会消耗一定的时间，如果撞掉了就可以获得 $T$ 的时间，问你能否撞完。（每撞上一个人会让这个烟花棒续命 $T$ 时间）</p>
-<p>考虑把前面的人和后面的人都分成一些连续的小段，满足每个段的所有前缀都满足 $cost&gt;T<em>c$ 而到了结束则 $cost \le T</em>c$。（$c$ 代表这一段前缀中人的个数，$cost$ 代表总消耗时间）</p>
+<p>考虑把前面的人和后面的人都分成一些连续的小段，满足每个段的所有前缀都满足 $cost&gt;T\times c$ 而到了结束则 $cost \le T\times c$。（$c$ 代表这一段前缀中人的个数，$cost$ 代表总消耗时间）</p>
 <p>如果这两列能够正好被分为一些小段，那么我们执行以下操作：</p>
 <p>每次选择一个段然后撞完，如果不能撞则一定不行了。</p>
 <p>如果不能被正好分完，那么就可以发现这个后缀满足 $cost &gt; T*c$。由于最后剩下的时间是可以求出的，我们就可以把后缀的 $T$ 和 $C$ 翻转过来，然后用上述方法再求一遍即可。</p>
@@ -237,8 +237,8 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2022/05/02/%E7%AC%AC46%E5%B1%8AICPC%E4%BA%9A%E6%B4%B2%E5%8C%BA%E5%9F%9F%E8%B5%9B%EF%BC%88%E6%98%86%E6%98%8E%EF%BC%89(%E6%AD%A3%E5%BC%8F%E8%B5%9B%EF%BC%89%20J.%20Just%20Another%20String%20Problem/" rel="prev" title="第46届ICPC亚洲区域赛（昆明）(正式赛） J.Just Another String Problem 题解">
-                  <i class="fa fa-chevron-left"></i> 第46届ICPC亚洲区域赛（昆明）(正式赛） J.Just Another String Problem 题解
+                <a href="/2022/05/02/%E4%B8%8D%E5%AE%9A%E6%9C%9F%E6%9B%B4%E6%96%B0%E7%9A%84%E6%9D%BF%E5%AD%90%E5%BA%93/" rel="prev" title="不定期更新的板子库">
+                  <i class="fa fa-chevron-left"></i> 不定期更新的板子库
                 </a>
             </div>
             <div class="post-nav-item">
