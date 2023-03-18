@@ -31,7 +31,7 @@
 <meta property="og:description" content="题目意思很清楚不用说。 看到每个点都有颜色，然后询问和颜色的种类有关，时限开了很【】的 8s，就可以往根号分治方面想了。 按照常理，我们钦定一个 $B$，所有颜色为 $i$ 的点的集合为 $col_i$。">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2022-07-20T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-07-21T13:17:07.242Z">
+<meta property="article:modified_time" content="2022-11-25T03:05:57.943Z">
 <meta property="article:author" content="paulzrm">
 <meta property="article:tag" content="题解">
 <meta name="twitter:card" content="summary">
@@ -125,12 +125,12 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">20</span>
+          <span class="site-state-item-count">21</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">4</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>
@@ -192,9 +192,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2022-07-21 00:00:00 / Modified: 21:17:07" itemprop="dateCreated datePublished" datetime="2022-07-21T00:00:00+08:00">2022-07-21</time>
+      <time title="Created: 2022-07-21 00:00:00" itemprop="dateCreated datePublished" datetime="2022-07-21T00:00:00+08:00">2022-07-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2022-11-25 11:05:57" itemprop="dateModified" datetime="2022-11-25T11:05:57+08:00">2022-11-25</time>
     </span>
 
   
@@ -216,12 +222,12 @@
 <p>同理，如果 $|col_x| \le B$ 且 $|col_y| &gt; B$，那么我们可以预处理 $dw_i$ 表示第 $i$ 个节点的子树中有多少个节点的颜色为 $c$，询问时计算 $\sum\limits_{v \in col_x}dw_v$。时间复杂度同上。</p>
 <p>最后，如果 $|col_x| &gt; B$ 且 $|col_y| &gt; B$，那么和小块对小块一样，可以预处理，对于所有可能的大块对建出虚树算一遍答案，询问时直接调用即可。时间复杂度 $O(n\sqrt{n})$。</p>
 <hr>
-<p>上述全部为口胡，如果实现不精细的话，时间复杂度会写成 $O(n\sqrt{nlogn})$且常数巨大，导致你可能只有 60pts 的好成绩。</p>
+<p>上述全部为口胡，如果实现不精细的话，时间复杂度会写成 $O(n\sqrt{n\log n})$且常数巨大，导致你可能只有 60pts 的好成绩。</p>
 <hr>
 <ol>
-<li><p>普通的倍增LCA的询问是 $O(logn)$ 的，我们要用ST表做到 $O(n)$ 预处理，$O(1)$ 求LCA。</p>
+<li><p>普通的倍增LCA的询问是 $O(\log n)$ 的，我们要用ST表做到 $O(n)$ 预处理，$O(1)$ 求LCA。</p>
 </li>
-<li><p>在建立虚树的时候，有一步要对所有点按照dfs序排序。如果不想写基数排序怎么办？可以在询问前先对每个 $col_i$ 中的元素先按照字典序排序，在询问的时候用类似归并排序的方法merge两个有序的 $col_x$ 和 $col_y$，就可以把这个 $logn$ 砍掉了。</p>
+<li><p>在建立虚树的时候，有一步要对所有点按照dfs序排序。如果不想写基数排序怎么办？可以在询问前先对每个 $col_i​$ 中的元素先按照字典序排序，在询问的时候用类似归并排序的方法merge两个有序的 $col_x​$ 和 $col_y​$，就可以把这个 $\log n​$ 砍掉了。</p>
 </li>
 </ol>
 <hr>
@@ -258,8 +264,8 @@
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2022/09/25/%E6%9A%B4%E5%8A%9B%E7%BE%8E%E5%AD%A6%E2%80%94%E2%80%94%E6%B5%85%E8%B0%88%E6%A0%B9%E5%8F%B7%E5%88%86%E6%B2%BB/" rel="next" title="暴力美学——浅谈根号分治">
-                  暴力美学——浅谈根号分治 <i class="fa fa-chevron-right"></i>
+                <a href="/2023/03/18/%E8%BE%83%E9%AB%98%E9%9A%BE%E5%BA%A6dp%E9%A2%98%E7%9B%AE%E9%80%89%E5%81%9A/" rel="next" title="">
+                   <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
@@ -282,7 +288,7 @@
 
 <div class="copyright">
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2023</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
