@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css">
+<script src="/live2d-widget/autoload.js"></script>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.4/css/all.min.css" integrity="sha256-mUZM63G8m73Mcidfrv5E+Y61y7a12O5mW4ezU3bxqW4=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.10.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+  <meta name="description" content="根号分治，是暴力美学的集大成体现。与其说是一种算法，我们不如称它为一个常用的trick。 首先，我们引入一道入门题目 CF1207F Remainder Problem： 给你一个长度为 $5\times10^5$ 的序列，初值为 $0$ ，你要完成 $q$ 次操作，操作有如下两种：  1 x y: 将下标为 $x$ 的位置的值加上 $y$。 2 x y: 询问所有下标模 $x$ 的结果为 $y$">
+<meta property="og:type" content="website">
+<meta property="og:title" content="暴力美学——浅谈根号分治">
+<meta property="og:url" content="http://example.com/2023/03/18/%E6%9A%B4%E5%8A%9B%E7%BE%8E%E5%AD%A6%E2%80%94%E2%80%94%E6%B5%85%E8%B0%88%E6%A0%B9%E5%8F%B7%E5%88%86%E6%B2%BB/index.html">
+<meta property="og:site_name" content="paulzrm 的小窝">
+<meta property="og:description" content="根号分治，是暴力美学的集大成体现。与其说是一种算法，我们不如称它为一个常用的trick。 首先，我们引入一道入门题目 CF1207F Remainder Problem： 给你一个长度为 $5\times10^5$ 的序列，初值为 $0$ ，你要完成 $q$ 次操作，操作有如下两种：  1 x y: 将下标为 $x$ 的位置的值加上 $y$。 2 x y: 询问所有下标模 $x$ 的结果为 $y$">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-03-17T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-03-18T01:15:35.109Z">
+<meta property="article:author" content="paulzrm">
+<meta property="article:tag" content="笔记">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2023/03/18/%E6%9A%B4%E5%8A%9B%E7%BE%8E%E5%AD%A6%E2%80%94%E2%80%94%E6%B5%85%E8%B0%88%E6%A0%B9%E5%8F%B7%E5%88%86%E6%B2%BB/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2023/03/18/%E6%9A%B4%E5%8A%9B%E7%BE%8E%E5%AD%A6%E2%80%94%E2%80%94%E6%B5%85%E8%B0%88%E6%A0%B9%E5%8F%B7%E5%88%86%E6%B2%BB/","path":"2023/03/18/暴力美学——浅谈根号分治/","title":"暴力美学——浅谈根号分治"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>暴力美学——浅谈根号分治 | paulzrm 的小窝</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">paulzrm 的小窝</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+		<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=110 src="//music.163.com/outchain/player?type=0&id=7300011593&auto=1&height=90"></iframe>
+        <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">paulzrm</p>
+  <div class="site-description" itemprop="description">一个存一些奇奇怪怪的东西的地方</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">22</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/03/18/%E6%9A%B4%E5%8A%9B%E7%BE%8E%E5%AD%A6%E2%80%94%E2%80%94%E6%B5%85%E8%B0%88%E6%A0%B9%E5%8F%B7%E5%88%86%E6%B2%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="paulzrm">
+      <meta itemprop="description" content="一个存一些奇奇怪怪的东西的地方">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="paulzrm 的小窝">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          暴力美学——浅谈根号分治
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2023-03-18 00:00:00 / Modified: 09:15:35" itemprop="dateCreated datePublished" datetime="2023-03-18T00:00:00+08:00">2023-03-18</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>根号分治，是暴力美学的集大成体现。与其说是一种算法，我们不如称它为一个常用的trick。</p>
+<p>首先，我们引入一道入门题目 <a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF1207F">CF1207F Remainder Problem</a>：</p>
+<p>给你一个长度为 $5\times10^5$ 的序列，初值为 $0$ ，你要完成 $q$ 次操作，操作有如下两种：</p>
+<ol>
+<li><code>1 x y</code>: 将下标为 $x$ 的位置的值加上 $y$。</li>
+<li><code>2 x y</code>: 询问所有下标模 $x$ 的结果为 $y$ 的位置的值之和。</li>
+</ol>
+<span id="more"></span> 
+<p>考虑这题的暴力是什么。</p>
+<p>首先有一种暴力就是按照题目所说的去做，开一个 $5\times10^5$ 大小的数组 $a$ 去存，$1$ 操作就对 $a_x$ 加上 $y$，$2$ 操作就枚举所有下标模 $x$ 的结果为 $y$ 的位置，统计他们的和。</p>
+<p>对于这种暴力，$1$ 操作的时间复杂度为 $O(1)$，$2$  操作的时间复杂度为 $O(n)$，所以在最坏情况下总时间复杂度可达 $O(nq)$。</p>
+<p>经过思考，我们可以发现另外一种暴力：新开一个大小为 $n\times n$  的二维数组 $b$，$b_{i,j}$ 当前所有下标模 $i$ 的结果为 $j$ 的数的和是什么。对于每个 $1$ 操作，动态的去维护这个 $b$  数组，在每次询问的时候直接输出答案即可。</p>
+<p>对于这种暴力，$1$ 操作的时间复杂度是枚举模数的 $O(n)$ ，$2$  操作的时间复杂度为 $O(1)$，总的时间复杂度为 $O(nq)$。</p>
+<p>现在我们发现，这两种暴力对应了两种极端：一个是 $1$ 操作的时间复杂度为 $O(1)$，$2$  操作的时间复杂度为 $O(n)$；另一个是 $1$ 操作的时间复杂度是枚举模数的 $O(n)$，$2$ 操作的时间复杂度为 $O(1)$。那么，有没有办法让这两种暴力融合一下，均摊时间复杂度，达到一个平衡呢？</p>
+<p>其实是有的。我们设定一个阈值 $b$。</p>
+<p>对于所有 $\le b$ 的数，我们动态的维护暴力 $2$ 的 $b$ 数组。每次 $1$ 操作只需要枚举 $b$ 个模数即可，故单次操作 $1$ 的时间复杂度降为 $O(b)$。</p>
+<p>对于所有 $&gt;b$ 的数，我们就不在操作 $1$ 中维护 $b$，直接再询问答案时暴力枚举下标即可。显然，这 $n$ 个下标中最多有 $\lceil \frac{n}{b}\rceil$ 个下标对 $x$ 取模余 $y$ 找到第一个 $y$ 后每次跳 $x$，即可做到单次操作 $2$ 时间复杂度为 $O(\frac{n}{b})$。</p>
+<p>所以，总时间复杂度就成为了 $O(q\times(b+\frac{n}{b}))$。由基本不等式可得，$b+\frac{n}{b} \geq 2\sqrt{b\times\frac{n}{b}}=2\sqrt{n}$，当 $b=\sqrt{n}$  时取等。所以我们只需要让 $b=\sqrt{n}$，就可以做到时间和空间复杂度均为 $O(q\sqrt{n})$  的优秀算法了，可以通过此题。</p>
+<p>代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> mp make_pair</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line">ll sum[<span class="number">755</span>][<span class="number">755</span>],a[<span class="number">500005</span>];  <span class="comment">//这里我的阈值取了700</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	ios_base::<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>);cin.<span class="built_in">tie</span>(<span class="number">0</span>),cout.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">	<span class="type">int</span> q;cin&gt;&gt;q;</span><br><span class="line">	<span class="keyword">for</span>(;q--;)&#123;</span><br><span class="line">		<span class="type">int</span> tp,x,y;cin&gt;&gt;tp&gt;&gt;x&gt;&gt;y;</span><br><span class="line">		<span class="keyword">if</span>(tp==<span class="number">1</span>)&#123;  </span><br><span class="line">			<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;<span class="number">700</span>;++i)sum[i][x%i]+=y;   <span class="comment">//枚举模数</span></span><br><span class="line">			a[x]+=y;</span><br><span class="line">		&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">			<span class="keyword">if</span>(x&lt;<span class="number">700</span>)&#123;</span><br><span class="line">				cout&lt;&lt;sum[x][y]&lt;&lt;endl;</span><br><span class="line">			&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">				ll rt=<span class="number">0</span>;</span><br><span class="line">				<span class="keyword">for</span>(<span class="type">int</span> i=y;i&lt;=<span class="number">500000</span>;i+=x)rt+=a[i];  <span class="comment">//暴力统计</span></span><br><span class="line">				cout&lt;&lt;rt&lt;&lt;endl;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<p>通过一道例题，我们可以发现，根号分治不就是两个暴力揉到一起嘛！对于小于一个阈值的数据我们采取一种暴力形式，对于大于阈值的数据我们采用另外一种形式。通常，这两种暴力，一种是直接模拟，另外一种是动态的维护什么东西，或者预处理。暴力与暴力的完美结合，就能过题，有时候甚至可以爆踩标算。</p>
+<p>根号分治的用处很广，不仅可以用于数据结构，也可以用在其他方面。现在由笔者继续介绍几道例题。</p>
+<p>1.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF710D">CF710D Two Arithmetic Progressions</a></p>
+<p>题目大意：</p>
+<p>现在有两个等差数列，形如 $a_1k+b_1$ 和 $a_2k+b_2$，其中 $k$ 要满足是自然数。现在再给你两个正整数 $l,r$，求出 $[l,r]$ 间有多少个数同时出现在两个等差数列中。数据满足 $0&lt;a_1,b_1\le2\times10^9，-2\times10*9\le b_1,b_2,l,r\le 2\times10^9,l\le r$。</p>
+<p>题解：</p>
+<p>正解要用到 exgcd 等数论知识，且细节较多比较麻烦。现在我们考虑如何用根号分治解决该数论问题。</p>
+<p>现在钦定 $a_1\geq a_2$，再令 $t=\sqrt{2\times 10^9}$。</p>
+<ol>
+<li>$a_1\le t$。此时 $a_2$ 也 $\le t$。由于每隔 $lcm(a_1,b_1)$ 就是一个循环节，且每个循环节只会有 $1$ 的贡献，我们只需要找到第一个重合的数（或报告不存在），然后计算出循环节的个数就可以了。找到第一个重合的数，可以直接对着第一个等差数列从前往后跳，如果跳了 $a_2$ 次还是没有出现，可以证明一定不存在了。</li>
+<li>。$a_1&gt;t$。那么有 $\frac{2\times10^9}{a_1}\le t$。也就是说，在 $[l,r]$ 这段区间内，属于等差数列 $1$ 的数不会超过根号个。我们只需要枚举这个根号个数，依次判断其是否在等差数列 $2$ 中即可。</li>
+</ol>
+<p>代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ll long long</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line">ll a,b,c,d,l,r;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	ios_base::<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>);</span><br><span class="line">	cin&gt;&gt;a&gt;&gt;b&gt;&gt;c&gt;&gt;d&gt;&gt;l&gt;&gt;r;</span><br><span class="line">	ll m=<span class="built_in">max</span>(a,c);</span><br><span class="line">	<span class="keyword">if</span>(m&lt;=<span class="number">50000</span>)&#123;     <span class="comment">//存在循环节，找到第一个就行了</span></span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> i=-m*<span class="number">2</span>;i&lt;=m*<span class="number">2</span>;++i)&#123;</span><br><span class="line">			ll p=i*a+b;</span><br><span class="line">			<span class="keyword">if</span>((<span class="built_in">abs</span>(d-p)%c==<span class="number">0</span>))&#123;</span><br><span class="line">				ll fg=__gcd(a,c);</span><br><span class="line">				fg=a*c/fg;</span><br><span class="line">				ll bg=<span class="built_in">max</span>(<span class="built_in">max</span>(b,d),l);</span><br><span class="line">				<span class="keyword">if</span>(p&gt;bg)&#123;</span><br><span class="line">					p=bg+(p-bg)%fg;</span><br><span class="line">				&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">					p+=((bg-p)/fg+<span class="number">1</span>)*fg;</span><br><span class="line">					p=bg+(p-bg)%fg;</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">if</span>(r&lt;p)<span class="keyword">continue</span>;</span><br><span class="line">				cout&lt;&lt;(r-p)/fg+<span class="number">1</span>&lt;&lt;<span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">				<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		cout&lt;&lt;<span class="number">0</span>&lt;&lt;<span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(a&lt;c)<span class="built_in">swap</span>(a,c),<span class="built_in">swap</span>(b,d);</span><br><span class="line">		ll cnt=<span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span>(ll i=b;i&lt;=r;i+=a)&#123;     <span class="comment">//直接暴力去找</span></span><br><span class="line">			<span class="keyword">if</span>(i&gt;=l <span class="keyword">and</span> i&gt;=d)&#123;</span><br><span class="line">				ll del=i-d;</span><br><span class="line">				<span class="keyword">if</span>(del%c==<span class="number">0</span>)++cnt;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		cout&lt;&lt;cnt&lt;&lt;endl;;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>2.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P8250">洛谷P8250 交友问题</a></p>
+<p>题目大意：</p>
+<p>洛谷上有 $n$ 位用户，这些用户组成了一个双向的网络。</p>
+<p>洛谷的图片分享机制如下：如果第 $i$ 个用户向他的好友 $j$ 分享了一张照片，那么，$j$ 的所有好友 $k$ 就能看到这张照片。<strong>$j$ 也可以看到这张照片。</strong></p>
+<p>现在，用户 $u_i$ 想分享一张照片，但是TA不想让用户 $v_i$ 看到这张照片。在不发送给自己的情况下，TA想知道，他最多可以发送给多少位好友？</p>
+<p>对于 $100\%$ 的数据，满足 $1 \le n,q \le 2\times10^5$，$1\le m \le 7\times 10^5$。</p>
+<p>题解：</p>
+<p>这题看上去就很不可做的样子，没有什么优秀的 $\log$ 算法可以解决。</p>
+<p>我们注意到这题其实还有一个限制：<strong>所有点的度数之和为</strong> $2m$。</p>
+<p>这句话看起来是废话，但 <strong>某个值的总数量一定</strong> 是根号分治的一个明显的提示条件。</p>
+<p>所以我们可以这样分治：</p>
+<p>暴力 $1$：</p>
+<p>利用 map 存储所有的出边，每次询问时暴力枚举所有邻居并在 map 中判断是否出现过。</p>
+<p>时间复杂度: $O(n^2\log n)$。</p>
+<p>暴力 $2$：</p>
+<p>对于每一个节点都开一个 bitset  存储邻接点。(设为 $b_i$)</p>
+<p>查询用 $b_u  xor  (b_u  and  b_v)$ 即可。$xor$ 为按位异或，$and$ 为按位与。（事实上就是在 $b_u$  的所有邻居中除掉了所有既在 $b_u$ 中又在 $b_v$ 中的点）</p>
+<p>时间&amp;空间复杂度: $O(\frac{n^2}{\omega})$。</p>
+<p>正解：</p>
+<p>考虑将 暴力 $1$ 和 暴力 $2$ 结合起来。</p>
+<p>我们设定一个阈值 $limit$，并将所有度数 $\geq limit$ 的点称为重点，所有度数 $&lt;limit$ 的点称为轻点。</p>
+<p>显然，由于总度数是 $O(m)$ 的，所以重点的个数是 $O(\frac{m}{limit})$ 级别的。</p>
+<p>查询的时候分类讨论（注意 $u$ 和 $v$ 不是等效的，所以要分 $4$ 类而不是 $3$ 类）：</p>
+<ol>
+<li>重点对重点。可以完全利用暴力 $2$ ，单次询问时间复杂度为 $O(\frac{n}{\omega})$。</li>
+<li>重点对轻点。枚举轻点的所有邻居，并让初始答案等于 $u$ 的邻居数。如果该邻居是 $u$ 的邻居则不合法，就让答案减一。单次询问时间复杂度 $O(limit)$</li>
+<li>轻点对重点。枚举轻点的所有邻居，如果其不在 $v$ 的 bitset 中则让答案加一。单次询问时间复杂度 $O(limit)$。</li>
+<li>轻点对轻点。枚举 $u$ 的所有邻居，在 $v$ 的 map 中判断是否出现。单次询问时间复杂度 $O(limit\times \log n)$</li>
+</ol>
+<p>通过对 $limit$ 的调整进行复杂度的均摊，可以做到时间&amp;空间复杂度为  $O(n\times\sqrt{\frac{n\log n}{\omega}})$。</p>
+<p>Code:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> reg register</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> mp make_pair</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ri register int</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ld long double</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> mxn=<span class="number">2e5</span>+<span class="number">5</span>;</span><br><span class="line">vector&lt;<span class="type">int</span>&gt;g[mxn];</span><br><span class="line"><span class="type">int</span> n,m,q,lim;</span><br><span class="line">vector&lt;<span class="type">int</span>&gt;heavy;</span><br><span class="line"><span class="type">int</span> id[mxn];  <span class="comment">//存是否为重点，并存是第几个重点</span></span><br><span class="line">vector&lt;bitset&lt;mxn&gt; &gt;T;</span><br><span class="line">map&lt;<span class="type">int</span>,<span class="type">int</span>&gt;have[mxn];</span><br><span class="line"><span class="type">int</span> deg[mxn];</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">solve</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d%d%d&quot;</span>,&amp;n,&amp;m,&amp;q);</span><br><span class="line">	<span class="keyword">for</span>(ri i=<span class="number">1</span>,u,v;i&lt;=m;++i)&#123;</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>,&amp;u,&amp;v);</span><br><span class="line">		g[u].<span class="built_in">push_back</span>(v);</span><br><span class="line">		g[v].<span class="built_in">push_back</span>(u);</span><br><span class="line">		++deg[u];</span><br><span class="line">		++deg[v];</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">sort</span>(deg+<span class="number">1</span>,deg+n+<span class="number">1</span>);<span class="built_in">reverse</span>(deg+<span class="number">1</span>,deg+n+<span class="number">1</span>);</span><br><span class="line">	lim=deg[<span class="built_in">min</span>(n,(<span class="type">int</span>)(<span class="built_in">sqrt</span>(n)*<span class="number">6</span>))];<span class="comment">//根号处分治</span></span><br><span class="line">	<span class="built_in">memset</span>(id,<span class="number">-1</span>,<span class="built_in">sizeof</span>(id));</span><br><span class="line">	<span class="keyword">for</span>(ri i=<span class="number">1</span>;i&lt;=n;++i)&#123;</span><br><span class="line">		<span class="keyword">if</span>(g[i].<span class="built_in">size</span>()&gt;lim)&#123;</span><br><span class="line">			heavy.<span class="built_in">push_back</span>(i);</span><br><span class="line">			id[i]=heavy.<span class="built_in">size</span>()<span class="number">-1</span>;bitset&lt;mxn&gt;newb;</span><br><span class="line">			newb&amp;=<span class="number">0</span>;</span><br><span class="line">			<span class="keyword">for</span>(ri j=<span class="number">0</span>;j&lt;g[i].<span class="built_in">size</span>();++j)newb[g[i][j]]=<span class="number">1</span>;</span><br><span class="line">			T.<span class="built_in">push_back</span>(newb);</span><br><span class="line">		&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">			<span class="keyword">for</span>(ri j=<span class="number">0</span>;j&lt;g[i].<span class="built_in">size</span>();++j)have[i][g[i][j]]=<span class="number">1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(ri i=<span class="number">1</span>;i&lt;=q;++i)&#123;</span><br><span class="line">		ri u,v;<span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>,&amp;u,&amp;v);</span><br><span class="line">		<span class="keyword">if</span>(~id[u] <span class="keyword">and</span> ~id[v])&#123;  <span class="comment">//对两个点是否是重点分类讨论</span></span><br><span class="line">			bitset&lt;mxn&gt;tmp=T[id[u]]^(T[id[u]]&amp;T[id[v]]);</span><br><span class="line">			tmp[u]=<span class="number">0</span>;tmp[v]=<span class="number">0</span>;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,tmp.<span class="built_in">count</span>());</span><br><span class="line">		&#125;<span class="keyword">else</span> <span class="keyword">if</span>(~id[u])&#123;</span><br><span class="line">			ri ans=<span class="number">0</span>;</span><br><span class="line">			<span class="keyword">for</span>(ri j=<span class="number">0</span>;j&lt;g[v].<span class="built_in">size</span>();++j)<span class="keyword">if</span>(g[v][j]==u <span class="keyword">or</span> g[v][j]==v <span class="keyword">or</span> T[id[u]][g[v][j]])++ans;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,T[id[u]].<span class="built_in">count</span>()-ans);</span><br><span class="line">		&#125;<span class="keyword">else</span> <span class="keyword">if</span>(~id[v])&#123;</span><br><span class="line">			ri ans=<span class="number">0</span>;</span><br><span class="line">			<span class="keyword">for</span>(ri j=<span class="number">0</span>;j&lt;g[u].<span class="built_in">size</span>();++j)<span class="keyword">if</span>(g[u][j]!=u <span class="keyword">and</span> g[u][j]!=v <span class="keyword">and</span> !T[id[v]][g[u][j]])++ans;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,ans);</span><br><span class="line">		&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">			ri ans=<span class="number">0</span>;</span><br><span class="line">			<span class="keyword">for</span>(ri j=<span class="number">0</span>;j&lt;g[u].<span class="built_in">size</span>();++j)<span class="keyword">if</span>(g[u][j]!=u <span class="keyword">and</span> g[u][j]!=v <span class="keyword">and</span> !have[v][g[u][j]])++ans;</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,ans);	</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="built_in">solve</span>();</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>3.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P5901">洛谷P5901 [IOI2009] regions</a></p>
+<p>题目大意：</p>
+<p>联合国区域发展委员会（The United Nations Regional Development Agency，UNRDA）有一个良好的组织结构。</p>
+<p>它任用了 $N$ 名委员，每名委员都属于几个地区中的一个。</p>
+<p>委员们按照其资历被编号为 $1$ 到 $N$ ，$1$ 号委员是主席，资历最高。委员所属地区被编号为 $1$ 到 $R$。</p>
+<p>除了主席之外所有委员都有一个直接导师。任何直接导师的资历都比他所指导的委员的资历要高。</p>
+<p>我们说委员 $A$ 是委员 $B$ 的导师当且仅当 $A$ 是 $B$ 的直接导师或者 $A$ 是 $B$ 的直接导师的导师。显然，主席是所有其他委员的导师，没有任何两名委员互为导师。</p>
+<p>现在，联合国区域发展委员会想要建立一个计算机系统：在给定委员之间的直接导师关系的情况下，该系统可以自动地回答下述形式的问题：给定两个地区 $r_1$ 和 $r_2$，要求系统回答委员会中有多少对委员 $e_1$ 和 $e_2$，满足 $e_1$ 属于 $r_1$，而 $e_2$ 属于 $r_2$，并且 $e_1$ 是 $e_2$ 的导师。</p>
+<p>对于 $100\%$ 的数据，$1 \le N \le 2 \times 10^5$，$1 \le R \le 2.5 \times 10^4$， $1 \le Q \le 2 \times 10^5$。</p>
+<p>题解：</p>
+<p>看到每个点都有颜色，然后询问和颜色的种类有关，时限开了很【】的 8s，就可以往根号分治方面想了。</p>
+<p>按照常理，我们钦定一个 $B$，所有颜色为 $i$ 的点的集合为 $col_i$。</p>
+<p>如果 $|col_x| \le B$ 且 $|col_y|&lt;B$，则他们都是小块，可以直接建立出虚树暴力跑，单次询问时间复杂度 $O(\sqrt{n})$。</p>
+<p>如果 $|col_x| &gt; B$ 且 $|col_y| \le B$，那么我们可以进行预处理。对于所有的大块（设其颜色为 $c$），我们处理处其 $up$ 数组，$up_i$ 表示在第 $i$ 个节点到根结点的路上，有多少个颜色为 $c$ 的节点，然后在询问的时候直接计算 $\sum\limits_{v \in col_y}up_v$ 即可。预处理时间复杂度 $O(n\sqrt{n})$，单次询问时间复杂度 $O(\sqrt{n})$。</p>
+<p>同理，如果 $|col_x| \le B$ 且 $|col_y| &gt; B$，那么我们可以预处理 $dw_i$ 表示第 $i$ 个节点的子树中有多少个节点的颜色为 $c$，询问时计算 $\sum\limits_{v \in col_x}dw_v$。时间复杂度同上。</p>
+<p>最后，如果 $|col_x| &gt; B$ 且 $|col_y| &gt; B$，那么和小块对小块一样，可以预处理，对于所有可能的大块对建出虚树算一遍答案，询问时直接调用即可。时间复杂度 $O(n\sqrt{n})$。</p>
+<p>以上是会根号分治的人都可以想到的做法，但如果实现不精细的话，时间复杂度会写成 $O(n\sqrt{n\log n})$ 且常数巨大，导致你可能只有 60pts 的好成绩。</p>
+<p>这就是很多根号分治要面对的问题：<strong>卡 常</strong>。</p>
+<p>针对这题可以如此实现：</p>
+<ol>
+<li>普通的倍增LCA的询问是 $O(\log n)$ 的，我们要用 ST 表做到 $O(n\log n)$ 预处理，$O(1)$ 求 LCA。</li>
+<li>在建立虚树的时候，有一步要对所有点按照 dfs 序排序。如果不想写基数排序怎么办？可以在询问前先对每个 $col_i$ 中的元素先按照字典序排序，在询问的时候用类似归并排序的方法 merge 两个有序的 $col_x$ 和 $col_y$，就可以把这个 $\log n$ 砍掉了。</li>
+</ol>
+<p>现在的时间复杂度已经降到了正好的 $O(n\sqrt{n})$，但是巨大的常数仍让你在 94pts 和 97pts 之间徘徊。</p>
+<p>为了减小常数：</p>
+<ol>
+<li>加入快读快输</li>
+<li>小对小和大对大中暴力统计答案的 dfs 看起来很累赘，那么短。如果我们能够想办法把这一步放入建立虚树的过程中，那么就可以避免存虚树的边，从而大幅减小常数（感谢 <a target="_blank" rel="noopener" href="https://www.luogu.com.cn/user/109942">w23c3c3</a> 的指导）</li>
+</ol>
+<p>代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">const</span> <span class="type">int</span> mxn=<span class="number">2e5</span>+<span class="number">5</span>;</span><br><span class="line">vector&lt;<span class="type">int</span>&gt;g[mxn];</span><br><span class="line"><span class="type">int</span> n,R,q,r[mxn];</span><br><span class="line"><span class="type">int</span> dep[mxn*<span class="number">2</span>];</span><br><span class="line"><span class="type">int</span> ord[mxn*<span class="number">2</span>],cco,cord[mxn*<span class="number">2</span>];</span><br><span class="line"><span class="type">int</span> mi[mxn*<span class="number">2</span>][<span class="number">22</span>];</span><br><span class="line"><span class="type">int</span> lg[mxn*<span class="number">2</span>],co;</span><br><span class="line"><span class="type">int</span> st[mxn*<span class="number">2</span>],ed[mxn*<span class="number">2</span>];</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">dfs</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> par=<span class="number">0</span>,<span class="type">int</span> deep=<span class="number">1</span>)</span></span>&#123;</span><br><span class="line">	cord[++cco]=x;</span><br><span class="line">	st[x]=cco;ed[x]=cco;</span><br><span class="line">	dep[x]=deep;ord[x]=++co;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> y:g[x])&#123;</span><br><span class="line">		<span class="keyword">if</span>(par==y)<span class="keyword">continue</span>;</span><br><span class="line">		<span class="built_in">dfs</span>(y,x,deep+<span class="number">1</span>);</span><br><span class="line">		cord[++cco]=x;</span><br><span class="line">		ed[x]=cco;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">init</span><span class="params">()</span></span>&#123;     <span class="comment">//预处理ST表</span></span><br><span class="line">	lg[<span class="number">1</span>]=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">2</span>;i&lt;mxn*<span class="number">2</span>;++i)lg[i]=lg[i&gt;&gt;<span class="number">1</span>]+<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=cco;++i)mi[i][<span class="number">0</span>]=cord[i];</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> k=<span class="number">1</span>;k&lt;<span class="number">22</span>;++k)&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=cco-(<span class="number">1</span>&lt;&lt;k)+<span class="number">1</span>;++i)&#123;</span><br><span class="line">			<span class="type">int</span> x=mi[i][k<span class="number">-1</span>],y=mi[i+(<span class="number">1</span>&lt;&lt;(k<span class="number">-1</span>))][k<span class="number">-1</span>];</span><br><span class="line">			<span class="keyword">if</span>(dep[x]&lt;dep[y])mi[i][k]=x;</span><br><span class="line">			<span class="keyword">else</span> mi[i][k]=y;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">int</span> <span class="title">lca</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> y)</span></span>&#123;</span><br><span class="line">	<span class="type">int</span> fx=st[x],fy=ed[y];</span><br><span class="line">	<span class="keyword">if</span>(fx&gt;fy)<span class="built_in">swap</span>(fx,fy);</span><br><span class="line">	<span class="type">int</span> ax=mi[fx][lg[fy-fx]],ay=mi[fy-(<span class="number">1</span>&lt;&lt;lg[fy-fx])+<span class="number">1</span>][lg[fy-fx]];</span><br><span class="line">	<span class="keyword">if</span>(dep[ax]&lt;dep[ay])<span class="keyword">return</span> ax;</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">return</span> ay;</span><br><span class="line">&#125; </span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">bool</span> <span class="title">cmp</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> y)</span></span>&#123;<span class="keyword">return</span> ord[x]&lt;ord[y];&#125;</span><br><span class="line"><span class="type">int</span> sta[mxn],top=<span class="number">0</span>;</span><br><span class="line"><span class="type">int</span> sz[mxn];</span><br><span class="line"><span class="type">int</span> up[<span class="number">404</span>][mxn],dw[<span class="number">404</span>][mxn];</span><br><span class="line"><span class="keyword">inline</span> vector&lt;<span class="type">int</span>&gt;<span class="built_in">mer</span>(vector&lt;<span class="type">int</span>&gt;x,vector&lt;<span class="type">int</span>&gt;y)&#123;  <span class="comment">//类似归并的操作</span></span><br><span class="line">	vector&lt;<span class="type">int</span>&gt;rt;rt.<span class="built_in">clear</span>();</span><br><span class="line">	<span class="type">int</span> i=<span class="number">0</span>,j=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(;i&lt;x.<span class="built_in">size</span>() <span class="keyword">and</span> j&lt;y.<span class="built_in">size</span>();)</span><br><span class="line">		<span class="keyword">if</span>(<span class="built_in">cmp</span>(x[i],y[j]))rt.<span class="built_in">push_back</span>(x[i]),++i;</span><br><span class="line">		<span class="keyword">else</span> rt.<span class="built_in">push_back</span>(y[j]),++j;</span><br><span class="line">	<span class="keyword">for</span>(;i&lt;x.<span class="built_in">size</span>();++i)rt.<span class="built_in">push_back</span>(x[i]);</span><br><span class="line">	<span class="keyword">for</span>(;j&lt;y.<span class="built_in">size</span>();++j)rt.<span class="built_in">push_back</span>(y[j]);</span><br><span class="line">	<span class="keyword">return</span> rt;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">gen</span><span class="params">(vector&lt;<span class="type">int</span>&gt;v,<span class="type">int</span> y)</span></span>&#123;  <span class="comment">//建立虚树</span></span><br><span class="line">	top=<span class="number">0</span>;</span><br><span class="line">	sta[++top]=<span class="number">1</span>;</span><br><span class="line">	sz[<span class="number">1</span>]=r[<span class="number">1</span>]==y;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i:v)&#123;</span><br><span class="line">		<span class="keyword">if</span>(i!=<span class="number">1</span>)&#123;</span><br><span class="line">			<span class="type">int</span> l=<span class="built_in">lca</span>(sta[top],i);</span><br><span class="line">			<span class="keyword">if</span>(l!=sta[top])&#123;</span><br><span class="line">				<span class="keyword">for</span>(;ord[l]&lt;ord[sta[top<span class="number">-1</span>]];)sz[sta[top<span class="number">-1</span>]]+=sz[sta[top]],--top;</span><br><span class="line">				<span class="keyword">if</span>(ord[l]&gt;ord[sta[top<span class="number">-1</span>]])&#123;</span><br><span class="line">					sz[l]=r[l]==y;</span><br><span class="line">					sz[l]+=sz[sta[top]];</span><br><span class="line">					sta[top]=l;</span><br><span class="line">				&#125;<span class="keyword">else</span> sz[l]+=sz[sta[top]],top--;</span><br><span class="line">			&#125;</span><br><span class="line">			sz[i]=r[i]==y;</span><br><span class="line">			sta[++top]=i;	</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=top<span class="number">-1</span>;i&gt;=<span class="number">1</span>;--i)sz[sta[i]]+=sz[sta[i+<span class="number">1</span>]];</span><br><span class="line">&#125;</span><br><span class="line">vector&lt;<span class="type">int</span>&gt;col[mxn];</span><br><span class="line">vector&lt;<span class="type">int</span>&gt;hea;</span><br><span class="line"><span class="type">int</span> ans[<span class="number">404</span>][<span class="number">404</span>];</span><br><span class="line"><span class="type">int</span> id[mxn];</span><br><span class="line"><span class="comment">//inline void getans(int x,int fa,int cl)&#123;//on ng[]    //原来的暴力统计小对小和大对大的答案</span></span><br><span class="line"><span class="comment">//	if(r[x]==cl)sz[x]=1;</span></span><br><span class="line"><span class="comment">//	else sz[x]=0;</span></span><br><span class="line"><span class="comment">//	for(int y:ng[x])if(y!=fa)getans(y,x,cl),sz[x]+=sz[y];</span></span><br><span class="line"><span class="comment">//&#125;</span></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">prep</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> fa,<span class="type">int</span> cl,<span class="type">int</span> flg=<span class="number">0</span>)</span></span>&#123;   <span class="comment">//预处理小对大和大对小的up和dw数组</span></span><br><span class="line">	<span class="keyword">if</span>(r[x]==hea[cl])dw[cl][x]=<span class="number">1</span>,++flg;</span><br><span class="line">	up[cl][x]=flg;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> y:g[x])<span class="keyword">if</span>(y!=fa)&#123;</span><br><span class="line">		<span class="built_in">prep</span>(y,x,cl,flg);</span><br><span class="line">		dw[cl][x]+=dw[cl][y];</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">solve</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="built_in">memset</span>(id,<span class="number">-1</span>,<span class="built_in">sizeof</span>(id));</span><br><span class="line">	<span class="built_in">read</span>(n),<span class="built_in">read</span>(R),<span class="built_in">read</span>(q);</span><br><span class="line">	<span class="built_in">read</span>(r[<span class="number">1</span>]);col[r[<span class="number">1</span>]].<span class="built_in">push_back</span>(<span class="number">1</span>);</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">2</span>;i&lt;=n;++i)&#123;</span><br><span class="line">		<span class="type">int</span> x;<span class="built_in">read</span>(x),<span class="built_in">read</span>(r[i]);</span><br><span class="line">		g[x].<span class="built_in">push_back</span>(i);</span><br><span class="line">		g[i].<span class="built_in">push_back</span>(x);</span><br><span class="line">		col[r[i]].<span class="built_in">push_back</span>(i);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">dfs</span>(<span class="number">1</span>);</span><br><span class="line">	<span class="built_in">init</span>();</span><br><span class="line">	<span class="type">int</span> bound=<span class="number">500</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=R;++i)<span class="keyword">if</span>(col[i].<span class="built_in">size</span>()&gt;=bound)hea.<span class="built_in">push_back</span>(i);  <span class="comment">//这里我的B定为了500</span></span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;hea.<span class="built_in">size</span>();++i)id[hea[i]]=i;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;++i)<span class="built_in">sort</span>(col[i].<span class="built_in">begin</span>(),col[i].<span class="built_in">end</span>(),cmp);</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;hea.<span class="built_in">size</span>();++i)<span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;j&lt;hea.<span class="built_in">size</span>();++j)<span class="keyword">if</span>(i!=j)&#123;</span><br><span class="line">		<span class="built_in">gen</span>(<span class="built_in">mer</span>(col[hea[i]],col[hea[j]]),hea[j]);</span><br><span class="line"><span class="comment">//		getans(1,0,hea[j]);</span></span><br><span class="line">		ll res=<span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> f:col[hea[i]])res+=sz[f];</span><br><span class="line">		ans[i][j]=res;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;hea.<span class="built_in">size</span>();++i)<span class="built_in">prep</span>(<span class="number">1</span>,<span class="number">0</span>,i);</span><br><span class="line">	<span class="keyword">for</span>(;q--;)&#123;</span><br><span class="line">		<span class="type">int</span> x,y;<span class="built_in">read</span>(x),<span class="built_in">read</span>(y);</span><br><span class="line">		<span class="keyword">if</span>(~id[x] <span class="keyword">and</span> ~id[y])<span class="built_in">print</span>(ans[id[x]][id[y]]),<span class="built_in">putchar</span>(<span class="string">&#x27;\n&#x27;</span>);</span><br><span class="line">		<span class="keyword">else</span> <span class="keyword">if</span>(~id[x] <span class="keyword">and</span> id[y]==<span class="number">-1</span>)&#123;</span><br><span class="line">			ll res=<span class="number">0</span>;</span><br><span class="line">			<span class="keyword">for</span>(<span class="type">int</span> i:col[y])res+=up[id[x]][i];</span><br><span class="line">			<span class="built_in">print</span>(res),<span class="built_in">putchar</span>(<span class="string">&#x27;\n&#x27;</span>);</span><br><span class="line">		&#125;<span class="keyword">else</span> <span class="keyword">if</span>(id[x]==<span class="number">-1</span> <span class="keyword">and</span> ~id[y])&#123;</span><br><span class="line">			ll res=<span class="number">0</span>;</span><br><span class="line">			<span class="keyword">for</span>(<span class="type">int</span> i:col[x])res+=dw[id[y]][i];</span><br><span class="line">			<span class="built_in">print</span>(res),<span class="built_in">putchar</span>(<span class="string">&#x27;\n&#x27;</span>);</span><br><span class="line">		&#125;<span class="keyword">else</span>&#123;</span><br><span class="line">			<span class="built_in">gen</span>(<span class="built_in">mer</span>(col[x],col[y]),y);</span><br><span class="line"><span class="comment">//			getans(1,0,y);</span></span><br><span class="line">			ll res=<span class="number">0</span>;</span><br><span class="line">			<span class="keyword">for</span>(<span class="type">int</span> f:col[x])res+=sz[f];</span><br><span class="line">			<span class="built_in">print</span>(res),<span class="built_in">putchar</span>(<span class="string">&#x27;\n&#x27;</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	ios_base::<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>);</span><br><span class="line">	cin.<span class="built_in">tie</span>(<span class="number">0</span>),cout.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">	<span class="type">int</span> T=<span class="number">1</span>;</span><br><span class="line">	<span class="comment">//cin&gt;&gt;T;</span></span><br><span class="line">	<span class="keyword">for</span>(;T--;)<span class="built_in">solve</span>();</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>4.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/AT_arc052_d">[ARC052D] 9</a></p>
+<p>题目大意：</p>
+<p>给定两个正整数 $K,M (1\le K,M \le 10^{10})$，你需要求出有多少个正整数 $N$ 满足 $1 \le N \le M$ 且 $N \equiv S_N (\mod K) $，其中 $S_N$ 是 $N$ 的各位数字之和。</p>
+<p>题解：</p>
+<p>这个 $10^{10}$ 的数据范围并不常见，但是可以发现大概是根号的复杂度。</p>
+<p>显然无法分块，考虑怎么做到根号分治。我们先对 $K$ 设定一个阈值 $T$，其中 $T$ 是 $\sqrt{M}$ 级别。</p>
+<ul>
+<li>$K \ge T$ </li>
+</ul>
+<p>当 $1 \le N \le 10^{10}$ 时，最大的 $S_N$ 不过 $9\times 10=90$，所以我们可以去先枚举数字和 $S$，然后就可以发现，$\mod K= S$ 的 $N$ 的个数不会超过 $\lfloor\frac{M}{K}\rfloor +1$ 个。直接枚举这些数就可以了。复杂度 $O(90\times \frac{M}{K})$。</p>
+<ul>
+<li>$K \le T$</li>
+</ul>
+<p>我们可以考虑把 $K$ 做为一维压到数位 dp 里了。令 $dp_{i,j,sm,0/1}$ 表示考虑到从高到低第 $i$ 位，此时的数 $\mod K = j$，数字和为 $sm$，是否已经小于 $m$ 的数的个数。这样就可以 dp 了，复杂度 $O(10\times90\times K\times 10)=O(9000K)$。</p>
+<p>均衡一下取 $K=10000$ 最优。</p>
+<p>Code:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> int ll</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line">ll k,m,n;</span><br><span class="line"><span class="type">int</span> ee[<span class="number">12</span>];</span><br><span class="line">ll dp[<span class="number">12</span>][<span class="number">10000</span>][<span class="number">91</span>][<span class="number">2</span>];</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">add</span><span class="params">(ll&amp;x,ll y)</span></span>&#123;x+=y;&#125;</span><br><span class="line"><span class="function"><span class="type">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	cin&gt;&gt;k&gt;&gt;m;</span><br><span class="line">	ll ans=<span class="number">0</span>;ll tm=m;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;;++i)&#123;</span><br><span class="line">		ee[i]=tm%<span class="number">10</span>;</span><br><span class="line">		tm/=<span class="number">10</span>;</span><br><span class="line">		<span class="keyword">if</span>(tm==<span class="number">0</span>)&#123;</span><br><span class="line">			n=i;</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">reverse</span>(ee+<span class="number">1</span>,ee+n+<span class="number">1</span>);</span><br><span class="line">	<span class="keyword">if</span>(k&gt;=<span class="number">10000</span>)&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;=<span class="number">90</span>;++i)&#123;</span><br><span class="line">			<span class="keyword">for</span>(ll ee=i;ee&lt;=m;ee+=k)&#123;</span><br><span class="line">				ll t=ee,cnt=<span class="number">0</span>;</span><br><span class="line">				<span class="keyword">while</span>(t)&#123;</span><br><span class="line">					cnt+=t%<span class="number">10</span>;</span><br><span class="line">					t/=<span class="number">10</span>;</span><br><span class="line">				&#125;</span><br><span class="line">				<span class="keyword">if</span>(cnt%k==i)++ans;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		cout&lt;&lt;ans<span class="number">-1</span>&lt;&lt;<span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	dp[<span class="number">1</span>][<span class="number">0</span>][<span class="number">0</span>][<span class="number">0</span>]=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;++i)&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;j&lt;k;++j)&#123;</span><br><span class="line">			<span class="keyword">for</span>(<span class="type">int</span> sm=<span class="number">0</span>;sm&lt;=<span class="number">90</span>;++sm)&#123;</span><br><span class="line">				&#123;<span class="comment">//f=0</span></span><br><span class="line">					<span class="keyword">for</span>(<span class="type">int</span> t=<span class="number">0</span>;t&lt;ee[i];++t)&#123;</span><br><span class="line">						<span class="keyword">if</span>(sm+t&lt;=<span class="number">90</span>)&#123;</span><br><span class="line">							<span class="built_in">add</span>(dp[i+<span class="number">1</span>][(j*<span class="number">10</span>+t)%k][sm+t][<span class="number">1</span>],dp[i][j][sm][<span class="number">0</span>]);</span><br><span class="line">						&#125;</span><br><span class="line">					&#125;</span><br><span class="line">					<span class="keyword">if</span>(sm+ee[i]&lt;=<span class="number">90</span>)<span class="built_in">add</span>(dp[i+<span class="number">1</span>][(j*<span class="number">10</span>+ee[i])%k][sm+ee[i]][<span class="number">0</span>],dp[i][j][sm][<span class="number">0</span>]);</span><br><span class="line">				&#125;</span><br><span class="line">				&#123;<span class="comment">//f=1</span></span><br><span class="line">					<span class="keyword">for</span>(<span class="type">int</span> t=<span class="number">0</span>;t&lt;<span class="number">10</span>;++t)<span class="keyword">if</span>(sm+t&lt;=<span class="number">90</span>)<span class="built_in">add</span>(dp[i+<span class="number">1</span>][(j*<span class="number">10</span>+t)%k][sm+t][<span class="number">1</span>],dp[i][j][sm][<span class="number">1</span>]);</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> ee=<span class="number">0</span>;ee&lt;=<span class="number">90</span>;++ee)<span class="built_in">add</span>(ans,dp[n+<span class="number">1</span>][ee%k][ee][<span class="number">0</span>]),<span class="built_in">add</span>(ans,dp[n+<span class="number">1</span>][ee%k][ee][<span class="number">1</span>]);</span><br><span class="line">	cout&lt;&lt;ans<span class="number">-1</span>&lt;&lt;<span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<p>小结：</p>
+<p>什么时候会用到根号分治呢？</p>
+<ol>
+<li>题目中明说，或者暗说了<strong>某个值的总数量一定</strong>。比如图论中所有店的度数之和为 $O(m)$ 的，或者字符串题中询问会输入字符串，且所有字符串的长度之和为 $O(n)$ 的（参考 <a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF914F">CF914F Substrings in a String</a>）。</li>
+<li>很明显有两种暴力，一种是 $O(b)$ 的，另一种是 $O(\frac{n}{b})$ 的，可以利用基本不等式化为 $O(n\sqrt{n})$。</li>
+<li>数据范围长得比较奇怪，比如例4的$10^{10}$，不像是筛法，也不像是什么数位 dp </li>
+</ol>
+<p>最后，补充几道例题：</p>
+<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF914F">CF914F Substrings in a String</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/P8349">P8349 [SDOI/SXOI2022] 整数序列</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF1039D">CF1039D You Are Given a Tree</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF587F">CF587F Duff is Mad</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF1666A">CF1666A Admissible Map</a></p>
+<p><a target="_blank" rel="noopener" href="https://atcoder.jp/contests/abc259/tasks/abc259_h">ABC259Ex - Yet Another Path Counting</a></p>
+<p>完结撒花。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"># 笔记</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/03/18/%E8%BE%83%E9%AB%98%E9%9A%BE%E5%BA%A6dp%E9%A2%98%E7%9B%AE%E9%80%89%E5%81%9A/" rel="prev" title="�ϸ��Ѷ�dp��Ŀѡ��">
+                  <i class="fa fa-chevron-left"></i> �ϸ��Ѷ�dp��Ŀѡ��
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+    <div class="comments gitalk-container"></div>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">paulzrm</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdn.jsdelivr.net/npm/mathjax@3.2.0/es5/tex-mml-chtml.js","integrity":"sha256-r+3itOMtGGjap0x+10hu6jW/gZCzxHsoKrOd7gyRSGY="}}</script>
+<script src="/js/third-party/math/mathjax.js"></script>
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
+
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"paulzrm","repo":"BlogComment","client_id":"3b7c67d15a0a361eff6a","client_secret":"41e9b7f21522101e5cb2ea601b8a452b639e4828","admin_user":"paulzrm","distraction_free_mode":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"feb2179b269819f19b109324476978e3"}</script>
+<script src="/js/third-party/comments/gitalk.js"></script>
+
+</body>
+</html>
