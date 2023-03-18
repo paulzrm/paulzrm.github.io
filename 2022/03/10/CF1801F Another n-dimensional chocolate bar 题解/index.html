@@ -23,28 +23,28 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.10.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
 
-  <meta name="description" content="���ǵ����ֻ����һ�� $b_i \ge \sqrt{k}$��  û���κ�һ�� $b_i \geq \sqrt{k}$��  ��ô���ǿ��Կ������� meet-in-the-middle ��������">
+  <meta name="description" content="考虑到最多只会有一个 $b_i \ge \sqrt{k}$。  没有任何一个 $b_i \geq \sqrt{k}$。  那么我们可以考虑类似 meet-in-the-middle 的做法。">
 <meta property="og:type" content="website">
-<meta property="og:title" content="CF1801F Another n-dimensional chocolate bar ���">
-<meta property="og:url" content="http://example.com/2022/03/19/CF1801F%20Another%20n-dimensional%20chocolate%20bar%20%E9%A2%98%E8%A7%A3/index.html">
+<meta property="og:title" content="CF1801F Another n-dimensional chocolate bar 题解">
+<meta property="og:url" content="http://example.com/2022/03/10/CF1801F%20Another%20n-dimensional%20chocolate%20bar%20%E9%A2%98%E8%A7%A3/index.html">
 <meta property="og:site_name" content="paulzrm 的小窝">
-<meta property="og:description" content="���ǵ����ֻ����һ�� $b_i \ge \sqrt{k}$��  û���κ�һ�� $b_i \geq \sqrt{k}$��  ��ô���ǿ��Կ������� meet-in-the-middle ��������">
+<meta property="og:description" content="考虑到最多只会有一个 $b_i \ge \sqrt{k}$。  没有任何一个 $b_i \geq \sqrt{k}$。  那么我们可以考虑类似 meet-in-the-middle 的做法。">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2022-03-18T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-03-18T01:16:34.181Z">
+<meta property="article:published_time" content="2022-03-09T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-03-18T01:29:40.714Z">
 <meta property="article:author" content="paulzrm">
-<meta property="article:tag" content="���">
+<meta property="article:tag" content="题解">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="http://example.com/2022/03/19/CF1801F%20Another%20n-dimensional%20chocolate%20bar%20%E9%A2%98%E8%A7%A3/">
+<link rel="canonical" href="http://example.com/2022/03/10/CF1801F%20Another%20n-dimensional%20chocolate%20bar%20%E9%A2%98%E8%A7%A3/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2022/03/19/CF1801F%20Another%20n-dimensional%20chocolate%20bar%20%E9%A2%98%E8%A7%A3/","path":"2022/03/19/CF1801F Another n-dimensional chocolate bar 题解/","title":"CF1801F Another n-dimensional chocolate bar ���"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2022/03/10/CF1801F%20Another%20n-dimensional%20chocolate%20bar%20%E9%A2%98%E8%A7%A3/","path":"2022/03/10/CF1801F Another n-dimensional chocolate bar 题解/","title":"CF1801F Another n-dimensional chocolate bar 题解"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>CF1801F Another n-dimensional chocolate bar ��� | paulzrm 的小窝</title>
+<title>CF1801F Another n-dimensional chocolate bar 题解 | paulzrm 的小窝</title>
   
 
 
@@ -130,7 +130,7 @@
         </a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>
@@ -169,7 +169,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/19/CF1801F%20Another%20n-dimensional%20chocolate%20bar%20%E9%A2%98%E8%A7%A3/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/10/CF1801F%20Another%20n-dimensional%20chocolate%20bar%20%E9%A2%98%E8%A7%A3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -182,7 +182,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          CF1801F Another n-dimensional chocolate bar ���
+          CF1801F Another n-dimensional chocolate bar 题解
         </h1>
 
         <div class="post-meta-container">
@@ -193,14 +193,14 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2022-03-19 00:00:00" itemprop="dateCreated datePublished" datetime="2022-03-19T00:00:00+08:00">2022-03-19</time>
+      <time title="Created: 2022-03-10 00:00:00" itemprop="dateCreated datePublished" datetime="2022-03-10T00:00:00+08:00">2022-03-10</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-03-18 09:16:34" itemprop="dateModified" datetime="2023-03-18T09:16:34+08:00">2023-03-18</time>
+      <time title="Modified: 2023-03-18 09:29:40" itemprop="dateModified" datetime="2023-03-18T09:29:40+08:00">2023-03-18</time>
     </span>
 
   
@@ -213,26 +213,26 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <p>���ǵ����ֻ����һ�� $b_i \ge \sqrt{k}$��</p>
+        <p>考虑到最多只会有一个 $b_i \ge \sqrt{k}$。</p>
 <ul>
-<li>û���κ�һ�� $b_i \geq \sqrt{k}$��</li>
+<li>没有任何一个 $b_i \geq \sqrt{k}$。</li>
 </ul>
-<p>��ô���ǿ��Կ������� meet-in-the-middle ��������</p>
+<p>那么我们可以考虑类似 meet-in-the-middle 的做法。</p>
 <span id="more"></span>
-<p>�� $f_{i,j}$ ��ʾ������ǰ $i$ ��������ʱ�˻�Ϊ $j$��$\lfloor\frac{a_1}{b_1}\rfloor\lfloor\frac{a_2}{b_2}\rfloor\dots\lfloor\frac{a_i}{b_i}\rfloor\frac{1}{a_1a_2\dots a_i}$ �����ֵ��$g_{i,j}$ �Ķ������ƣ������Ǵ� $n$ ��ʼ���ŵġ�dp ��ʱ��ö�� $i$��ö�� $j$����ö������ $j\times k \le$ �ڶ�ά��С������ $k$ ���ɡ�</p>
-<p>��������������µ���ô𰸾���ö��һ���м�ϵ� $i$���� $i$ ��ߵĲ��ֵĳ˻� $j$��$f_{i,j}\times g_{i+1,\lceil\frac{k}{j}\rceil}$ ����Сֵ�ˡ�</p>
-<p>��ʱ������Ҫ֤����������ѡ��� $b_i$ �� $\le \sqrt{k}$ ������£�$f$ �� $g$ �ĵڶ�ά��ֻҪ���� $k^{\frac{3}{4}}$ ���ɡ�</p>
-<p>������һ�� $x$����ʼΪ $b_i$ ����λ�ã��� $p$ Ϊ $x$ ������� $b_i$ �ĳ˻���$q$ Ϊ $x$ �ұ����� $b_i$ �ĳ˻���</p>
-<p>����̰�ĵĿ��ǣ���� $b_x^2\times p &lt;q$������ $x+1$����� $b_x^2\times q &lt; p$������ $x-1$�����ƶ� $x$ ��ͬʱά�� $p$ �� $q$ ��ֵ��</p>
-<p>��ʱ�ڶ�ά����Ҫ����һ�� $\min(p,q)\times b_x$ �Ĵ�С����Ϊ $p \times q \times b_x$ �� $O(k)$ ����ģ����� $\min(p,q)\le \sqrt{\frac{k}{b_x}}$���ʵڶ�άֻ��Ҫ���� $\sqrt{\frac{k}{b_x}}\times b_x=\sqrt{k\times b_x}$ ���ɡ���Ϊ $b_x\le \sqrt{k}$������ $\sqrt{\frac{k}{b_x}}\times b_x \le k^{\frac{3}{4}}$����֤��</p>
-<p>���ϣ��ò��ָ��Ӷ�Ϊ $O(n\times k^{\frac{3}{4}}\times\log(k^{\frac{3}{4}}))$��</p>
+<p>令 $f_{i,j}$ 表示考虑了前 $i$ 个数，此时乘积为 $j$，$\lfloor\frac{a_1}{b_1}\rfloor\lfloor\frac{a_2}{b_2}\rfloor\dots\lfloor\frac{a_i}{b_i}\rfloor\frac{1}{a_1a_2\dots a_i}$ 的最大值，$g_{i,j}$ 的定义类似，不过是从 $n$ 开始倒着的。dp 的时候枚举 $i$，枚举 $j$，再枚举满足 $j\times k \le$ 第二维大小的所有 $k$ 即可。</p>
+<p>则我们这种情况下的最好答案就是枚举一个中间断点 $i$，和 $i$ 左边的部分的乘积 $j$，$f_{i,j}\times g_{i+1,\lceil\frac{k}{j}\rceil}$ 的最小值了。</p>
+<p>此时我们需要证明，在所有选择的 $b_i$ 都 $\le \sqrt{k}$ 的情况下，$f$ 和 $g$ 的第二维都只要开到 $k^{\frac{3}{4}}$ 即可。</p>
+<p>不妨设一个 $x$，初始为 $b_i$ 最大的位置，令 $p$ 为 $x$ 左边所有 $b_i$ 的乘积，$q$ 为 $x$ 右边所有 $b_i$ 的乘积。</p>
+<p>我们贪心的考虑，如果 $b_x^2\times p &lt;q$，就让 $x+1$；如果 $b_x^2\times q &lt; p$，就让 $x-1$。在移动 $x$ 的同时维护 $p$ 和 $q$ 的值。</p>
+<p>此时第二维就需要开到一个 $\min(p,q)\times b_x$ 的大小。因为 $p \times q \times b_x$ 是 $O(k)$ 级别的，所以 $\min(p,q)\le \sqrt{\frac{k}{b_x}}$，故第二维只需要开到 $\sqrt{\frac{k}{b_x}}\times b_x=\sqrt{k\times b_x}$ 即可。因为 $b_x\le \sqrt{k}$，所以 $\sqrt{\frac{k}{b_x}}\times b_x \le k^{\frac{3}{4}}$，得证。</p>
+<p>综上，该部分复杂度为 $O(n\times k^{\frac{3}{4}}\times\log(k^{\frac{3}{4}}))$。</p>
 <ul>
-<li>����ǡ��һ�� $b_i \geq \sqrt{k}$��</li>
+<li>存在恰好一个 $b_i \geq \sqrt{k}$。</li>
 </ul>
-<p>��ô���ǿ���ֱ��ö����� $i$������ $i$ �����Ҳ� $b_j$ �ĳ˻��� $\le \sqrt{k}$���� $h_j$ ��ʾ����ʱ��ѡ $b_i$����������λ�ö�ѡ֮��˻�Ϊ $j$ ʱ�����ֵ������������� $f_{i-1}$ �� $g_{i+1}$ ���ٴ�����</p>
-<p>Ȼ������ö�ٳ��� $b_i$ ������ $b_j$ �ĳ˻� $t$���Ƴ� $b_i$ ��ֵ��С�Ƕ��٣������ $\lfloor\frac{a_i}{b_i}\rfloor\frac{1}{a_i}$ ���� $i$ �����Ĺ��ף����� $h_t$ ���ɡ�</p>
-<p>�ò��ָ��Ӷ�Ϊ $O(n\sqrt{k})$��</p>
-<p>���ϣ��ܸ��Ӷ�Ϊ $O(n\times k^{\frac{3}{4}}\times\log(k^{\frac{3}{4}}))$������<del>��֪��Ϊʲô��ֻ����1.5s</del>ͨ�����⡣</p>
+<p>那么我们可以直接枚举这个 $i$，发现 $i$ 左侧和右侧 $b_j$ 的乘积均 $\le \sqrt{k}$。令 $h_j$ 表示现暂时不选 $b_i$，其他所有位置都选之后乘积为 $j$ 时的最大值。这个可以利用 $f_{i-1}$ 和 $g_{i+1}$ 快速处理。</p>
+<p>然后我们枚举除了 $b_i$ 的所有 $b_j$ 的乘积 $t$，推出 $b_i$ 的值最小是多少，计算出 $\lfloor\frac{a_i}{b_i}\rfloor\frac{1}{a_i}$ 即第 $i$ 个数的贡献，乘上 $h_t$ 即可。</p>
+<p>该部分复杂度为 $O(n\sqrt{k})$。</p>
+<p>综上，总复杂度为 $O(n\times k^{\frac{3}{4}}\times\log(k^{\frac{3}{4}}))$，可以<del>不知道为什么但只跑了1.5s</del>通过此题。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> B=<span class="number">177830</span>;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> B2=<span class="number">6600</span>;</span><br><span class="line"><span class="type">int</span> n,w,a[<span class="number">103</span>];</span><br><span class="line"><span class="type">double</span> f[<span class="number">103</span>][B+<span class="number">3</span>],g[<span class="number">103</span>][B+<span class="number">3</span>],ans;</span><br><span class="line">vector&lt;<span class="type">int</span>&gt;v;</span><br><span class="line"><span class="type">double</span> h[B2+<span class="number">3</span>];</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	cin&gt;&gt;n&gt;&gt;w;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)</span><br><span class="line">		cin&gt;&gt;a[i];</span><br><span class="line">	f[<span class="number">0</span>][<span class="number">1</span>]=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;i++)&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">1</span>;j&lt;=B;j++)</span><br><span class="line">			<span class="keyword">for</span>(<span class="type">int</span> k=<span class="number">1</span>;k&lt;=B/j;k++)</span><br><span class="line">				f[i][j*k]=<span class="built_in">max</span>(f[i][j*k],f[i<span class="number">-1</span>][j]*(<span class="number">1.0</span>*(a[i]/k)/a[i]));</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> j=B;j&gt;<span class="number">0</span>;j--)</span><br><span class="line">			f[i][j]=<span class="built_in">max</span>(f[i][j],f[i][j+<span class="number">1</span>]); </span><br><span class="line">	&#125;</span><br><span class="line">	g[n+<span class="number">1</span>][<span class="number">1</span>]=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=n;i;i--)&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">1</span>;j&lt;=B;j++)</span><br><span class="line">			<span class="keyword">for</span>(<span class="type">int</span> k=<span class="number">1</span>;j*k&lt;=B;k++)</span><br><span class="line">				g[i][j*k]=<span class="built_in">max</span>(g[i][j*k],g[i+<span class="number">1</span>][j]*(<span class="number">1.0</span>*(a[i]/k))/a[i]);</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> j=B;j&gt;<span class="number">0</span>;j--)</span><br><span class="line">			g[i][j]=<span class="built_in">max</span>(g[i][j],g[i][j+<span class="number">1</span>]); </span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">0</span>;i&lt;=n;++i)<span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">1</span>;j&lt;=B;++j) </span><br><span class="line">	    <span class="keyword">if</span>((w+j<span class="number">-1</span>)/j&lt;=B)ans=<span class="built_in">max</span>(ans,f[i][j]*g[i+<span class="number">1</span>][(w+j<span class="number">-1</span>)/j]);</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;++i)&#123;</span><br><span class="line">		<span class="keyword">if</span>(<span class="number">1</span>)&#123;</span><br><span class="line">			<span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">1</span>;j&lt;=B2;++j)h[j]=<span class="number">0</span>;</span><br><span class="line">			<span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">1</span>;j&lt;=B2;++j)</span><br><span class="line">				<span class="keyword">for</span>(<span class="type">int</span> k=<span class="number">1</span>;k*j&lt;=B2;++k)</span><br><span class="line">					h[j*k]=<span class="built_in">max</span>(h[j*k],f[i<span class="number">-1</span>][j]*g[i+<span class="number">1</span>][k]);</span><br><span class="line">			<span class="keyword">for</span>(<span class="type">int</span> j=B2;j;--j)h[j]=<span class="built_in">max</span>(h[j],h[j+<span class="number">1</span>]);</span><br><span class="line">			<span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">1</span>;j&lt;=B2;++j)&#123;</span><br><span class="line">				<span class="type">int</span> ee=(w+j<span class="number">-1</span>)/j;ee=<span class="built_in">max</span>(ee,<span class="number">1</span>);</span><br><span class="line">				<span class="keyword">if</span>(ee&gt;a[i])<span class="keyword">continue</span>;</span><br><span class="line">				<span class="type">int</span> e2=a[i]/ee;</span><br><span class="line">				ans=<span class="built_in">max</span>(ans,<span class="number">1.0</span>*e2/(<span class="number">1.0</span>*a[i])*h[j]);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	cout&lt;&lt;fixed&lt;&lt;<span class="built_in">setprecision</span>(<span class="number">15</span>)&lt;&lt;ans*w&lt;&lt;<span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
     </div>
@@ -243,7 +243,7 @@
 
     <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%EF%BF%BD%EF%BF%BD%EF%BF%BD/" rel="tag"># ���</a>
+              <a href="/tags/%E9%A2%98%E8%A7%A3/" rel="tag"># 题解</a>
           </div>
 
         
@@ -314,7 +314,7 @@
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.css" integrity="sha256-AJnUHL7dBv6PGaeyPQJcgQPDjt/Hn/PvYZde1iqfp8U=" crossorigin="anonymous">
 
-<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"paulzrm","repo":"BlogComment","client_id":"3b7c67d15a0a361eff6a","client_secret":"41e9b7f21522101e5cb2ea601b8a452b639e4828","admin_user":"paulzrm","distraction_free_mode":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"5e6cf554d44839efccc724ddc40dbaa2"}</script>
+<script class="next-config" data-name="gitalk" type="application/json">{"enable":true,"github_id":"paulzrm","repo":"BlogComment","client_id":"3b7c67d15a0a361eff6a","client_secret":"41e9b7f21522101e5cb2ea601b8a452b639e4828","admin_user":"paulzrm","distraction_free_mode":false,"proxy":"https://cors-anywhere.azm.workers.dev/https://github.com/login/oauth/access_token","language":null,"js":{"url":"https://cdn.jsdelivr.net/npm/gitalk@1.7.2/dist/gitalk.min.js","integrity":"sha256-Pmj85ojLaPOWwRtlMJwmezB/Qg8BzvJp5eTzvXaYAfA="},"path_md5":"11cc577c2c7a7c2a674908415b0355d0"}</script>
 <script src="/js/third-party/comments/gitalk.js"></script>
 
 </body>

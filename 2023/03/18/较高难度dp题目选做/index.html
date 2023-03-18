@@ -23,18 +23,18 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.10.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
 
-  <meta name="description" content="1.CF559E Gerald and Path��Ŀ���⣺ �� $n$ ���߶Σ�ÿ���߶θ�������һ�˵�λ�ü����ȣ��������߶θ��ǵ���󳤶ȡ� $n \le 100$  �Ѷȣ�Normal��*3000">
+  <meta name="description" content="1.CF559E Gerald and Path题目大意： 有 $n$ 条线段，每条线段给定其中一端的位置及长度，求所有线段覆盖的最大长度。 $n \le 100$  难度：Normal，*3000">
 <meta property="og:type" content="website">
-<meta property="og:title" content="�ϸ��Ѷ�dp��Ŀѡ��">
+<meta property="og:title" content="较高难度dp题目选做">
 <meta property="og:url" content="http://example.com/2023/03/18/%E8%BE%83%E9%AB%98%E9%9A%BE%E5%BA%A6dp%E9%A2%98%E7%9B%AE%E9%80%89%E5%81%9A/index.html">
 <meta property="og:site_name" content="paulzrm 的小窝">
-<meta property="og:description" content="1.CF559E Gerald and Path��Ŀ���⣺ �� $n$ ���߶Σ�ÿ���߶θ�������һ�˵�λ�ü����ȣ��������߶θ��ǵ���󳤶ȡ� $n \le 100$  �Ѷȣ�Normal��*3000">
+<meta property="og:description" content="1.CF559E Gerald and Path题目大意： 有 $n$ 条线段，每条线段给定其中一端的位置及长度，求所有线段覆盖的最大长度。 $n \le 100$  难度：Normal，*3000">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://cdn.luogu.com.cn/upload/image_hosting/236me23g.png">
 <meta property="article:published_time" content="2023-03-17T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-03-18T01:20:21.927Z">
+<meta property="article:modified_time" content="2023-03-18T01:30:28.910Z">
 <meta property="article:author" content="paulzrm">
-<meta property="article:tag" content="�ʼ�">
+<meta property="article:tag" content="笔记">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://cdn.luogu.com.cn/upload/image_hosting/236me23g.png">
 
@@ -43,10 +43,10 @@
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2023/03/18/%E8%BE%83%E9%AB%98%E9%9A%BE%E5%BA%A6dp%E9%A2%98%E7%9B%AE%E9%80%89%E5%81%9A/","path":"2023/03/18/较高难度dp题目选做/","title":"�ϸ��Ѷ�dp��Ŀѡ��"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2023/03/18/%E8%BE%83%E9%AB%98%E9%9A%BE%E5%BA%A6dp%E9%A2%98%E7%9B%AE%E9%80%89%E5%81%9A/","path":"2023/03/18/较高难度dp题目选做/","title":"较高难度dp题目选做"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>�ϸ��Ѷ�dp��Ŀѡ�� | paulzrm 的小窝</title>
+<title>较高难度dp题目选做 | paulzrm 的小窝</title>
   
 
 
@@ -133,7 +133,7 @@
         </a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-count">5</span>
         <span class="site-state-item-name">tags</span>
       </div>
   </nav>
@@ -185,7 +185,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          �ϸ��Ѷ�dp��Ŀѡ��
+          较高难度dp题目选做
         </h1>
 
         <div class="post-meta-container">
@@ -197,7 +197,7 @@
       <span class="post-meta-item-text">Posted on</span>
       
 
-      <time title="Created: 2023-03-18 00:00:00 / Modified: 09:20:21" itemprop="dateCreated datePublished" datetime="2023-03-18T00:00:00+08:00">2023-03-18</time>
+      <time title="Created: 2023-03-18 00:00:00 / Modified: 09:30:28" itemprop="dateCreated datePublished" datetime="2023-03-18T00:00:00+08:00">2023-03-18</time>
     </span>
 
   
@@ -210,219 +210,219 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="1-CF559E-Gerald-and-Path"><a href="#1-CF559E-Gerald-and-Path" class="headerlink" title="1.CF559E Gerald and Path"></a>1.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF559E">CF559E Gerald and Path</a></h1><p>��Ŀ���⣺</p>
-<p>�� $n$ ���߶Σ�ÿ���߶θ�������һ�˵�λ�ü����ȣ��������߶θ��ǵ���󳤶ȡ�</p>
+        <h1 id="1-CF559E-Gerald-and-Path"><a href="#1-CF559E-Gerald-and-Path" class="headerlink" title="1.CF559E Gerald and Path"></a>1.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF559E">CF559E Gerald and Path</a></h1><p>题目大意：</p>
+<p>有 $n$ 条线段，每条线段给定其中一端的位置及长度，求所有线段覆盖的最大长度。</p>
 <p>$n \le 100$ </p>
-<p>�Ѷȣ�Normal��*3000</p>
+<p>难度：Normal，*3000</p>
 <span id="more"></span>
-<p>��ž���Ҫ�����ȶ�һ������Ȼ��ÿ���ն���ǰ�߶εķ���Ȼ��ȥdp��</p>
-<p>���һ�� $dp_{i,j}$ ��ʾǰ $i$ ���߶Σ����Ҷ˸��ǵ�λ�� $j$ ʱ���ǵ�����ȡ�</p>
-<p>ת�Ƶ�ʱ�������ǰ���ҷžͱȽϺô�������Ϊ������û�б����ǹ����ˣ�ȫ���µĹ��ס��赱ǰ�߶ι̶��Ķ˵��λ���� $p$���� $dp_{i,j}=\max\{dp_{i-1,p}+dist(p,j)\},j\in[p,r]$��</p>
-<p>��������ŵ�ʱ����ܻ�����⣬��Ϊ�����ܻḲ�ǵ�֮��û�б����ǹ��Ĳ��֡���ǰ��Ķ�̫���ˣ�������ر�ĳ���</p>
-<p>���ͼ��<img src="https://cdn.luogu.com.cn/upload/image_hosting/236me23g.png" alt=""></p>
-<p>����Ϊ�˱���������������ǿ���ö��һ�� $k \in [1,i-1]$��ǿ���ն� $\in[k,i-1]$ ���߶ζ����ҷš�</p>
-<p>�� $l$ ��ʾ��ǰ�����߶�����ź���˵��λ�ã�$R$ ��ʾ $[k,i-1]$ �������߶ε��Ҷ˵�����ֵ������ $dp_{i,j}=\max\{dp_{k-1,l}+dist(l,R)\}$����ȷ�Կ��Ա��������⡣</p>
-<h1 id="2-CF1305G-Kuroni-and-Antihype"><a href="#2-CF1305G-Kuroni-and-Antihype" class="headerlink" title="2.CF1305G Kuroni and Antihype"></a>2.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF1305G">CF1305G Kuroni and Antihype</a></h1><p>��͸�𿴺���İ��� $\color{white}\text{<del>����ȿ���������ҪMST��ţ������뵽�����</del>}$</p>
-<p>��Ŀ���⣺</p>
-<p>������ $n$ ���ˣ����Ҹ������ǵ����䡣�����������ѣ����ҽ�������������İ�λ����Ϊ $0$��</p>
-<p>���ڣ���һ��������֯��ÿ���������ֲ�����</p>
-<p>1���������봫����֯�������Ļ���������֯�������Ǯ��</p>
-<p>2�������Լ���һ�����Ѽ��봫����֯�������Ļ���������֯�ά������ֵ������������Ǯ������Ȼ��ִ�иò������˱����Ѿ����봫����֯�ˣ�</p>
-<p>ÿ����ֻ���Խ��봫����֯һ�Ρ�</p>
-<p>���ڣ������������� $n$ ����ͨ��������������֧֯������ $n$ ���˵�Ǯ��֮������Ƕ��١�</p>
-<p>�Ѷȣ�Normal+��*3500</p>
-<p>��ѵ��һ�仰������İ��֡�</p>
-<p>ÿ����ֻ�ܼӽ������֯һ�Σ�����һ����ÿ���ڵ����һ�����ڵ�һ�����ѶȾ�������ôȥ�������MST��</p>
-<p>�� $a_{n+1}=0$���ҳ�ʼ������Ѿ���������֯�������ÿ������ $2$ ������ѡ��ĵ�����֮����һ���ߣ���õ�һ��������ʱ�� $i$ �� $j$ ֮��ı�Ȩ��Ϊ $a_i+a_j$����ô�𰸾������ı�Ȩ��ȥ�ܵ�Ȩ�����������������</p>
-<p>����ֻ��������������Ϊ $0$ �Ż��бߣ����Լӷ��൱���ǻ�</p>
-<p>��Ϳ����Ƴ�һ���ܹ��� $O(3^{18}\alpha(n))$ �������ˡ��Ӵ�Сö�ٵ�ǰ���ǵ��ı�Ȩ $x$ ��kruskal���٣���Ȼ��ö�� $x$ ��һ���Ӽ� $i$���� $i$ �� $x \oplus i$ ��������</p>
-<p>���⻹�� $O(18\times2^{18} \log n)$ ��������������������˼���������ĸ�ɶB��ͷ��MST�㷨��</p>
-<h1 id="3-CF1188D-Make-Equal"><a href="#3-CF1188D-Make-Equal" class="headerlink" title="3.CF1188D Make Equal"></a>3.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF1188D">CF1188D Make Equal</a></h1><p>��Ŀ���⣺</p>
-<p>���� $ n $ ������ $ a_1 , a_2 , \ldots , a_n $ ��ÿ�β������Ը�����һ�������� $ 2 $ �ķǸ��������ݡ������ٵĲ���������ʹ���� $ n $ ������ȡ�</p>
+<p>大概就是要想着先对一端排序，然后每次钦定当前线段的方向然后去dp。</p>
+<p>设计一个 $dp_{i,j}$ 表示前 $i$ 条线段，最右端覆盖到位置 $j$ 时覆盖的最长长度。</p>
+<p>转移的时候如果当前向右放就比较好处理，因为再往右没有被覆盖过的了，全是新的贡献。设当前线段固定的端点的位置是 $p$，则 $dp_{i,j}=\max\{dp_{i-1,p}+dist(p,j)\},j\in[p,r]$。</p>
+<p>但是向左放的时候可能会出问题，因为他可能会覆盖到之间没有被覆盖过的部分。（前面的都太短了，而这个特别的长）</p>
+<p>借个图：<img src="https://cdn.luogu.com.cn/upload/image_hosting/236me23g.png" alt=""></p>
+<p>所以为了避免这种情况，我们可以枚举一个 $k \in [1,i-1]$，强制钦定 $\in[k,i-1]$ 的线段都往右放。</p>
+<p>令 $l$ 表示当前这条线段往左放后左端点的位置，$R$ 表示 $[k,i-1]$ 中所有线段的右端点的最大值，则有 $dp_{i,j}=\max\{dp_{k-1,l}+dist(l,R)\}$，正确性可以被感性理解。</p>
+<h1 id="2-CF1305G-Kuroni-and-Antihype"><a href="#2-CF1305G-Kuroni-and-Antihype" class="headerlink" title="2.CF1305G Kuroni and Antihype"></a>2.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF1305G">CF1305G Kuroni and Antihype</a></h1><p>剧透别看后面的白字 $\color{white}\text{<del>逛洛谷看到有人在要MST的牛逼题就想到了这个</del>}$</p>
+<p>题目大意：</p>
+<p>现在有 $n$ 个人，并且给出他们的年龄。两个人是朋友，当且仅当两个人年龄的按位与结果为 $0$。</p>
+<p>现在，有一个传销组织，每个人有两种操作：</p>
+<p>1、主动加入传销组织，这样的话，传销组织不会给你钱；</p>
+<p>2、邀请自己的一个朋友加入传销组织，这样的话，传销组织会奖励你数值等于你的年龄的钱。（当然，执行该操作的人必须已经进入传销组织了）</p>
+<p>每个人只可以进入传销组织一次。</p>
+<p>现在，请你输出，如果 $n$ 个人通力合作，传销组织支付给这 $n$ 个人的钱数之和最大是多少。</p>
+<p>难度：Normal+，*3500</p>
+<p>妙！难点就一句话，上面的白字。</p>
+<p>每个点只能加进这个组织一次，就像一棵树每个节点最多一个父节点一样，难度就在于怎么去构造这个MST。</p>
+<p>设 $a_{n+1}=0$，且初始这个人已经加入了组织。如果将每个点在 $2$ 过程中选择的点与它之间连一条边，会得到一棵树。此时将 $i$ 和 $j$ 之间的边权设为 $a_i+a_j$，那么答案就是最大的边权减去总点权，就是最大生成树。</p>
+<p>由于只有两个点与起来为 $0$ 才会有边，所以加法相当于是或。</p>
+<p>这就可以推出一个能过的 $O(3^{18}\alpha(n))$ 的做法了。从大到小枚举当前考虑到的边权 $x$ （kruskal基操），然后枚举 $x$ 的一个子集 $i$，将 $i$ 和 $x \oplus i$ 连起来。</p>
+<p>此题还有 $O(18\times2^{18} \log n)$ 的做法，留给读者自行思考。（用哪个啥B开头的MST算法）</p>
+<h1 id="3-CF1188D-Make-Equal"><a href="#3-CF1188D-Make-Equal" class="headerlink" title="3.CF1188D Make Equal"></a>3.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF1188D">CF1188D Make Equal</a></h1><p>题目大意：</p>
+<p>给出 $ n $ 个数字 $ a_1 , a_2 , \ldots , a_n $ ，每次操作可以给其中一个数加上 $ 2 $ 的非负整数次幂。求最少的操作次数，使得这 $ n $ 个数相等。</p>
 <p>$1 \le n \le 10^5$</p>
-<p>�Ѷȣ�Hard-��*3100</p>
-<p>�Ҳ����������ǡ�</p>
-<p>һ����Ȼ�ģ�������˵������Ȼ����ת����Ҫ��Ϊ�� $\sum{x+a_n-a_i}$ �����͡����� $a$ ���մ�С��������</p>
-<p>������ $a_i$ ��Ϊ $a_n-a_i$��������ô�벻������</p>
-<p>��С������ߵ�ǰ��� $x$ �ĵ� $k$ λ���� $3$ ����ص�����</p>
+<p>难度：Hard-，*3100</p>
+<p>我不会做，降智。</p>
+<p>一个显然的（对我来说并不显然）的转化是要变为求 $\sum{x+a_n-a_i}$ 的类型。（让 $a$ 按照从小到大排序）</p>
+<p>下面让 $a_i$ 变为 $a_n-a_i$。（我怎么想不到啊）</p>
+<p>从小到大决策当前这个 $x$ 的第 $k$ 位，有 $3$ 个相关的量：</p>
 <ul>
-<li><p>$x$ ��һλ�ǲ��� $1$</p>
+<li><p>$x$ 这一位是不是 $1$</p>
 </li>
-<li><p>$a$ ���ж��ٸ�����һλ�� $1$ ���������������λ��</p>
+<li><p>$a$ 中有多少个数这一位是 $1$ （接下来会产生进位）</p>
 </li>
-<li><p>ǰ�� $k-1$ Ϊ�Ľ�λ����һλ�����Ĺ���</p>
+<li><p>前面 $k-1$ 为的进位对这一位产生的贡献</p>
 </li>
 </ul>
-<p>ǰ�����ô��������ǵ��������ô�����</p>
-<p>��� bitmask ö��ǰ����Щ������ô���ӶȾͱ�ը�ˣ�$2^n$������Ȼ����ȥ��</p>
-<p>����һ��������˵����Ȼ�Ľ��ۣ����Ƕ�����͵� $k-1$ λ��˵���Ե� $k$ λ������λ��һ������Щ $a$ �ж� $2^{k-1}$ ȡģ��Ӵ�С�����һ��ǰ׺��֤����Ȼ��</p>
-<p>�� $dp_{i,j}$ ��ʾ��������͵� $i$ λ����һλ�� $j$ ����λʱ�Ĵ𰸡�</p>
-<p>���Է������ǲ���������������Ƕ��٣�ֻ���� $1$ �������ͽ�λ������</p>
-<p>�� $cnt$ Ϊ $a$ ����һλ���� $1$ ��������$tot$ Ϊǰ $j$ ������һλ $1$ ��������</p>
+<p>前两个好处理，就是第三个不好处理。</p>
+<p>如果 bitmask 枚举前面那些数，那么复杂度就爆炸了（$2^n$），显然过不去。</p>
+<p>又是一个对我来说不显然的结论，就是对于最低的 $k-1$ 位来说，对第 $k$ 位产生进位的一定是那些 $a$ 中对 $2^{k-1}$ 取模后从大到小排序的一个前缀。证明显然。</p>
+<p>令 $dp_{i,j}$ 表示考虑了最低的 $i$ 位，上一位有 $j$ 个进位时的答案。</p>
+<p>可以发现我们不关心这个数到底是多少，只关心 $1$ 的数量和进位的数量</p>
+<p>令 $cnt$ 为 $a$ 中这一位数中 $1$ 的总数，$tot$ 为前 $j$ 个数这一位 $1$ 的总数。</p>
 <ul>
-<li>�ϴν�λ����һλ�� $1$���� $tot$ ����</li>
-<li>�ϴν�λ����һλ�� $0$���� $j-tot$ ����</li>
-<li>�ϴ�δ��λ����һλ�� $1$��$cnt-tot$ ����</li>
-<li>�ϴ�δ��λ����һλ�� $0$��$n-j-(cnt-tot)$ ����</li>
+<li>上次进位，这一位是 $1$，有 $tot$ 个。</li>
+<li>上次进位，这一位是 $0$，有 $j-tot$ 个。</li>
+<li>上次未进位，这一位是 $1$，$cnt-tot$ 个。</li>
+<li>上次未进位，这一位是 $0$，$n-j-(cnt-tot)$ 个。</li>
 </ul>
-<p>��һλȡ $1$���� $1,2,3$ ��λ��$1,4$ ��һλ�� $1$��</p>
-<p>��һλȡ $0$���� $1$ ��λ��$2,3$ ��һλ��1��</p>
-<p>û�ˡ��о���������ͻ������������ôд���Լ�С������</p>
-<h1 id="4-CF739E-Gosha-is-hunting"><a href="#4-CF739E-Gosha-is-hunting" class="headerlink" title="4.CF739E Gosha is hunting"></a>4.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF739E">CF739E Gosha is hunting</a></h1><p>��Ŀ���⣺</p>
-<p>��Ҫץ���汦����<br>����һ���� $n$ ֻ���汦����<br>���� $a$ ���������򡻺� $b$ ���������򡻡�<br>��������ץ����  $i$  ֻ���汦���ĸ����� $p_i$����������ץ���ĸ������� $u_i$��<br>������ͬһֻ���汦����ʹ�ó���һ��ͬ�ֵġ��򡻣����ǿ�����ͬһֻ�ϼ�ʹ�á���������ʹ�á������򡻣���ץ����һ������<br>���������ÿ����ץ˭��ʹ����ץ�����汦�����ܸ���������󣬲�������ֵ��</p>
-<p>$n \leq 2000$��</p>
-<p>�ҿ��Գ��� $n \le 10^5$��</p>
-<p>�Ѷȣ�Easy—��*3000</p>
-<p>����Ҳ��*3000������</p>
-<p>���wqs���֣���һ�ο������� $n^2\log n$ ��ԭ�⣬�����ξͿ������� $n\log ^2n$ �� $1e5$��</p>
-<p>�Ǿͼ�дһ��ʲô��wqs���֡�</p>
-<p>ԭ��û�д���ֻ�д������ƣ�����������취ȡ������������ơ�</p>
-<p>���ֱ��ȡ����ô�϶���ȫ���õ����ţ��������Ƕ�ÿ���þͼ���һ�����ۡ�</p>
-<p>Ȼ�����������ۣ�ֱ��̰�ģ�����dp����õ�ʹ�õĴ�����������ͬ�Ҵ����</p>
-<h1 id="5-CF1463F-Max-Correct-Set"><a href="#5-CF1463F-Max-Correct-Set" class="headerlink" title="5.CF1463F Max Correct Set"></a>5.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF1463F">CF1463F Max Correct Set</a></h1><p>��Ŀ���⣺</p>
-<p>�涨һ�������� $S$�����ҽ���������������ʱ����������������</p>
+<p>这一位取 $1$，则 $1,2,3$ 进位，$1,4$ 这一位是 $1$。</p>
+<p>这一位取 $0$，则 $1$ 进位，$2,3$ 这一位是1。</p>
+<p>没了。有就是这玩意和基数排序很像，这么写可以减小常数。</p>
+<h1 id="4-CF739E-Gosha-is-hunting"><a href="#4-CF739E-Gosha-is-hunting" class="headerlink" title="4.CF739E Gosha is hunting"></a>4.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF739E">CF739E Gosha is hunting</a></h1><p>题目大意：</p>
+<p>你要抓神奇宝贝！<br>现在一共有 $n$ 只神奇宝贝。<br>你有 $a$ 个『宝贝球』和 $b$ 个『超级球』。<br>『宝贝球』抓到第  $i$  只神奇宝贝的概率是 $p_i$，『超级球』抓到的概率则是 $u_i$。<br>不能往同一只神奇宝贝上使用超过一个同种的『球』，但是可以往同一只上既使用『宝贝球』又使用『超级球』（都抓到算一个）。<br>请合理分配每个球抓谁，使得你抓到神奇宝贝的总个数期望最大，并输出这个值。</p>
+<p>$n \leq 2000$。</p>
+<p>我可以出到 $n \le 10^5$。</p>
+<p>难度：Easy—，*3000</p>
+<p>就这也配*3000？？？</p>
+<p>裸的wqs二分，套一次可以做到 $n^2\log n$ 过原题，套两次就可以做到 $n\log ^2n$ 过 $1e5$。</p>
+<p>那就简单写一下什么是wqs二分。</p>
+<p>原题没有代价只有次数限制，现在我们想办法取消这个次数限制。</p>
+<p>如果直接取消那么肯定是全部用掉最优，所以我们对每次用就加上一个代价。</p>
+<p>然后二分这个代价，直到贪心（或者dp）后得到使用的次数和限制相同且答案最大。</p>
+<h1 id="5-CF1463F-Max-Correct-Set"><a href="#5-CF1463F-Max-Correct-Set" class="headerlink" title="5.CF1463F Max Correct Set"></a>5.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF1463F">CF1463F Max Correct Set</a></h1><p>题目大意：</p>
+<p>规定一组正整数 $S$。当且仅当满足以下条件时该组正整数成立：</p>
 <ul>
 <li><p>$S \subseteq \{1,2,…,n\}$</p>
 </li>
-<li><p>��� $a \in s$ ���� $b \in s$����ô $|a - b| \not ={x}$ ���� $|a - b| \not ={y}$</p>
+<li><p>如果 $a \in s$ 并且 $b \in s$，那么 $|a - b| \not ={x}$ 并且 $|a - b| \not ={y}$</p>
 </li>
 </ul>
-<p>���ڸ�������ֵ $n,x,y$������Ҫ�ҵ������������󳤶ȡ�</p>
+<p>对于给定的数值 $n,x,y$，你需要找到成立数组的最大长度。</p>
 <p>$1 \le n \le 10^9, 1 \le x,y \le 22$</p>
-<p>�Ѷȣ�Normal+��*3100</p>
-<p>�����˼ά�⣬����֮ǰ������һ��MO����񣿣���</p>
-<p>�����ǿ����и�����Ϊ $x+y$ ��ѭ���ڡ��ն� $x \ge y$��Ȼ���� $dp_{i,j}$ ��ʾ���ǵ��˵� $i$ λ����� $x$ λ�� mask λ $j$ ʱ�Ĵ𰸡�����������ֻ�ô� $x$ λ������ $x+y$ λ�ˣ��Ǹ�trick��</p>
-<p>֤��ͦ�ѵģ����Բο� <a target="_blank" rel="noopener" href="https://www.luogu.com.cn/blog/119261/solution-cf1463f">7KByte��ү��</a> ���� <a target="_blank" rel="noopener" href="https://www.luogu.com.cn/blog/feecle6418/solution-cf1463f">feecle6418��ү��</a> ��</p>
-<h1 id="6-CF1616H-Keep-XOR-Low"><a href="#6-CF1616H-Keep-XOR-Low" class="headerlink" title="6.CF1616H Keep XOR Low"></a>6.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF1616H">CF1616H Keep XOR Low</a></h1><p>��Ŀ���⣺</p>
-<p>���� $n$ ������ $a_1,a_2,\cdots,a_n$ ��һ������ $x$��</p>
-<p>����Ҫ��� $\{1,2,\cdots,n\}$ ��һ���Ӽ� $S$������ $S$ ������������ͬ��Ԫ�� $i,j$������ $a_i~{\rm xor}~a_j\le x$��</p>
-<p>��ѡȡ $S$ �ķ��������� $998244353$ ȡģ�Ľ����</p>
+<p>难度：Normal+，*3100</p>
+<p>神奇的思维题，和我之前做过的一道MO题好像？？？</p>
+<p>结论是可以有个长度为 $x+y$ 的循环节。钦定 $x \ge y$，然后令 $dp_{i,j}$ 表示考虑到了第 $i$ 位，最后 $x$ 位的 mask 位 $j$ 时的答案。（这样我们只用存 $x$ 位而不是 $x+y$ 位了，是个trick）</p>
+<p>证明挺难的，可以参考 <a target="_blank" rel="noopener" href="https://www.luogu.com.cn/blog/119261/solution-cf1463f">7KByte大爷的</a> 或者 <a target="_blank" rel="noopener" href="https://www.luogu.com.cn/blog/feecle6418/solution-cf1463f">feecle6418大爷的</a> 。</p>
+<h1 id="6-CF1616H-Keep-XOR-Low"><a href="#6-CF1616H-Keep-XOR-Low" class="headerlink" title="6.CF1616H Keep XOR Low"></a>6.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF1616H">CF1616H Keep XOR Low</a></h1><p>题目大意：</p>
+<p>给你 $n$ 个整数 $a_1,a_2,\cdots,a_n$ 和一个整数 $x$。</p>
+<p>你需要求出 $\{1,2,\cdots,n\}$ 的一个子集 $S$，满足 $S$ 中任意两个不同的元素 $i,j$，满足 $a_i~{\rm xor}~a_j\le x$。</p>
+<p>求选取 $S$ 的方案数，对 $998244353$ 取模的结果。</p>
 <p>$1\le n\le 150000,0\le a_i,x&lt; 2^{30}$</p>
-<p>�Ѷȣ�Normal+�������Ҳ���Ϥ�����⣩��*3000</p>
-<p>һ����򣬼���Ϊ 01-trie����� $dp_{u}$ ��ʾ���ǵ��� $u$ Ϊ���������У�������� $\le x$ �ķ�������</p>
-<p>��ôdp��ĵ���ӦΪ����һλ�� $1$ ��ʱ���������������以�໹�����ơ�</p>
-<p>��ô�죿�󵨵㣬�� $dp_{u1,u2}$ ��ʾ�� $u1$ �� $u2$ ��ѡ���ɸ������������ $\le x$ �ķ�������</p>
-<p>�������������ܳ����������ǿ��еġ����ǵ�ǰ���ǵ��� $d$ �㣩</p>
-<p>�� $x$ �ĵ� $d$ λΪ $1$����ô $u1$ ������Ӻ� $u2$ ������ӵ������ڵ����������һ��������� $x$ �ˣ�$u1$ ���Ҷ��Ӻ� $u2$ ���Ҷ���ͬ����������������ֻ��Ҫ���� $u1$ ������Ӻ� $u2$ ���Ҷ��ӣ��Լ� $u2$ ������Ӻ� $u1$ ���Ҷ���֮������ƣ�ֱ�Ӱ����� $dp$ ֵ��һ�¾����ˡ�</p>
-<p>�� $x$ �ĵ� $d$ λΪ $0$����ô $u1$ ������Ӻ� $u2$ ���Ҷ��Ӳ���ͬʱѡ����$u1$ ���Ҷ��Ӻ� $u2$ �������ͬ�������԰�������dpֵ��һ�£��ټ��ϵ�����ĳ��������ѡ���ķ����Ϳ����ˡ�</p>
-<h1 id="7-AGC024F-Simple-Subsequence-Problem"><a href="#7-AGC024F-Simple-Subsequence-Problem" class="headerlink" title="7.[AGC024F] Simple Subsequence Problem"></a>7.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/AT3963">[AGC024F] Simple Subsequence Problem</a></h1><p>��Ŀ���⣺</p>
-<p>��һ�� <code>01</code> ������ $S$������ÿ�����ĳ��ȶ������� $N$����Ҫ��������� $S$ �� $K$ �����������е����������ж�⣬����ֵ�����С������⡣</p>
-<p>���� $S$ ���ܴܺ������������������ $S$ �ģ�</p>
+<p>难度：Normal+（可能我不熟悉这类题），*3000</p>
+<p>一眼异或，鉴定为 01-trie。设计 $dp_{u}$ 表示考虑到以 $u$ 为根的子树中，两两异或都 $\le x$ 的方案数。</p>
+<p>这么dp会寄掉，应为当这一位是 $1$ 的时候它的两个子树间互相还有限制。</p>
+<p>怎么办？大胆点，令 $dp_{u1,u2}$ 表示在 $u1$ 和 $u2$ 中选若干个数，两两异或都 $\le x$ 的方案数。</p>
+<p>看起来这个玩意很扯淡，但是是可行的。（记当前考虑到第 $d$ 层）</p>
+<p>若 $x$ 的第 $d$ 位为 $1$，那么 $u1$ 的左儿子和 $u2$ 的左儿子的子树内的数异或起来一定不会大于 $x$ 了，$u1$ 的右儿子和 $u2$ 的右儿子同理。所以现在我们只需要考虑 $u1$ 的左儿子和 $u2$ 的右儿子，以及 $u2$ 的左儿子和 $u1$ 的右儿子之间的限制，直接把两个 $dp$ 值乘一下就行了。</p>
+<p>若 $x$ 的第 $d$ 位为 $0$，那么 $u1$ 的左儿子和 $u2$ 的右儿子不能同时选数，$u1$ 的右儿子和 $u2$ 的左儿子同理。所以把这两个dp值加一下，再加上单独在某个儿子里选数的方案就可以了。</p>
+<h1 id="7-AGC024F-Simple-Subsequence-Problem"><a href="#7-AGC024F-Simple-Subsequence-Problem" class="headerlink" title="7.[AGC024F] Simple Subsequence Problem"></a>7.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/AT3963">[AGC024F] Simple Subsequence Problem</a></h1><p>题目大意：</p>
+<p>有一个 <code>01</code> 串集合 $S$，其中每个串的长度都不超过 $N$，你要求出至少是 $S$ 中 $K$ 个串的子序列的最长串，如果有多解，输出字典序最小的那组解。</p>
+<p>由于 $S$ 可能很大，因此我们是这样描述 $S$ 的：</p>
 <ul>
-<li><p>�㽫�õ� $(N+1)$ �� <code>01</code> ������ $i$ �����ĳ���Ϊ $2^{i-1}$��</p>
+<li><p>你将得到 $(N+1)$ 个 <code>01</code> 串，第 $i$ 个串的长度为 $2^{i-1}$。</p>
 </li>
-<li><p>�� $i$ ���ַ����ĵ� $j$ ���ַ����������� $(j-1)$ �ġ�����Ϊ $(i-1)$ �Ķ����Ʊ�ʾ�Ƿ������ $S$ �С�</p>
+<li><p>第 $i$ 个字符串的第 $j$ 个字符，代表数字 $(j-1)$ 的、长度为 $(i-1)$ 的二进制表示是否出现在 $S$ 中。</p>
 </li>
 </ul>
-<p>$N \leq 20$��</p>
-<p>�Ѷȣ�Hard��������difficulty 3544</p>
-<p>�����ҵ��������Զ��������⡣</p>
-<p>��Ŀ�൱�ڶ���ÿ�������������������е�ֵ+1������������п��ܵ�01����ֵ�����ֵ�Ƕ��١�</p>
-<p>���ǲ�����ö��ÿ���������������У�������֮���Ҫ�õ�һ�������������Զ��������⡣</p>
-<p>�������̰�ĵ�ȥȷ��һ��01���ǲ�������һ��01���������С����赱ǰƥ�䴮�Ŀ�ͷ�� $p$����ô����Ҫ��ģʽ�����ҵ���ͷ��һ�� $p$ ȥ������Ӧ��</p>
-<p>�������ǾͿ���ģ��������̣��� $A$ Ϊ��ǰ�Ѿ�ƥ��õĴ���$B$ Ϊģʽ��ʣ��Ĳ��֣�Ȼ����Է���ÿ��״̬�����ֳ�·����ģʽ���Ŀ�ͷƥ����ʹ�ͷ��ʼ��һ���Ϳ�ͷ��ͬ���ַ�ƥ�������</p>
-<p>���� $|A+B|\le 20$���������ǾͿ��Լ�¼ $|A+B|$ �� $A+B$��Ȼ��dp��ʱ��ö�� $A$ �ĳ��ȣ��Ϳ��Է����ת���ˣ�����������ֱ��ʡ��������ͷ����ƥ��������ʮ�ַ��㣩</p>
-<p><a target="_blank" rel="noopener" href="https://atcoder.jp/contests/agc024/submissions/35449177">�ο�����</a></p>
-<h1 id="8-AGC016F-Games-on-DAG"><a href="#8-AGC016F-Games-on-DAG" class="headerlink" title="8.[AGC016F] Games on DAG"></a>8.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/AT2390">[AGC016F] Games on DAG</a></h1><p>��Ŀ���⣺</p>
-<p>����һ��$n$����$m$���ߵ�DAG������ÿ����$(u,v)$������$u&lt;v$��$1,2$�ŵ��һ��ʯͷ��ÿ�ο�����DAG�ϵı��ƶ�һ��ʯͷ�������ƶ����䣬������$2^{m}$���ߵ��Ӽ��У�ֻ��������Ӽ����ֱ�ʤ�ķ�������</p>
-<p>�Ѷȣ�Normal������,difficulty 3754</p>
-<p>�ҵĲ�����������</p>
-<p>���Ȿ���Ͼ���Ҫ��SG(1) �� SG(2) ����ͬ��Ȼ�����ת��Ϊ $2^m$ ��ȥ��ͬ�������</p>
-<p>SG(i) �Ķ��壺���������ھӵ�SG()��mex</p>
-<p>�������ǾͿ���ÿ��ö���µ�SG()ֵΪ0�ĵ㣬Ҫ����������֮�䲻�ܻ������ߣ�֮ǰö�ٵ����в���0�ĵ�����Ҫ����Щ���е�һ�������ߣ���Щ������0�ĵ������û��Ҫ��</p>
-<p>Ȼ�����1�ŵ��2�ŵ�Ҫôͬʱ�ڲ���0�ĵ㣬Ҫôͬʱ���µ�0��</p>
-<p>���Ǹ��Ӽ�ö�٣����Ӷ� $O(n\times3^n)$</p>
-<h1 id="9-CF1149D-Abandoning-Roads"><a href="#9-CF1149D-Abandoning-Roads" class="headerlink" title="9.CF1149D Abandoning Roads"></a>9.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF1149D">CF1149D Abandoning Roads</a></h1><p>��Ŀ���⣺</p>
-<p>һ�� $n$ ���� $m$ ���ߵ�����ͼ��ֻ�� $a,b$ ���ֱ�Ȩ��$a&lt;b$��������ÿ�� $i$����ͼ�����е���С�������У��� $1$ �� $i$ �������Сֵ��</p>
+<p>$N \leq 20$。</p>
+<p>难度：Hard（？），difficulty 3544</p>
+<p>这是我的子序列自动机入门题。</p>
+<p>题目相当于对于每个串，对其所有子序列的值+1，问你最后所有可能的01串的值的最大值是多少。</p>
+<p>我们不可以枚举每个串的所有子序列，所以这之后就要用到一个叫做子序列自动机的玩意。</p>
+<p>考虑如何贪心的去确定一个01串是不是另外一个01串的子序列。假设当前匹配串的开头是 $p$，那么我们要在模式串中找到开头第一个 $p$ 去和他对应。</p>
+<p>所以我们就可以模拟这个过程，令 $A$ 为当前已经匹配好的串，$B$ 为模式串剩余的部分，然后可以发现每种状态有两种出路（把模式串的开头匹配掉和从头开始第一个和开头不同的字符匹配掉）。</p>
+<p>由于 $|A+B|\le 20$，所以我们就可以记录 $|A+B|$ 和 $A+B$，然后dp的时候枚举 $A$ 的长度，就可以方便的转移了（这样做可以直接省掉两个开头互相匹配的情况，十分方便）</p>
+<p><a target="_blank" rel="noopener" href="https://atcoder.jp/contests/agc024/submissions/35449177">参考代码</a></p>
+<h1 id="8-AGC016F-Games-on-DAG"><a href="#8-AGC016F-Games-on-DAG" class="headerlink" title="8.[AGC016F] Games on DAG"></a>8.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/AT2390">[AGC016F] Games on DAG</a></h1><p>题目大意：</p>
+<p>给定一个$n$个点$m$条边的DAG，对于每条边$(u,v)$都满足$u&lt;v$，$1,2$号点各一个石头，每次可以沿DAG上的边移动一颗石头，不能移动则输，求所有$2^{m}$个边的子集中，只保留这个子集先手必胜的方案个数</p>
+<p>难度：Normal（？）,difficulty 3754</p>
+<p>我的博弈论入门题</p>
+<p>这题本质上就是要求SG(1) 和 SG(2) 不相同，然后可以转化为 $2^m$ 减去相同的情况。</p>
+<p>SG(i) 的定义：它的所有邻居的SG()的mex</p>
+<p>所以我们就可以每次枚举新的SG()值为0的点，要求满足他们之间不能互相连边，之前枚举的所有不是0的点至少要向这些点中的一个点连边，这些点向不是0的点的连边没有要求</p>
+<p>然后就是1号点和2号点要么同时在不是0的点，要么同时是新的0。</p>
+<p>这是个子集枚举，复杂度 $O(n\times3^n)$</p>
+<h1 id="9-CF1149D-Abandoning-Roads"><a href="#9-CF1149D-Abandoning-Roads" class="headerlink" title="9.CF1149D Abandoning Roads"></a>9.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF1149D">CF1149D Abandoning Roads</a></h1><p>题目大意：</p>
+<p>一张 $n$ 个点 $m$ 条边的无向图，只有 $a,b$ 两种边权（$a&lt;b$），对于每个 $i$，求图中所有的最小生成树中，从 $1$ 到 $i$ 距离的最小值。</p>
 <p>$n \le 70$</p>
-<p>�Ѷȣ�Hard++++��*3000</p>
-<p>��ȥ������ˡ�</p>
-<p>���������ֻ��3000������</p>
-<p>�⸴�Ӷ�������������ģ�������</p>
-<p>������������<strong>��С������</strong>�У���������ôһ�����ʣ�һ��������ȫΪ $a$ ��·���϶������������һ��MST�С�</p>
-<p>��������ôһ�����ۣ������ԭͼ�������ر�ɾ������ʣ��һЩ��ͨ�顣һ��·����������С�������ϣ����ҽ�����û���뿪һ����ͨ����ٻص�ԭ���Ǹ���ͨ���С�</p>
-<p>Ȼ������� $dp_{u,S}$ ��ʾ�����Ѿ�����״ѹ�󼯺�Ϊ $S$ ����ͨ�飬��ǰ�ߵ� $U$ ʱ���·���ĳ��ȡ�ת�������·ת�ơ�</p>
-<p>�������ʱ $O(2^n\log(2^n(n+m)))$ �ģ���������ȥ��</p>
-<p>�������ڻ�����ôһ�����ۣ����ǲ��ÿ������д�С $\le 3$ ����ͨ�飬��Ϊ������ͨ�����Ǿ��㲻����ѹ��ȥ�������ǿ�dijkstra�Ϳ��԰����ų������ٽ����ˡ�����ȥ�ٻ�������Ҫ $2\times b$�����ڲ��⿿ $a$ �Ϳ������� $2\times a$�����ţ�</p>
-<p>�����ˡ������˰���ʱ�临�Ӷ� $O(2^{\frac{n}{4}}\log(2^{\frac{n}{4}}<br>+m))$�������01bfs����dijksta���Կ������ $\log$��</p>
-<h1 id="10-APC001F-XOR-Tree"><a href="#10-APC001F-XOR-Tree" class="headerlink" title="10.APC001F XOR Tree"></a>10.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/AT3913">APC001F XOR Tree</a></h1><p>��Ŀ���⣺</p>
-<p>����һ����$N$���ڵ�������ڵ��Ŵ�$0$��$N-1$��<br>���߱�Ŵ�$1$��$N-1$����$i$�������ӽڵ�$x_i$��$y_i$����ȨֵΪ$a_i$��</p>
-<p>����Զ���ִ������β�����ÿ�β���ѡȡһ������һ���Ǹ�����$x$�������ϵıߵ�Ȩֵ��$x$����Ϊ�ñߵ���Ȩֵ��</p>
-<p>��������Ҫ���ٴβ�����ʹ�����бߵ�Ȩֵ��Ϊ0��</p>
+<p>难度：Hard++++，*3000</p>
+<p>溜去看题解了。</p>
+<p>你告诉我这只有3000？？？</p>
+<p>这复杂度是人能想出来的？？？？</p>
+<p>由于是在所有<strong>最小生成树</strong>中，所以有这么一个性质：一条连续的全为 $a$ 的路径肯定会出现在至少一棵MST中。</p>
+<p>就有了这么一个结论：如果把原图中所有重边删掉，会剩下一些联通块。一条路径可能在最小生成树上，当且仅当它没有离开一个联通块后再回到原来那个联通块中。</p>
+<p>然后就是令 $dp_{u,S}$ 表示考虑已经走了状压后集合为 $S$ 的连通块，当前走到 $U$ 时最短路径的长度。转移用最短路转移。</p>
+<p>这个方法时 $O(2^n\log(2^n(n+m)))$ 的，铁定过不去。</p>
+<p>但是现在还有这么一个结论：我们不用考虑所有大小 $\le 3$ 的连通块，因为这种连通块我们就算不把它压进去，它光是靠dijkstra就可以把它排除不会再进来了。（出去再回来至少要 $2\times b$，而内部光靠 $a$ 就可以做到 $2\times a$，更优）</p>
+<p>结束了。妙死了啊！时间复杂度 $O(2^{\frac{n}{4}}\log(2^{\frac{n}{4}}<br>+m))$，如果用01bfs代替dijksta可以砍掉这个 $\log$。</p>
+<h1 id="10-APC001F-XOR-Tree"><a href="#10-APC001F-XOR-Tree" class="headerlink" title="10.APC001F XOR Tree"></a>10.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/AT3913">APC001F XOR Tree</a></h1><p>题目大意：</p>
+<p>给你一棵有$N$个节点的树，节点编号从$0$到$N-1$，<br>树边编号从$1$到$N-1$。第$i$条边连接节点$x_i$和$y_i$，其权值为$a_i$。</p>
+<p>你可以对树执行任意次操作，每次操作选取一条链和一个非负整数$x$，将链上的边的权值与$x$异或成为该边的新权值。</p>
+<p>问最少需要多少次操作，使得所有边的权值都为0。</p>
 <p>$2\leq N \leq 10^5 , 0\leq a_i \leq 15$</p>
-<p>�Ѷȣ�easy-��difficulty 2865</p>
-<p>����Ҳ�ܺ��⣿��ȶ������ء�</p>
-<p>һ����·�ǽ��ȱ�Ȩ�·ŵ���Ȩ����ÿ����ĵ�ȨΪ����ΧһȦ�ߵ�Ȩֵ�����͡�</p>
-<p>���������һ�� $u$ �� $v$ ��·���������ô���൱�ڶԵ� $u$ �� $v$ ��Ȩֵ���������Ŀ����������е��Ȩֵ��Ϊ $0$��</p>
-<p>�������������֣������Ժ�ÿ��Ȩֵ���������ᳬ�� $1$���Ӽ�dpһ�¾����ˡ�</p>
-<h1 id="11-CF232E-Quick-Tortoise"><a href="#11-CF232E-Quick-Tortoise" class="headerlink" title="11.CF232E Quick Tortoise"></a>11.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF232E">CF232E Quick Tortoise</a></h1><p>��Ŀ���⣺</p>
-<p>��һ�� $n \times m(1 \le n,m\le 500)$ �������ϣ���һЩ�������ϰ������� $q(1\le q \le6\times10^5)$ ��ѯ�ʣ�ÿ��ѯ���Ƿ���ֻͨ�������ߺ������ߴӸ��� $(x_1,y_1)$ �ߵ����� $(x_2,y_2)$��</p>
-<p>�Ѷȣ�Normal��*3000</p>
-<p>�е���·���⣬���Ƿ��Ρ�</p>
-<p>�����ǰ��Щѯ�����������һ��ʹ������ѯ�ʿ��ܵ�·�������뾭����һ�е�һ���㣬��ô��Щѯ�ʿ����� $O(\frac{n^3}{\omega}+\frac{qn}{\omega})$ ��ʱ������ɡ����ǿ��Զ���������ϵ�ÿһ����ά��һ��bitset���� $i$ Ϊ��ʾ�ܲ��ܵ���һ�У�����ѯ�ʱ��뾭������һ�У��ĵ� $i$ ���㣬ת�ƵĻ�����һ�¾Ϳ����ˡ�</p>
-<p>Ȼ��Ϳ��Է����ˡ������յ㶼�� $mid$ �����桢���� $mid$ ���桢ʣ�µĶ��Ǳ��뾭�� $mid$ �еġ�</p>
-<h1 id="12-CF1707E-Replace"><a href="#12-CF1707E-Replace" class="headerlink" title="12.CF1707E Replace"></a>12.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF1707E">CF1707E Replace</a></h1><p>��Ŀ���⣺</p>
-<p>����һ����Ϊ $n$ ������ $a_1,\ldots,a_n$�����ж�������� $i$ ���� $1 \leq a_i \leq n$��</p>
-<p>����һ����Ԫ�麯�����£�</p>
-<script type="math/tex; mode=display">f((l,r)=(\min\{a_l,\ldots,a_r\},\max\{a_l,\ldots,a_r\})(l \leq r)</script><p>����Ҫ�ش� $q$ ��ѯ�ʣ�ÿ�θ��� $(l_i,r_i)$���������پ������ٴ� $f$ �ĵ��ã��� $(l,r) \rightarrow f((l,r))$��ʹ�� $(l_i,r_i)$ ��� $(1,n)$�����޽������ <code>-1</code>��</p>
-<p>�Ѷȣ�Hard++������˼ά�⣬*3500</p>
-<p>������������max/min���ͺ���Ȼ���뵽��ST���ͱ�����</p>
-<p>�����ı�����ܷ�����Ϊ�� $n^2$ �����䣬�ġ�</p>
-<p>�����ܲ���������ST���ķ����������������������ϴ�ġ��н��������䲢��һ�������䣬���ܽ� $n^2$ ��СΪ $n\log n$ �ˡ�</p>
-<p>ע�⵽ $f(l,r)=f(l,l+1)\cup f(l+1,l+2)\cup\dots f(r-1,r)$��Ȼ�����֤�� $f^k(l,r)=f^k(l,l+1)\cup f^k(l+1,l+2)\cup\dots f^k(r-1,r)$����Ϳ����ñ���ά���ˡ�</p>
-<h1 id="13-CF1710D-Recover-the-Tree"><a href="#13-CF1710D-Recover-the-Tree" class="headerlink" title="13.CF1710D Recover the Tree"></a>13.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF1710D">CF1710D Recover the Tree</a></h1><p>��Ŀ���⣺</p>
-<p>����Ҫ������Ŀ��������Ϣ�����һ��������������������</p>
+<p>难度：easy-，difficulty 2865</p>
+<p>就这也能黑题？洛谷恶评严重。</p>
+<p>一个套路是将比边权下放到点权，令每个点的点权为它周围一圈边的权值的异或和。</p>
+<p>现在如果对一条 $u$ 到 $v$ 的路径做异或，那么就相当于对点 $u$ 和 $v$ 的权值做异或，最终目标就是让所有点的权值都为 $0$。</p>
+<p>最后就是玩消消乐，消完以后每种权值的数量不会超过 $1$，子集dp一下就行了。</p>
+<h1 id="11-CF232E-Quick-Tortoise"><a href="#11-CF232E-Quick-Tortoise" class="headerlink" title="11.CF232E Quick Tortoise"></a>11.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF232E">CF232E Quick Tortoise</a></h1><p>题目大意：</p>
+<p>在一个 $n \times m(1 \le n,m\le 500)$ 的网格上，有一些格子是障碍。给定 $q(1\le q \le6\times10^5)$ 个询问，每次询问是否能只通过向下走和向右走从格子 $(x_1,y_1)$ 走到格子 $(x_2,y_2)$。</p>
+<p>难度：Normal，*3000</p>
+<p>有点套路的题，考虑分治。</p>
+<p>如果当前这些询问中满足存在一行使得所有询问可能的路径都必须经过这一行的一个点，那么这些询问可以在 $O(\frac{n^3}{\omega}+\frac{qn}{\omega})$ 的时间内完成。我们可以对这个网格上的每一个点维护一个bitset，第 $i$ 为表示能不能到那一行（所有询问必须经过的那一行）的第 $i$ 个点，转移的话随便或一下就可以了。</p>
+<p>然后就可以分治了。起点和终点都在 $mid$ 行上面、都在 $mid$ 下面、剩下的都是必须经过 $mid$ 行的。</p>
+<h1 id="12-CF1707E-Replace"><a href="#12-CF1707E-Replace" class="headerlink" title="12.CF1707E Replace"></a>12.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF1707E">CF1707E Replace</a></h1><p>题目大意：</p>
+<p>给定一个长为 $n$ 的序列 $a_1,\ldots,a_n$，其中对于任意的 $i$ 满足 $1 \leq a_i \leq n$。</p>
+<p>定义一个二元组函数如下：</p>
+<script type="math/tex; mode=display">f((l,r)=(\min\{a_l,\ldots,a_r\},\max\{a_l,\ldots,a_r\})(l \leq r)</script><p>你需要回答 $q$ 次询问，每次给定 $(l_i,r_i)$，问其最少经过多少次 $f$ 的调用（即 $(l,r) \rightarrow f((l,r))$）使得 $(l_i,r_i)$ 变成 $(1,n)$，若无解请输出 <code>-1</code>。</p>
+<p>难度：Hard++，清新思维题，*3500</p>
+<p>这题中有区间max/min，就很自然的想到了ST表和倍增。</p>
+<p>如果裸的倍增会很烦，因为有 $n^2$ 种区间，寄。</p>
+<p>考虑能不能用类似ST表的方法来处理，就是用两个较大的、有交集的区间并称一个大区间，就能将 $n^2$ 缩小为 $n\log n$ 了。</p>
+<p>注意到 $f(l,r)=f(l,l+1)\cup f(l+1,l+2)\cup\dots f(r-1,r)$，然后可以证明 $f^k(l,r)=f^k(l,l+1)\cup f^k(l+1,l+2)\cup\dots f^k(r-1,r)$，这就可以用倍增维护了。</p>
+<h1 id="13-CF1710D-Recover-the-Tree"><a href="#13-CF1710D-Recover-the-Tree" class="headerlink" title="13.CF1710D Recover the Tree"></a>13.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF1710D">CF1710D Recover the Tree</a></h1><p>题目大意：</p>
+<p>你需要根据题目给出的信息构造出一棵树，满足如下条件：</p>
 <ol>
-<li><p>���Ľڵ����Ϊ $n$��</p>
+<li><p>树的节点个数为 $n$。</p>
 </li>
-<li><p>����ÿ������ $[l,r]$ �����ǻ�����ͨ�顣</p>
+<li><p>对于每个区间 $[l,r]$ 给出是或不是连通块。</p>
 </li>
 </ol>
-<p>���ݱ�֤�н⣬$n\le 2000$��</p>
-<p>�Ѷȣ�Normal++��*3400</p>
-<p>���⡣</p>
-<p>���Ǵ�С���������п��ܵ����䣨��������dp����·����</p>
-<p>�������ǵ�ǰ���ǵ���һ����ͨ������ $[l,r]$���������Ƿֱ����� $[x_1,x_2-1],[x_2,x_3-1]\dots [x_{k-1},x_k-1]$������ $l \geq x_1, r\le x_k-1$�����Է��� $k$ Ϊ $[l,r]$ �����е����ڵĲ�ͬ����ͨ���������� $k=3$ ��ʱ����Է����޽⣬$k=2$ ��ʱ�����ֱ������ $(l,r)$����� $k&gt;3$ ��ʱ�������ô���ӣ�$(l,x_{k-1}-1), (x_i,r)(i &lt; k-1)$�������Ϳ��Ա�֤ $l$ �� $r$ ǰ��һ����ͨ��֮���������ͨ�鲻�ܹ���һ�������ͨ�飬�� $l$ �� $r$ �Ϳ����ˡ�</p>
-<h1 id="14-CF1616G-Just-Add-an-Edge"><a href="#14-CF1616G-Just-Add-an-Edge" class="headerlink" title="14.CF1616G Just Add an Edge"></a>14.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF1616G">CF1616G Just Add an Edge</a></h1><p>�ⳡ��HҲ����ƪblog�У���#6����Ӧ��û�����G��/hsh</p>
-<p>��Ŀ���⣺</p>
-<p>����һ�� DAG����һ���ӱ��С�ĵ������Ŵ�ĵ㣬���ж��ٶ� $(x,y)$ ʹ�� $x&gt;y$ ������ $(x,y)$ �����ߺ��ͼ���ڹ��ܶ�·����</p>
+<p>数据保证有解，$n\le 2000$。</p>
+<p>难度：Normal++，*3400</p>
+<p>好题。</p>
+<p>我们从小到大考虑所有可能的区间（类似区间dp的套路）。</p>
+<p>假设我们当前考虑到有一个联通的区间 $[l,r]$，其中他们分别属于 $[x_1,x_2-1],[x_2,x_3-1]\dots [x_{k-1},x_k-1]$，其中 $l \geq x_1, r\le x_k-1$。可以发现 $k$ 为 $[l,r]$ 中所有点属于的不同的连通块个数。如果 $k=3$ 的时候可以发现无解，$k=2$ 的时候可以直接连接 $(l,r)$，如果 $k&gt;3$ 的时候可以这么连接：$(l,x_{k-1}-1), (x_i,r)(i &lt; k-1)$。这样就可以保证 $l$ 和 $r$ 前面一个连通块之间的所有连通块不能构成一个大的连通块，而 $l$ 到 $r$ 就可以了。</p>
+<h1 id="14-CF1616G-Just-Add-an-Edge"><a href="#14-CF1616G-Just-Add-an-Edge" class="headerlink" title="14.CF1616G Just Add an Edge"></a>14.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF1616G">CF1616G Just Add an Edge</a></h1><p>这场的H也在这篇blog中，是#6，但应该没有这个G难/hsh</p>
+<p>题目大意：</p>
+<p>给定一个 DAG，边一定从编号小的点连向编号大的点，求有多少对 $(x,y)$ 使得 $x&gt;y$ 且添加 $(x,y)$ 这条边后的图存在哈密顿路径。</p>
 <p>$n \le 150000$</p>
-<p>�Ѷȣ�Hard+(*114514)�����ᣡ</p>
-<p>�ȹ��ţ��������翴��⡣</p>
-<p>�ҳ������ڿ����ˣ������⡣</p>
-<p>$n^2$ ������trivial��Ψһ��·����ʽ�Ƚ���Ȼ������ $1 \rightarrow x-1 \rightarrow y-1 \rightarrow x \rightarrow y \rightarrow n$������ $y-1 \rightarrow x$ ��һ����λ��$1 \rightarrow x-1$ �� $y \rightarrow n$ ��һ��һ������</p>
-<p>�������ǿ���ö�� $y$ �����ж��ٸ� $x$ ������������ $f_{i,0/1}$ ��ʾ���ǵ�һ��λ�� $i$���ܷ��ɵ�ǰö�ٵ� $(y-1,y)$ �ߵ� $(i-1,i)$ ���� $(i,i-1)$��ת����Ȼ��</p>
-<p>������ô�Ż��������ҵ�һ������� $p$ ���� $p-1$ �� $p$ ֮��û�бߣ���ʱ $p$ ��Ϊ�ؾ�֮·�����ǿ��Խ��� $n$ �����Ͽ�������ߺ��ұ߷ֱ�dp��Ȼ���ݳ�һ�´𰸾����ˡ�</p>
-<p>֤���ɴ�Ļ��������ߵ� $(a,a+1)$ �ܵ� $(p,p+1)$��$(p,p+1)$ �ܵ��ұߵ� $b,b+1$����ô��Ȼ $(a,a+1)$ �ܵ� $(b,b+1)$����֮ $(p+1,p)$ ͬ����</p>
-<p>ע��һЩϸ�ڡ��Լ�ע�⵱ $p=2$ ʱ���ö��� $f_{0,0/1}$�����������Ҫ���� $0$ �� $n+1$ �����������ɡ�</p>
-<h1 id="15-AGC010E-Rearranging"><a href="#15-AGC010E-Rearranging" class="headerlink" title="15.[AGC010E] Rearranging"></a>15.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/AT_agc010_e">[AGC010E] Rearranging</a></h1><p>��Ŀ���⣺</p>
-<p>��һ�� $n$ ������ɵ����� $a_i$��</p>
-<p>���ž�������������������У�Ȼ����ľ�����Խ�������β�����ÿ��ѡ���������ڵĻ��ʵ�������λ�á�</p>
-<p>���ž�ϣ���������е��ֵ�����С������ľ��ϣ���ֵ����������������С�</p>
+<p>难度：Hard+(*114514)，不会！</p>
+<p>先咕着，明天中午看题解。</p>
+<p>我超，终于看懂了，神仙题。</p>
+<p>$n^2$ 暴力很trivial。唯一的路径方式比较显然，就是 $1 \rightarrow x-1 \rightarrow y-1 \rightarrow x \rightarrow y \rightarrow n$，其中 $y-1 \rightarrow x$ 是一步到位，$1 \rightarrow x-1$ 和 $y \rightarrow n$ 是一步一步跳。</p>
+<p>所以我们可以枚举 $y$ 考虑有多少个 $x$ 满足条件。令 $f_{i,0/1}$ 表示考虑到一个位置 $i$，能否由当前枚举的 $(y-1,y)$ 走到 $(i-1,i)$ 或者 $(i,i-1)$，转移显然。</p>
+<p>考虑怎么优化。我们找到一个最靠做的 $p$ 满足 $p-1$ 和 $p$ 之间没有边，此时 $p$ 即为必经之路。我们可以将这 $n$ 个数断开来，左边和右边分别dp，然后容斥一下答案就行了。</p>
+<p>证明可达的话，如果左边的 $(a,a+1)$ 能到 $(p,p+1)$，$(p,p+1)$ 能到右边的 $b,b+1$，那么显然 $(a,a+1)$ 能到 $(b,b+1)$，反之 $(p+1,p)$ 同理。</p>
+<p>注意一些细节。以及注意当 $p=2$ 时不好定义 $f_{0,0/1}$，所以这才是要加上 $0$ 和 $n+1$ 两个虚点的理由。</p>
+<h1 id="15-AGC010E-Rearranging"><a href="#15-AGC010E-Rearranging" class="headerlink" title="15.[AGC010E] Rearranging"></a>15.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/AT_agc010_e">[AGC010E] Rearranging</a></h1><p>题目大意：</p>
+<p>有一个 $n$ 个数组成的序列 $a_i$。</p>
+<p>高桥君会把整个序列任意排列，然后青木君可以进行任意次操作，每次选择两个相邻的互质的数交换位置。</p>
+<p>高桥君希望最终序列的字典序尽量小，而青木君希望字典序尽量大。求最终序列。</p>
 <p>$n \le 2000$</p>
-<p>�Ѷȣ�Normal��difficulty 3887</p>
-<p>����ô������Ⱥ�AT���������Ҷ������˺ðɡ�</p>
-<p>Ŷ�����Ҳ���֤���������/qd</p>
-<p>��������˵�����ǿ��ǽ���ͼ��ģ�͡���� $a_i$ �� $a_j$ �����ʣ���ô��ô���� $a_i$ �� $a_j$ ֮������λ��Ҳ����ı䡣</p>
-<p>���ԣ���һ���˵Ĳ������൱�ڶ��������ͼ���򣬵ڶ����˵Ĳ�ŷ���൱���������DAG��һ�����������</p>
-<p>�����Ժ���Է��ֽ��ۣ�����ÿ����ͨ�飬���Ǵ���С��һ�������֣�ÿ��һ���� $x$����С����ö���������ھ� $y$���� $y$������ $x$ ָ�� $y$��</p>
-<p>Ȼ���ø�priority_queue����topsort�����ˡ�</p>
-<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/blog/George1123/solution-at2306">֤�����صġ�</a></p>
-<h1 id="16-AGC027E-ABBreviate"><a href="#16-AGC027E-ABBreviate" class="headerlink" title="16.[AGC027E] ABBreviate"></a>16.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/AT_agc027_e">[AGC027E] ABBreviate</a></h1><p>��Ŀ���⣺</p>
-<p>����һ��ֻ��Сд��ĸ $\mathtt{a}, \mathtt{b}$ ���ַ��� $s$��ÿ�������ִ���������ֲ�����</p>
+<p>难度：Normal，difficulty 3887</p>
+<p>有这么难吗？洛谷和AT都恶评？我独立切了好吧。</p>
+<p>哦等下我不会证明这个结论/qd</p>
+<p>反正就是说，我们考虑建立图论模型。如果 $a_i$ 和 $a_j$ 不互质，那么怎么交换 $a_i$ 和 $a_j$ 之间的相对位置也不会改变。</p>
+<p>所以，第一个人的操作就相当于对这个无向图定向，第二个人的擦欧总相当于求出这张DAG的一个最大拓扑序。</p>
+<p>手玩以后可以发现结论：对于每个连通块，我们从最小的一个数入手，每到一个点 $x$，从小到大枚举其所有邻居 $y$，搜 $y$，并把 $x$ 指向 $y$。</p>
+<p>然后用个priority_queue进行topsort就行了。</p>
+<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/blog/George1123/solution-at2306">证明：贺的。</a></p>
+<h1 id="16-AGC027E-ABBreviate"><a href="#16-AGC027E-ABBreviate" class="headerlink" title="16.[AGC027E] ABBreviate"></a>16.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/AT_agc027_e">[AGC027E] ABBreviate</a></h1><p>题目大意：</p>
+<p>给定一个只含小写字母 $\mathtt{a}, \mathtt{b}$ 的字符串 $s$，每次你可以执行以下两种操作：</p>
 <ol>
-<li>ѡȡ $s$ �������������ַ� $\mathtt{aa}$��������ɾȥ���滻��һ���ַ� $\mathtt{b}$��</li>
-<li>ѡȡ $s$ �������������ַ� $\mathtt{bb}$��������ɾȥ���滻��һ���ַ� $\mathtt{a}$��</li>
+<li>选取 $s$ 中连续的两个字符 $\mathtt{aa}$，把它们删去，替换成一个字符 $\mathtt{b}$。</li>
+<li>选取 $s$ 中连续的两个字符 $\mathtt{bb}$，把它们删去，替换成一个字符 $\mathtt{a}$。</li>
 </ol>
-<p>�������ִ�����ɴβ������ܹ��õ��ı��ʲ�ͬ���ַ����ж��ٸ����𰸶� $({10}^9 + 7)$ ȡģ��</p>
+<p>请你求出执行若干次操作后，能够得到的本质不同的字符串有多少个，答案对 $({10}^9 + 7)$ 取模。</p>
 <ul>
-<li>$1 \le |s| \le {10}^5$��</li>
+<li>$1 \le |s| \le {10}^5$。</li>
 </ul>
-<p>�Ѷȣ�Hard��difficulty *3634</p>
-<p>���ݴ��۹۲���Է��֣������ $a$ Ϊ $1$��$b$ Ϊ $2$����ôÿ�β���������� $s$ ���ܺ��ǲ���ġ�</p>
-<p>���ǿ���ʲô $t$ ���� $s$ �õ������� $t$ �е�ÿһ���ַ�������Ӧ�� $s$ �е�һ���ַ������ҽ��� $s$ �е�����ַ��ĺͺ� $t$ ������ַ���Ȩֵ��ģ $3$ ������ͬ�࣬�� $s$ ������ַ��������� $ababa\dots$ �Ľṹ��</p>
-<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/blog/PinkRabbit/solution-at4379">֤���ο�С���õ�blog</a></p>
-<p>Ȼ��Ϳ���dp�ˡ���¼����ǰ׺�ͣ���һ�� $r_{i,j}$ �����ʾ�����һ���� $i$ �ĺ�ģ $3$ Ϊ $j$ ��λ�á�</p>
+<p>难度：Hard，difficulty *3634</p>
+<p>根据大眼观察可以发现，如果令 $a$ 为 $1$，$b$ 为 $2$，那么每次操作过后这个 $s$ 的总和是不变的。</p>
+<p>我们考虑什么 $t$ 能由 $s$ 得到。对于 $t$ 中的每一个字符，都对应了 $s$ 中的一段字符，当且仅当 $s$ 中的这段字符的和和 $t$ 中这个字符的权值在模 $3$ 意义下同余，且 $s$ 中这段字符不是形如 $ababa\dots$ 的结构。</p>
+<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/blog/PinkRabbit/solution-at4379">证明参考小粉兔的blog</a></p>
+<p>然后就可以dp了。记录以下前缀和，和一个 $r_{i,j}$ 数组表示后面第一个到 $i$ 的和模 $3$ 为 $j$ 的位置。</p>
 
     </div>
 
@@ -432,7 +432,7 @@
 
     <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%EF%BF%BD%CA%BC%EF%BF%BD/" rel="tag"># �ʼ�</a>
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"># 笔记</a>
           </div>
 
         
