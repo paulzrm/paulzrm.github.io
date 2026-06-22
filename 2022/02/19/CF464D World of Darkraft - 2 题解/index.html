@@ -110,7 +110,7 @@
 
 
 <nav class="site-nav">
-  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-文章列表"><a href="/articles/" rel="section"><i class="fa fa-list fa-fw"></i>文章列表</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-题解"><a href="/categories/%E9%A2%98%E8%A7%A3/" rel="section"><i class="fa fa-code fa-fw"></i>题解</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
   </ul>
 </nav>
 
@@ -245,7 +245,7 @@
 <p>本文迁移自<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/article/z7qabciy">洛谷原文</a>。</p>
 </blockquote>
 <p>题目大意：</p>
-<p>一款游戏中有 $k$ 种装备，你一开始每种装备各有 $1$ 个，且每种装备的初始等级均为 $1$。游戏中可以靠打怪来获取新装备，总共有 $n$ 只怪兽，每打赢 $1$ 只怪兽后会随机获得一种装备 $a \in [1,k]$。假设原有的 $a$ 装备的等级为 $t$，那么新获得的装备的等级为 $[1,t+1]$，且你会将新获得的装备和原来的装备中等级较高的装备留下，等级较低的装备卖出，卖出可获得的金币为该装备的等级。 问打完这 $n$ 只怪兽后，获得的金币的期望。 </p>
+<p>一款游戏中有 $k$ 种装备，你一开始每种装备各有 $1$ 个，且每种装备的初始等级均为 $1$。游戏中可以靠打怪来获取新装备，总共有 $n$ 只怪兽，每打赢 $1$ 只怪兽后会随机获得一种装备 $a \in [1,k]$。假设原有的 $a$ 装备的等级为 $t$，那么新获得的装备的等级为 $[1,t+1]$，且你会将新获得的装备和原来的装备中等级较高的装备留下，等级较低的装备卖出，卖出可获得的金币为该装备的等级。 问打完这 $n$ 只怪兽后，获得的金币的期望。</p>
 <p>$1 \le n \le 10^5, 1 \le k \le 100$</p>
 <p>题解：</p>
 <p>期望 dp</p>
