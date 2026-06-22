@@ -14,8 +14,17 @@
   <main class="shell game-page">
     <section class="game-shell">
       <div class="game-header">
-        <div><div class="eyebrow">GAME 01</div><h1>Wordle</h1><p>六次机会，猜出一个五字母英文单词。</p></div>
-        <button class="button" id="new-word">换一个单词</button>
+        <div><div class="eyebrow">GAME 01</div><h1>Wordle</h1><p>选择 4–7 个字母，在有限次数内猜出英文单词。</p></div>
+        <div class="game-options">
+          <label for="word-length">单词长度</label>
+          <select id="word-length">
+            <option value="4">4</option>
+            <option value="5" selected>5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+          </select>
+          <button class="button" id="new-word">换一个单词</button>
+        </div>
       </div>
       <div class="status" id="wordle-status" aria-live="polite"></div>
       <div class="wordle-board" id="wordle-board" aria-label="Wordle 棋盘"></div>
@@ -23,6 +32,7 @@
       <p class="wordle-help">绿色：位置正确；黄色：字母存在但位置错误；灰色：答案中没有该字母。可直接使用电脑键盘。</p>
     </section>
   </main>
+  <script src="./words.js"></script>
   <script src="./wordle.js"></script>
 </body>
 </html>

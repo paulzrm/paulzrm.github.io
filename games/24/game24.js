@@ -1,9 +1,4 @@
 (() => {
-  const puzzles = [
-    [1, 3, 4, 6], [2, 3, 4, 6], [3, 3, 8, 8], [4, 4, 7, 7],
-    [1, 5, 5, 5], [2, 5, 7, 8], [3, 5, 7, 9], [4, 5, 6, 8],
-    [5, 5, 5, 9], [2, 6, 6, 9], [1, 6, 8, 9], [3, 4, 6, 10]
-  ];
   const pool = document.querySelector('#number-pool');
   const status = document.querySelector('#game-status');
   const historyElement = document.querySelector('#history');
@@ -15,8 +10,52 @@
   let held = null;
   let nextId = 1;
 
-  const format = value => Number.isInteger(value) ? String(value) : Number(value.toFixed(6)).toString();
+  const gcd = (a, b) => b ? gcd(b, a % b) : Math.abs(a);
+  function fraction(numerator, denominator = 1) {
+    if (denominator === 0) return null;
+    if (denominator < 0) {
+      numerator = -numerator;
+      denominator = -denominator;
+    }
+    const divisor = gcd(numerator, denominator);
+    return { n: numerator / divisor, d: denominator / divisor };
+  }
+  const equal = (a, b) => a.n === b.n && a.d === b.d;
+  const format = value => value.d === 1 ? String(value.n) : `${value.n}/${value.d}`;
   const expression = card => card.expression || format(card.value);
+
+  function calculate(left, right, operator) {
+    if (operator === '+') return fraction(left.n * right.d + right.n * left.d, left.d * right.d);
+    if (operator === '-') return fraction(left.n * right.d - right.n * left.d, left.d * right.d);
+    if (operator === '*') return fraction(left.n * right.n, left.d * right.d);
+    if (operator === '/') return right.n === 0 ? null : fraction(left.n * right.d, left.d * right.n);
+    return null;
+  }
+
+  function hasSolution(values) {
+    if (values.length === 1) return equal(values[0], fraction(24));
+    for (let i = 0; i < values.length; i++) {
+      for (let j = 0; j < values.length; j++) {
+        if (i === j) continue;
+        const rest = values.filter((_, index) => index !== i && index !== j);
+        for (const operator of ['+', '-', '*', '/']) {
+          if ((operator === '+' || operator === '*') && i > j) continue;
+          const result = calculate(values[i], values[j], operator);
+          if (result && hasSolution([...rest, result])) return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  function randomPuzzle() {
+    for (let attempts = 0; attempts < 500; attempts++) {
+      const numbers = Array.from({ length: 4 }, () => 1 + Math.floor(Math.random() * 10));
+      if (new Set(numbers).size === 1) continue;
+      if (hasSolution(numbers.map(number => fraction(number)))) return numbers;
+    }
+    return [1, 3, 4, 6];
+  }
 
   function makeCard(value, exp = null) {
     return { id: nextId++, value, expression: exp || format(value), used: false };
@@ -30,9 +69,14 @@
     renderSlots();
     historyElement.innerHTML = history.map(item => `<div>${item}</div>`).join('');
     const active = cards.filter(card => !card.used);
-    if (active.length === 1 && Math.abs(active[0].value - 24) < 1e-9) {
-      status.textContent = `完成：${active[0].expression} = 24`;
-      status.className = 'status victory';
+    if (active.length === 1) {
+      if (equal(active[0].value, fraction(24))) {
+        status.textContent = `完成：${active[0].expression} = 24`;
+        status.className = 'status victory';
+      } else {
+        status.textContent = `只剩 ${format(active[0].value)}，重新开始或换一道题再试。`;
+        status.className = 'status';
+      }
     }
   }
 
@@ -55,10 +99,10 @@
     renderSlots();
   }
 
-  function start(numbers = puzzles[Math.floor(Math.random() * puzzles.length)]) {
+  function start(numbers = randomPuzzle()) {
     original = [...numbers];
     nextId = 1;
-    cards = numbers.map(number => makeCard(number));
+    cards = numbers.map(number => makeCard(fraction(number)));
     history = [];
     clearSelection();
     status.textContent = '把两个数字拖入左右区域，再把运算符拖到中间。';
@@ -133,16 +177,10 @@
       status.textContent = '操作区还缺少数字或运算符。';
       return;
     }
-    let value;
-    if (operator === '+') value = left.value + right.value;
-    if (operator === '-') value = left.value - right.value;
-    if (operator === '*') value = left.value * right.value;
-    if (operator === '/') {
-      if (Math.abs(right.value) < 1e-12) {
-        status.textContent = '不能除以 0。';
-        return;
-      }
-      value = left.value / right.value;
+    const value = calculate(left.value, right.value, operator);
+    if (!value) {
+      status.textContent = '不能除以 0。';
+      return;
     }
     const symbol = operator === '*' ? '×' : operator === '/' ? '÷' : operator;
     const exp = `(${expression(left)} ${symbol} ${expression(right)})`;

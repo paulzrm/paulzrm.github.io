@@ -1,44 +1,38 @@
 (() => {
-  const answers = [
-    'ALERT', 'ALONE', 'ANGLE', 'APPLE', 'BEACH', 'BRAIN', 'BRAVE', 'BREAD',
-    'CHAIR', 'CHARM', 'CLOUD', 'CODEX', 'CRANE', 'DREAM', 'EARTH', 'FLAME',
-    'FOCUS', 'FRAME', 'GRACE', 'GRAPH', 'GREEN', 'HEART', 'HOUSE', 'LIGHT',
-    'MAGIC', 'MAPLE', 'MUSIC', 'OCEAN', 'PAINT', 'PLANT', 'POINT', 'PRIDE',
-    'QUEST', 'RIVER', 'ROBOT', 'SHARE', 'SHINE', 'SOLVE', 'SPACE', 'STONE',
-    'STORY', 'TABLE', 'TIGER', 'TRAIN', 'VALUE', 'WATER', 'WORLD', 'WRITE'
-  ];
-  const valid = new Set(answers.concat([
-    'ABOUT', 'ABOVE', 'ACTOR', 'ADORE', 'AFTER', 'AGAIN', 'AGENT', 'AGREE',
-    'BLACK', 'BLOCK', 'BOARD', 'CARRY', 'CLEAR', 'CLOSE', 'COUNT', 'DAILY',
-    'DANCE', 'DRIVE', 'ENJOY', 'FIELD', 'FINAL', 'FIRST', 'FRESH', 'FRUIT',
-    'GAMES', 'GREAT', 'HAPPY', 'IDEAL', 'LEARN', 'LEVEL', 'LUCKY', 'MAJOR',
-    'MATCH', 'MODEL', 'NIGHT', 'NORTH', 'NOVEL', 'OTHER', 'POWER', 'READY',
-    'RIGHT', 'ROUND', 'SCORE', 'SHORT', 'SMART', 'SOUND', 'START', 'STYLE',
-    'THINK', 'THREE', 'UNDER', 'VIDEO', 'VOICE', 'WHITE', 'WOMAN', 'YOUNG'
-  ]));
+  const dictionary = window.WORDLE_WORDS;
   const board = document.querySelector('#wordle-board');
   const keyboard = document.querySelector('#keyboard');
   const status = document.querySelector('#wordle-status');
+  const lengthSelect = document.querySelector('#word-length');
   const rows = ['QWERTYUIOP', 'ASDFGHJKL', 'ZXCVBNM'];
-  let answer, guesses, current, over;
+  let wordLength = 5;
+  let answer = '';
+  let guesses = [];
+  let current = '';
+  let over = false;
+
+  const maxGuesses = () => wordLength + 1;
 
   function chooseAnswer() {
-    answer = answers[Math.floor(Math.random() * answers.length)];
+    wordLength = Number(lengthSelect.value);
+    const candidates = dictionary.answers[wordLength];
+    answer = candidates[Math.floor(Math.random() * candidates.length)];
     guesses = [];
     current = '';
     over = false;
     status.textContent = '';
+    status.className = 'status';
     render();
   }
 
   function score(guess) {
-    const result = Array(5).fill('absent');
+    const result = Array(wordLength).fill('absent');
     const remaining = {};
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < wordLength; i++) {
       if (guess[i] === answer[i]) result[i] = 'correct';
       else remaining[answer[i]] = (remaining[answer[i]] || 0) + 1;
     }
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < wordLength; i++) {
       if (result[i] === 'correct') continue;
       if (remaining[guess[i]]) {
         result[i] = 'present';
@@ -60,12 +54,13 @@
 
   function render() {
     board.innerHTML = '';
-    for (let row = 0; row < 6; row++) {
+    for (let row = 0; row < maxGuesses(); row++) {
       const rowElement = document.createElement('div');
       rowElement.className = 'wordle-row';
+      rowElement.style.setProperty('--word-length', wordLength);
       const word = guesses[row] || (row === guesses.length ? current : '');
       const states = guesses[row] ? score(guesses[row]) : [];
-      for (let column = 0; column < 5; column++) {
+      for (let column = 0; column < wordLength; column++) {
         const tile = document.createElement('div');
         tile.className = `letter-tile${word[column] ? ' filled' : ''}${states[column] ? ` ${states[column]}` : ''}`;
         tile.textContent = word[column] || '';
@@ -83,13 +78,13 @@
   }
 
   function submit() {
-    if (current.length !== 5) return message('还需要输入五个字母。');
-    if (!valid.has(current)) return message('词库中没有这个单词，换一个试试。');
+    if (current.length !== wordLength) return message(`还需要输入 ${wordLength} 个字母。`);
+    if (!dictionary.valid[wordLength].includes(current)) return message('词库中没有这个单词，换一个试试。');
     guesses.push(current);
     if (current === answer) {
       over = true;
       message(`答对了！答案是 ${answer}。`, true);
-    } else if (guesses.length === 6) {
+    } else if (guesses.length === maxGuesses()) {
       over = true;
       message(`本轮结束，答案是 ${answer}。`);
     } else {
@@ -111,7 +106,7 @@
       current = current.slice(0, -1);
       status.textContent = '';
       render();
-    } else if (/^[A-Z]$/.test(key) && current.length < 5) {
+    } else if (/^[A-Z]$/.test(key) && current.length < wordLength) {
       current += key;
       status.textContent = '';
       render();
@@ -128,5 +123,6 @@
     input(key);
   });
   document.querySelector('#new-word').addEventListener('click', chooseAnswer);
+  lengthSelect.addEventListener('change', chooseAnswer);
   chooseAnswer();
 })();

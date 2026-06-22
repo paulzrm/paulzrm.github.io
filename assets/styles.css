@@ -253,6 +253,19 @@ section { padding: 30px 0 58px; }
   text-align: center;
 }
 .projects-empty b { display: block; color: var(--ink); font-size: 22px; }
+.project-list { display: grid; gap: 14px; }
+.project-entry {
+  display: grid;
+  grid-template-columns: minmax(150px, .4fr) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 18px;
+  padding: 20px 22px;
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+}
+.project-entry b { font-size: 18px; }
+.project-entry span { color: var(--muted); }
 
 .article-layout { padding: 52px 0 80px; }
 .article-card { padding: clamp(25px, 6vw, 64px); }
@@ -289,7 +302,7 @@ section { padding: 30px 0 58px; }
 .award-list { display: grid; gap: 11px; }
 .award {
   display: grid;
-  grid-template-columns: 64px minmax(0, 1fr) 92px;
+  grid-template-columns: 100px minmax(0, 1fr) 92px;
   align-items: center;
   gap: 15px;
   padding: 16px 18px;
@@ -326,7 +339,16 @@ section { padding: 30px 0 58px; }
   width: min(350px, 100%);
   margin: 22px auto;
 }
-.wordle-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 7px; }
+.wordle-row { display: grid; grid-template-columns: repeat(var(--word-length, 5), 1fr); gap: 7px; }
+.game-options { display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 10px; }
+.game-options label { color: var(--muted); font-size: 14px; }
+.game-options select {
+  padding: 10px 13px;
+  color: var(--ink);
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
 .letter-tile {
   display: grid;
   place-items: center;
@@ -455,7 +477,9 @@ section { padding: 30px 0 58px; }
   .search-panel { padding: 17px; }
   .search-result { grid-template-columns: auto minmax(0, 1fr); }
   .search-result > :last-child { display: none; }
-  .award { grid-template-columns: 54px minmax(0, 1fr) 72px; gap: 10px; padding: 14px 12px; }
+  .award { grid-template-columns: 88px minmax(0, 1fr) 72px; gap: 10px; padding: 14px 12px; }
+  .award-year { font-size: 12px; }
+  .project-entry { grid-template-columns: 1fr; gap: 7px; }
   .game-header { flex-direction: column; }
   .key { min-width: 28px; height: 46px; padding: 0 7px; font-size: 11px; }
   .key.wide { min-width: 52px; }
