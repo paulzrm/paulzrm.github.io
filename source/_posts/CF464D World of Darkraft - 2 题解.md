@@ -1,9 +1,16 @@
 ---
-title: CF464D World of Darkraft - 2 题解
-date: '2022-02-19T00:00:00+08:00'
+title: "CF464D World of Darkraft - 2 题解"
+date: 2022-02-19 19:47:29
+categories:
+  - 题解
 tags:
-- 题解
+  - 题解
+  - 洛谷
+luogu_article: "z7qabciy"
+source: "https://www.luogu.com.cn/article/z7qabciy"
 ---
+
+> 本文迁移自[洛谷原文](https://www.luogu.com.cn/article/z7qabciy)。
 
 题目大意：
 
@@ -11,11 +18,9 @@ tags:
 
 $1 \le n \le 10^5, 1 \le k \le 100$
 
-<!-- more -->
-
 题解：
 
-期望 $dp$
+期望 dp
 
 观察到这 $k$ 种装备都是“一样”的，所以我们可以随便选择一种装备来考虑它在打这 $n$ 个怪兽时是如何变化的，然后对答案乘上 $k$ 就可以了。
 
@@ -27,17 +32,17 @@ $1 \le n \le 10^5, 1 \le k \le 100$
 
 考虑转移。
 
-- 正好拿到了这种装备，而且等级为 $j+1$
++ 正好拿到了这种装备，而且等级为 $j+1$
 
 卖掉了原有的等级为 $j$ 的装备，可能性为 $\frac{1}{k\times(j+1)}$，收益为 $j$
 
-- 拿到了这种装备，但等级不为 $j+1$
++ 拿到了这种装备，但等级不为 $j+1$
 
 那就相当于拿到了又卖了
 
 可能性为 $\frac{j}{(j+1)\times k}$，收益为 $\frac{\sum\limits_{f=1}^{j}f}{j}=\frac{j\times(j+1)}{2\times j}=\frac{j+1}{2}$
 
-- 拿到了其它装备
++ 拿到了其它装备
 
 可能性为 $\frac{k-1}{k}$，对其它装备有影响，而对这个装备的收益为 $0$
 
@@ -54,7 +59,6 @@ $1 \le n \le 10^5, 1 \le k \le 100$
 所以，我们可以假定一个最大等级 $l=1000$，当达到最大等级后就不再升级，这样也是在误差范围内的。
 
 Code:
-
 ```cpp
 using namespace std;
 int n;

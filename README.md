@@ -7,7 +7,7 @@
 - 主题：NexT 8.27.0（Muse）
 - 源码分支：`hexo-source`
 - GitHub Pages 发布分支：`main`
-- 已恢复文章：23 篇
+- 当前文章：63 篇（其中 52 篇从洛谷推荐题解迁移）
 
 ## 首次安装
 
@@ -50,6 +50,14 @@ npm run deploy
 
 `npm run deploy` 会把 `public/` 中的生成结果推送到远端 `main` 分支。执行推送时需要登录 GitHub。
 
+## 洛谷题解同步
+
+```powershell
+python tools/import_luogu_solutions.py
+```
+
+导入工具会读取已登记的洛谷文章，统一题解标题，并保留原文链接。
+
 ## 重要目录
 
 - `source/_posts/`：Markdown 文章原稿
@@ -57,5 +65,7 @@ npm run deploy
 - `_config.yml`：Hexo 站点配置
 - `_config.next.yml`：NexT 主题配置
 - `scaffolds/`：新文章模板
+- `tools/`：洛谷导入和 PDF 手册生成工具
+- `Hexo博客使用手册.pdf`：完整使用手册
 
 旧静态网站的完整备份位于 `backup/legacy-static-site-8ac87fc.zip`，该目录已被 Git 忽略。

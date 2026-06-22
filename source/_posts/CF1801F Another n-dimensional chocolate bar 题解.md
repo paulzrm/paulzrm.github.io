@@ -1,17 +1,22 @@
 ---
-title: CF1801F Another n-dimensional chocolate bar 题解
-date: '2022-03-10T00:00:00+08:00'
+title: "CF1801F Another n-dimensional chocolate bar 题解"
+date: 2023-03-10 20:13:32
+categories:
+  - 题解
 tags:
-- 题解
+  - 题解
+  - 洛谷
+luogu_article: "qu7zpgzi"
+source: "https://www.luogu.com.cn/article/qu7zpgzi"
 ---
+
+> 本文迁移自[洛谷原文](https://www.luogu.com.cn/article/qu7zpgzi)。
 
 考虑到最多只会有一个 $b_i \ge \sqrt{k}$。
 
-- 没有任何一个 $b_i \geq \sqrt{k}$。
++ 没有任何一个 $b_i \geq \sqrt{k}$。
 
 那么我们可以考虑类似 meet-in-the-middle 的做法。
-
-<!-- more -->
 
 令 $f_{i,j}$ 表示考虑了前 $i$ 个数，此时乘积为 $j$，$\lfloor\frac{a_1}{b_1}\rfloor\lfloor\frac{a_2}{b_2}\rfloor\dots\lfloor\frac{a_i}{b_i}\rfloor\frac{1}{a_1a_2\dots a_i}$ 的最大值，$g_{i,j}$ 的定义类似，不过是从 $n$ 开始倒着的。dp 的时候枚举 $i$，枚举 $j$，再枚举满足 $j\times k \le$ 第二维大小的所有 $k$ 即可。
 
@@ -25,9 +30,9 @@ tags:
 
 此时第二维就需要开到一个 $\min(p,q)\times b_x$ 的大小。因为 $p \times q \times b_x$ 是 $O(k)$ 级别的，所以 $\min(p,q)\le \sqrt{\frac{k}{b_x}}$，故第二维只需要开到 $\sqrt{\frac{k}{b_x}}\times b_x=\sqrt{k\times b_x}$ 即可。因为 $b_x\le \sqrt{k}$，所以 $\sqrt{\frac{k}{b_x}}\times b_x \le k^{\frac{3}{4}}$，得证。
 
-综上，该部分复杂度为 $O(n\times k^{\frac{3}{4}}\times\log(k^{\frac{3}{4}}))$。
+综上，该部分复杂度为 $O(n\times k^{\frac{3}{4}}\times\log(k))$。
 
-- 存在恰好一个 $b_i \geq \sqrt{k}$。
++ 存在恰好一个 $b_i \geq \sqrt{k}$。
 
 那么我们可以直接枚举这个 $i$，发现 $i$ 左侧和右侧 $b_j$ 的乘积均 $\le \sqrt{k}$。令 $h_j$ 表示现暂时不选 $b_i$，其他所有位置都选之后乘积为 $j$ 时的最大值。这个可以利用 $f_{i-1}$ 和 $g_{i+1}$ 快速处理。
 
@@ -35,7 +40,7 @@ tags:
 
 该部分复杂度为 $O(n\sqrt{k})$。
 
-综上，总复杂度为 $O(n\times k^{\frac{3}{4}}\times\log(k^{\frac{3}{4}}))$，可以~~不知道为什么但只跑了1.5s~~通过此题。
+综上，总复杂度为 $O(n\times k^{\frac{3}{4}}\times\log(k))$，可以~~不知道为什么但只跑了 1.5s~~ 通过此题。
 
 ```cpp
 #include<bits/stdc++.h>

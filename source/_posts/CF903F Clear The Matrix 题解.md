@@ -1,9 +1,16 @@
 ---
-title: CF1903F Clear The Matrix 题解
-date: '2022-02-19T00:00:00+08:00'
+title: "CF903F Clear The Matrix 题解"
+date: 2022-02-19 17:24:03
+categories:
+  - 题解
 tags:
-- 题解
+  - 题解
+  - 洛谷
+luogu_article: "sbtaedbl"
+source: "https://www.luogu.com.cn/article/sbtaedbl"
 ---
+
+> 本文迁移自[洛谷原文](https://www.luogu.com.cn/article/sbtaedbl)。
 
 题目大意：
 
@@ -12,8 +19,6 @@ tags:
 题解：
 
 萌萌题。
-
-<!-- more -->
 
 看到只有 $4$ 行就想到可以状压 $dp$。
 

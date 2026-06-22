@@ -1,11 +1,18 @@
 ---
-title: CF1555F Good Graph 题解
-date: '2022-02-13T00:00:00+08:00'
+title: "CF1555F Good Graph 题解"
+date: 2021-07-31 21:45:51
+categories:
+  - 题解
 tags:
-- 题解
+  - 题解
+  - 洛谷
+luogu_article: "4hlqbebw"
+source: "https://www.luogu.com.cn/article/4hlqbebw"
 ---
 
-晚上有点累就没打Edu，感觉亏大本了
+> 本文迁移自[洛谷原文](https://www.luogu.com.cn/article/4hlqbebw)。
+
+晚上有点累就没打 Edu，感觉亏大本了。
 
 ---
 
@@ -13,17 +20,17 @@ tags:
 
 合法的图中不存在两个有着公共边的环
 
-<!-- more -->
-
 证明：
 
 设环 $a$ 中不与环 $b$ 公用的部分的异或值为 $x$，环 $b$ 中不与环 $a$ 公用的部分的异或值为 $y$，环 $a$ 与 $b$ 公共部分的异或值为 $z$
 
 那么，有:
 
-- $x \oplus z = 1$
-- $y \oplus z = 1$
-- $x \oplus y = 1$
++ $x \oplus z = 1$
+
++ $y \oplus z = 1$
+
++ $x \oplus y = 1$
 
 (对应了环 $a$，环 $b$ 和新构成的环 $c$，其中 $\oplus$ 表示异或)
 
@@ -47,7 +54,7 @@ tags:
 
 至于题目要求是对边权进行加，我们可以把边权转换到点上：点 $i$ 的权值为连接 $i$ 与 $i$ 父亲的边的权值。
 
-然后就可以码码码了
+然后就可以码码码了。
 
 我想练练手，所以代码里判断异或和就单独写了个倍增，没有再在树剖里搞，导致巨大多常数，1497ms
 

@@ -1,9 +1,16 @@
 ---
-title: CF1545D AquaMoon and Wrong Coordinate 题解
-date: '2022-03-22T00:00:00+08:00'
+title: "CF1545D AquaMoon and Wrong Coordinate 题解"
+date: 2021-07-12 12:01:54
+categories:
+  - 题解
 tags:
-- 题解
+  - 题解
+  - 洛谷
+luogu_article: "ow5o19vi"
+source: "https://www.luogu.com.cn/article/ow5o19vi"
 ---
+
+> 本文迁移自[洛谷原文](https://www.luogu.com.cn/article/ow5o19vi)。
 
 赛时看到“误差修复”就一直往随机化方面想了
 

@@ -1,21 +1,26 @@
 ---
-title: CF1634D Finding Zero 题解
-date: '2022-02-13T00:00:00+08:00'
+title: "CF1634D Finding Zero 题解"
+date: 2022-02-11 13:57:55
+categories:
+  - 题解
 tags:
-- 题解
+  - 题解
+  - 洛谷
+luogu_article: "2etsnoml"
+source: "https://www.luogu.com.cn/article/2etsnoml"
 ---
+
+> 本文迁移自[洛谷原文](https://www.luogu.com.cn/article/2etsnoml)。
 
 **Warning：可能比官方题解复杂的多，思维难度估计要上紫，但推出来了能有很好的训练效果**
 
-~~然后你们知道为啥 div2 rank1 的 YuezhengLing 最后才过D了吧~~
-
-<!-- more -->
+$\color{white}\text{~~然后你们知道为啥 div2 rank1 的 YuezhengLing 最后才过D了吧~~}$
 
 ---
 
 令 $x$ 为隐藏的数组。
 
-这个方法的大体思路就是，通过两次全数组的询问，得到两个数的位置（$0$ 和最大的数），然后上传这两个位置。
+这个方法的大体思路就是，通过两次全数组的询问，得到两个数的位置（$0$  和最大的数），然后上传这两个位置。
 
 我们考虑这么询问:
 
@@ -29,7 +34,7 @@ tags:
 
 我赛时的注释：
 
-```plaintext
+```
 //now if both x[1] and x[2] isn't 0 this is okay
 //if x[2] is 0? what will happen?
 //a[i] will be x[i]. How to ensure it?
@@ -38,21 +43,22 @@ tags:
 //if x[2] is 0: this returns a[pos1 or pos2] then we can return [2,pos1 or pos2]
 //otherwise we can return [pos1,pos2]
 //oops,there still can be x[1] is max and pos1 is zero
+
 ```
 
 我们要分类讨论（如何判断是哪一类待会儿讲）：
 
-- $0$ 和最大的数都不在 $1$ 和 $2$ 两个位置上
++  $0$ 和最大的数都不在 $1$ 和 $2$ 两个位置上
 
 显然，对于这种情况，我们求得的 $pos_1$ 和 $pos_2$ 就可以做为答案上传。因为，如果 $x_1$ 和 $x_2$ 都不是 $0$ 或最大值的话，第一遍求得的 $pos_1$ 肯定是 $0$ 或 最大值。（如果想不明白的话，画个数轴看看就知道了）
 
 然后第二遍询问，因为询问的东西带上了 $pos_1$，故得到的 $pos_2$ 一定是另外一个极值。（因为这样的话 $max-min$ 才会最大）
 
-- $b_i$ 的值全相同
++ $b_i$ 的值全相同
 
 我们的 $pos_1$ 肯定是一个极值（排除 $x_1,x_2$ 均为极值的情况），然后就可以肯定 $(1,pos_1)$ 为两个极值，上传。
 
-- $a_i$ 的值全相同
++ $a_i$ 的值全相同
 
 有可能 $x_1$ 是极值，所以我们需要用一次询问来特判这种情况。
 
@@ -60,13 +66,13 @@ tags:
 
 如果说，$tmp$ 大于任意 $a_i$ 的话，我们可以直接返回 $(1,2)$，感性理解容易。
 
-- Otherwise
++ Otherwise
 
 通过不断的尝试，我发现此时询问 $(2,pos_1,pos_2)$ 可以有很大的用处：
 
 我们令这次询问的返回值为 $rt$。
 
-- （$rt < a_{pos_1}$ 且 $rt \le a_{pos_2}$）或（$rt \le a_{pos_2}$ 且 $rt < a_{pos_1}$）
++ （$rt < a_{pos_1}$ 且 $rt \le a_{pos_2}$）或（$rt \le a_{pos_2}$ 且  $rt < a_{pos_1}$）
 
 注意，一个是严格小于，另一个是小于等于。
 
@@ -84,15 +90,16 @@ $a_{pos_2}$ 查询的是 $(1,2,pos_2)$，$rt$ 查询的是 $(2,pos_1,pos_2)$
 
 但上述讨论都是基于 $x_2$ 不为 $0$ 的情况。保险起见，我们上传 $(1,2)$ 做为可能的答案。
 
-- $rt=a_{pos_1}$
++ $rt=a_{pos_1}$
 
 通过比较 $a_pos1$ 和 $rt$ 查询的内容可以发现，在这种情况下，$x_2$ 和 $x_{pos_1}$ 中必然有一个是 $0$。应为此时的 $pos_2$ 也应该是向着极值发展的，然而改变后并没有使 $rt$ 和 $a_{pos_1}$ 变得不同，故 $x_2$ 和 $x_{pos_1}$ 为两个极值，上传 $(2,pos_1)$
 
-- $rt=a_{pos_2}$
++ $rt=a_{pos_2}$
 
 同理，上传 $(2,pos_2)$
 
-- Otherwise
++ Otherwise
+
 
 平凡情况，上传 $(pos_1,pos_2)$
 

@@ -1,9 +1,16 @@
 ---
-title: CF1383E Strange Operation 题解
-date: '2022-02-19T00:00:00+08:00'
+title: "CF1383E Strange Operation 题解"
+date: 2022-02-17 22:08:36
+categories:
+  - 题解
 tags:
-- 题解
+  - 题解
+  - 洛谷
+luogu_article: "8yjuq5j1"
+source: "https://www.luogu.com.cn/article/8yjuq5j1"
 ---
+
+> 本文迁移自[洛谷原文](https://www.luogu.com.cn/article/8yjuq5j1)。
 
 题目大意：
 
@@ -12,8 +19,6 @@ tags:
 每一次操作，可以选择一个位置（不为最后一位），然后删除它和它后面一位，在原来的位置上填上他们的或。每次操作会使 $n-1$。
 
 问你执行最多 $n-1$ 次操作后能得到多少不同的串。
-
-<!-- more -->
 
 题解：
 

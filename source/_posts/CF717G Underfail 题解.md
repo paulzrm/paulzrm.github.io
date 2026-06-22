@@ -1,17 +1,22 @@
 ---
-title: CF717G Underfail 题解
-date: '2022-02-13T00:00:00+08:00'
+title: "CF717G Underfail 题解"
+date: 2022-02-04 21:15:30
+categories:
+  - 题解
 tags:
-- 题解
+  - 题解
+  - 洛谷
+luogu_article: "4opn09he"
+source: "https://www.luogu.com.cn/article/4opn09he"
 ---
+
+> 本文迁移自[洛谷原文](https://www.luogu.com.cn/article/4opn09he)。
 
 此题我们可以考虑费用流
 
 我们考虑建出一张 $n+2$ 个点的图（本文字符串下标从 $1$ 开始）
 
-<!-- more -->
-
-首先对于 $s$ 的一个子串 $s_{l\dots r}$，如果它可以和一个权值为 $w$ 的串匹配上，那么就建立一条从 $l$ 个点出发，连向第 $r+1$ 个点，流量为1，费用为 $w$ 的边；
+首先对于 $s$ 的一个子串 $s_{l\dots r}$，如果它可以和一个权值为 $w$  的串匹配上，那么就建立一条从 $l$ 个点出发，连向第 $r+1$ 个点，流量为1，费用为 $w$ 的边；
 
 然后，我们对于所有的 $1 \le i \le n+1$，建立一条从 $i$ 号点 出发，连向 $i+1$ 号点，流量为 $x$ （如题目所给，一个字符能被覆盖的最大次数），费用为0。
 
@@ -25,7 +30,8 @@ tags:
 
 我们考虑一下，把那 $n+1$ 个点平铺在一个坐标轴上，这张流量网络大概长成什么样：（样例，边的方向都是从前往后，绿色为费用，蓝色为流量）
 
-![](/images/posts/d33db4f3c1945999.png)
+![](https://cdn.luogu.com.cn/upload/image_hosting/e8ircc2w.png)
+
 
 然后我们再尝试着把这张图拍扁。
 
