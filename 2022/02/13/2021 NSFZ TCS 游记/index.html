@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 8.1.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"paulzrm.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"language":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="我只是去摸鱼的。  总的来说机试要比去年难的多，大概CSP2019Day1的难度。  事实上这篇游记的目的大概就是介绍流程。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2021 NSFZ TCS 游记">
+<meta property="og:url" content="https://paulzrm.github.io/2022/02/13/2021%20NSFZ%20TCS%20%E6%B8%B8%E8%AE%B0/index.html">
+<meta property="og:site_name" content="paulzrm 的小窝">
+<meta property="og:description" content="我只是去摸鱼的。  总的来说机试要比去年难的多，大概CSP2019Day1的难度。  事实上这篇游记的目的大概就是介绍流程。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-02-12T16:00:00.000Z">
+<meta property="article:modified_time" content="2022-02-12T16:00:00.000Z">
+<meta property="article:author" content="paulzrm">
+<meta property="article:tag" content="游记">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://paulzrm.github.io/2022/02/13/2021%20NSFZ%20TCS%20%E6%B8%B8%E8%AE%B0/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://paulzrm.github.io/2022/02/13/2021%20NSFZ%20TCS%20%E6%B8%B8%E8%AE%B0/","path":"2022/02/13/2021 NSFZ TCS 游记/","title":"2021 NSFZ TCS 游记"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>2021 NSFZ TCS 游记 | paulzrm 的小窝</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js" defer></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">paulzrm 的小窝</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Day-0"><span class="nav-number">1.</span> <span class="nav-text">Day 0</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Day-1"><span class="nav-number">2.</span> <span class="nav-text">Day 1</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="paulzrm"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">paulzrm</p>
+  <div class="site-description" itemprop="description">一个存一些奇奇怪怪的东西的地方</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/paulzrm" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;paulzrm" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://paulzrm.github.io/2022/02/13/2021%20NSFZ%20TCS%20%E6%B8%B8%E8%AE%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="paulzrm">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="paulzrm 的小窝">
+      <meta itemprop="description" content="一个存一些奇奇怪怪的东西的地方">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="2021 NSFZ TCS 游记 | paulzrm 的小窝">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          2021 NSFZ TCS 游记
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-02-13 00:00:00" itemprop="dateCreated datePublished" datetime="2022-02-13T00:00:00+08:00">2022-02-13</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><p>我只是去摸鱼的。</p>
+<hr>
+<p>总的来说机试要比去年难的多，大概CSP2019Day1的难度。</p>
+<hr>
+<p>事实上这篇游记的目的大概就是介绍流程。</p>
+<span id="more"></span>
+
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/yzhang-rp-inf/p/13079868.html">放上去年yzh神仙的游记做个对比</a> orz</p>
+<hr>
+<h3 id="Day-0"><a href="#Day-0" class="headerlink" title="Day 0"></a>Day 0</h3><p>放学前居然还考了场数学。学校估计是知道我们要考特长生就特意把题目放难了点。有那味了。考完发现最后一题出了点小毛病，但答案居然还是对的。只能希望明天的考试不要这样就行。</p>
+<hr>
+<h3 id="Day-1"><a href="#Day-1" class="headerlink" title="Day 1"></a>Day 1</h3><p>上午8:55 到达nsfz。<br>事实上这是迟了点的，最好8:50到，我是最后一个到的。</p>
+<p>但一到那就有神仙开始假我&#x2F;fad</p>
+<p>走之前突然听到楼上高一的学长xwy也在假我&#x2F;fad</p>
+<p>先去考的综合卷。9:30 考到 11:00。</p>
+<p>今年是近几年来第一次放上物理题（但这道题只是套了一件物理的外套，实质上只是求个二次分式最值）。</p>
+<p>大约9:55写完数学，物理先空着。然后大约10:15写完语文除了作文外的题目。</p>
+<p>10:32写完英语（包括作文）。这次的作文，怎么也想不到居然是校内书上的作文 <del>（初二的学弟们听好了，是九下要把机器人退货那一篇）</del></p>
+<p>10:47写完语文作文。10:58写完最后一道<del>物理</del>数学题。</p>
+<p>11:00收卷。折腾了15min才出考场。</p>
+<p>去附近的KFC吃了个饭，背了会儿板子就回来了。（事实证明这还有点用）</p>
+<p>在学生剧场等待，碰到的全是工程物理的。</p>
+<p>工程物理的人数：软件工程的人数≈30:1</p>
+<p>12:50出发，先去抽签。本来还以为是每个人的题目都不一样 <del>&#x2F;yun</del> 但原来只是抽机位号 <del>抽到的是01号 2333</del></p>
+<p>试机的时候测了一下电脑，1s 1e8估计都有点危，慌</p>
+<p>发题了。</p>
+<hr>
+<p>T1：</p>
+<p>有一张 n 点 m 边的无向图。有 q 组询问。每一组询问有4个参数 s,t,l,r 表示假如起点为 s，终点为t，不同的长度在[l,r] 范围内的路径条数是多少。$1\le n,q,\le 40, 1\le m \le 10^3,1 \le l,r\le 10^9$，保证$r-l \le 200$</p>
+<hr>
+<p>T2：</p>
+<p>有一棵树。每个节点上都有一个人。现在这些人要走到1号节点上，每次从儿子走到父亲用时1。所有人同时走，不能等待。</p>
+<p>你可以使用k次技能，每次技能可以将一个节点上的人瞬移到它的父节点上，用时0。<strong>技能是瞬时的，没有后效性</strong></p>
+<p>给定这棵树和k，问你所有人都到达1号节点的最少时间是多少。</p>
+<p>$1 \le k \le n \le 5\times10^5$</p>
+<hr>
+<p>T3：</p>
+<p>一张有向图，边权为1或2。问你从1号节点到n号节点的最短路。</p>
+<p>$n \le 3\times10^5, m\le 5\times10^5$</p>
+<hr>
+<p>口胡思路：</p>
+<p>T1看来是个矩阵快速幂。（但问了一圈居然好像只有我写了矩阵快速幂&#x2F;yiw）</p>
+<p>T2是个O(n)的dp不多说，主要是要猜个结论。</p>
+<p>T3有点迷。边权干嘛是1,2?写了个裸的dijkstra本地跑了1.1s。卡了会儿常跑了1.01s。有点慌，最后加了个快读就0.6s了。</p>
+<hr>
+<p>upd:</p>
+<p>T1估计是挂了40</p>
+<p>忘了小粉兔的QQ名（慢即快）！！！！</p>
+<p>不用对 l…r 都做矩阵快速幂</p>
+<p>求出l 然后暴力跑到r就行了！！！</p>
+<p>总分第一，还行</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B8%B8%E8%AE%B0/" rel="tag"># 游记</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/02/13/CF1634D%20Finding%20Zero%20%E9%A2%98%E8%A7%A3/" rel="prev" title="CF1634D Finding Zero 题解">
+                  <i class="fa fa-angle-left"></i> CF1634D Finding Zero 题解
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/02/16/%E8%AF%84%E8%AE%BA%E9%A1%BB%E7%9F%A5/" rel="next" title="评论须知">
+                  评论须知 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2022 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">paulzrm</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

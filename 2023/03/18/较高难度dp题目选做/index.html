@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 8.1.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"paulzrm.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"language":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="1.CF559E Gerald and Path题目大意： 有 $n$ 条线段，每条线段给定其中一端的位置及长度，求所有线段覆盖的最大长度。 $n \le 100$ 难度：Normal，*3000">
+<meta property="og:type" content="article">
+<meta property="og:title" content="较高难度dp题目选做">
+<meta property="og:url" content="https://paulzrm.github.io/2023/03/18/%E8%BE%83%E9%AB%98%E9%9A%BE%E5%BA%A6dp%E9%A2%98%E7%9B%AE%E9%80%89%E5%81%9A/index.html">
+<meta property="og:site_name" content="paulzrm 的小窝">
+<meta property="og:description" content="1.CF559E Gerald and Path题目大意： 有 $n$ 条线段，每条线段给定其中一端的位置及长度，求所有线段覆盖的最大长度。 $n \le 100$ 难度：Normal，*3000">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://paulzrm.github.io/images/posts/511c7318df433c6c.png">
+<meta property="article:published_time" content="2023-03-17T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-03-17T16:00:00.000Z">
+<meta property="article:author" content="paulzrm">
+<meta property="article:tag" content="笔记">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://paulzrm.github.io/images/posts/511c7318df433c6c.png">
+
+
+<link rel="canonical" href="https://paulzrm.github.io/2023/03/18/%E8%BE%83%E9%AB%98%E9%9A%BE%E5%BA%A6dp%E9%A2%98%E7%9B%AE%E9%80%89%E5%81%9A/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://paulzrm.github.io/2023/03/18/%E8%BE%83%E9%AB%98%E9%9A%BE%E5%BA%A6dp%E9%A2%98%E7%9B%AE%E9%80%89%E5%81%9A/","path":"2023/03/18/较高难度dp题目选做/","title":"较高难度dp题目选做"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>较高难度dp题目选做 | paulzrm 的小窝</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js" defer></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">paulzrm 的小窝</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-CF559E-Gerald-and-Path"><span class="nav-number">1.</span> <span class="nav-text">1.CF559E Gerald and Path</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-CF1305G-Kuroni-and-Antihype"><span class="nav-number">2.</span> <span class="nav-text">2.CF1305G Kuroni and Antihype</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-CF1188D-Make-Equal"><span class="nav-number">3.</span> <span class="nav-text">3.CF1188D Make Equal</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-CF739E-Gosha-is-hunting"><span class="nav-number">4.</span> <span class="nav-text">4.CF739E Gosha is hunting</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-CF1463F-Max-Correct-Set"><span class="nav-number">5.</span> <span class="nav-text">5.CF1463F Max Correct Set</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#6-CF1616H-Keep-XOR-Low"><span class="nav-number">6.</span> <span class="nav-text">6.CF1616H Keep XOR Low</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#7-AGC024F-Simple-Subsequence-Problem"><span class="nav-number">7.</span> <span class="nav-text">7.[AGC024F] Simple Subsequence Problem</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#8-AGC016F-Games-on-DAG"><span class="nav-number">8.</span> <span class="nav-text">8.[AGC016F] Games on DAG</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#9-CF1149D-Abandoning-Roads"><span class="nav-number">9.</span> <span class="nav-text">9.CF1149D Abandoning Roads</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#10-APC001F-XOR-Tree"><span class="nav-number">10.</span> <span class="nav-text">10.APC001F XOR Tree</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#11-CF232E-Quick-Tortoise"><span class="nav-number">11.</span> <span class="nav-text">11.CF232E Quick Tortoise</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#12-CF1707E-Replace"><span class="nav-number">12.</span> <span class="nav-text">12.CF1707E Replace</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#13-CF1710D-Recover-the-Tree"><span class="nav-number">13.</span> <span class="nav-text">13.CF1710D Recover the Tree</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#14-CF1616G-Just-Add-an-Edge"><span class="nav-number">14.</span> <span class="nav-text">14.CF1616G Just Add an Edge</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#15-AGC010E-Rearranging"><span class="nav-number">15.</span> <span class="nav-text">15.[AGC010E] Rearranging</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#16-AGC027E-ABBreviate"><span class="nav-number">16.</span> <span class="nav-text">16.[AGC027E] ABBreviate</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="paulzrm"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">paulzrm</p>
+  <div class="site-description" itemprop="description">一个存一些奇奇怪怪的东西的地方</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/paulzrm" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;paulzrm" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://paulzrm.github.io/2023/03/18/%E8%BE%83%E9%AB%98%E9%9A%BE%E5%BA%A6dp%E9%A2%98%E7%9B%AE%E9%80%89%E5%81%9A/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="paulzrm">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="paulzrm 的小窝">
+      <meta itemprop="description" content="一个存一些奇奇怪怪的东西的地方">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="较高难度dp题目选做 | paulzrm 的小窝">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          较高难度dp题目选做
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2023-03-18 00:00:00" itemprop="dateCreated datePublished" datetime="2023-03-18T00:00:00+08:00">2023-03-18</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><h1 id="1-CF559E-Gerald-and-Path"><a href="#1-CF559E-Gerald-and-Path" class="headerlink" title="1.CF559E Gerald and Path"></a>1.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF559E">CF559E Gerald and Path</a></h1><p>题目大意：</p>
+<p>有 $n$ 条线段，每条线段给定其中一端的位置及长度，求所有线段覆盖的最大长度。</p>
+<p>$n \le 100$</p>
+<p>难度：Normal，*3000</p>
+<span id="more"></span>
+
+<p>大概就是要想着先对一端排序，然后每次钦定当前线段的方向然后去dp。</p>
+<p>设计一个 $dp_{i,j}$ 表示前 $i$ 条线段，最右端覆盖到位置 $j$ 时覆盖的最长长度。</p>
+<p>转移的时候如果当前向右放就比较好处理，因为再往右没有被覆盖过的了，全是新的贡献。设当前线段固定的端点的位置是 $p$，则 $dp_{i,j}&#x3D;\max{dp_{i-1,p}+dist(p,j)},j\in[p,r]$。</p>
+<p>但是向左放的时候可能会出问题，因为他可能会覆盖到之间没有被覆盖过的部分。（前面的都太短了，而这个特别的长）</p>
+<p>借个图：<img src="/images/posts/511c7318df433c6c.png"></p>
+<p>所以为了避免这种情况，我们可以枚举一个 $k \in [1,i-1]$，强制钦定 $\in[k,i-1]$ 的线段都往右放。</p>
+<p>令 $l$ 表示当前这条线段往左放后左端点的位置，$R$ 表示 $[k,i-1]$ 中所有线段的右端点的最大值，则有 $dp_{i,j}&#x3D;\max{dp_{k-1,l}+dist(l,R)}$，正确性可以被感性理解。</p>
+<h1 id="2-CF1305G-Kuroni-and-Antihype"><a href="#2-CF1305G-Kuroni-and-Antihype" class="headerlink" title="2.CF1305G Kuroni and Antihype"></a>2.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF1305G">CF1305G Kuroni and Antihype</a></h1><p>剧透别看后面的白字 $\color{white}\text{<del>逛洛谷看到有人在要MST的牛逼题就想到了这个</del>}$</p>
+<p>题目大意：</p>
+<p>现在有 $n$ 个人，并且给出他们的年龄。两个人是朋友，当且仅当两个人年龄的按位与结果为 $0$。</p>
+<p>现在，有一个传销组织，每个人有两种操作：</p>
+<p>1、主动加入传销组织，这样的话，传销组织不会给你钱；</p>
+<p>2、邀请自己的一个朋友加入传销组织，这样的话，传销组织会奖励你数值等于你的年龄的钱。（当然，执行该操作的人必须已经进入传销组织了）</p>
+<p>每个人只可以进入传销组织一次。</p>
+<p>现在，请你输出，如果 $n$ 个人通力合作，传销组织支付给这 $n$ 个人的钱数之和最大是多少。</p>
+<p>难度：Normal+，*3500</p>
+<p>妙！难点就一句话，上面的白字。</p>
+<p>每个点只能加进这个组织一次，就像一棵树每个节点最多一个父节点一样，难度就在于怎么去构造这个MST。</p>
+<p>设 $a_{n+1}&#x3D;0$，且初始这个人已经加入了组织。如果将每个点在 $2$ 过程中选择的点与它之间连一条边，会得到一棵树。此时将 $i$ 和 $j$ 之间的边权设为 $a_i+a_j$，那么答案就是最大的边权减去总点权，就是最大生成树。</p>
+<p>由于只有两个点与起来为 $0$ 才会有边，所以加法相当于是或。</p>
+<p>这就可以推出一个能过的 $O(3^{18}\alpha(n))$ 的做法了。从大到小枚举当前考虑到的边权 $x$ （kruskal基操），然后枚举 $x$ 的一个子集 $i$，将 $i$ 和 $x \oplus i$ 连起来。</p>
+<p>此题还有 $O(18\times2^{18} \log n)$ 的做法，留给读者自行思考。（用哪个啥B开头的MST算法）</p>
+<h1 id="3-CF1188D-Make-Equal"><a href="#3-CF1188D-Make-Equal" class="headerlink" title="3.CF1188D Make Equal"></a>3.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF1188D">CF1188D Make Equal</a></h1><p>题目大意：</p>
+<p>给出 $ n $ 个数字 $ a_1 , a_2 , \ldots , a_n $ ，每次操作可以给其中一个数加上 $ 2 $ 的非负整数次幂。求最少的操作次数，使得这 $ n $ 个数相等。</p>
+<p>$1 \le n \le 10^5$</p>
+<p>难度：Hard-，*3100</p>
+<p>我不会做，降智。</p>
+<p>一个显然的（对我来说并不显然）的转化是要变为求 $\sum{x+a_n-a_i}$ 的类型。（让 $a$ 按照从小到大排序）</p>
+<p>下面让 $a_i$ 变为 $a_n-a_i$。（我怎么想不到啊）</p>
+<p>从小到大决策当前这个 $x$ 的第 $k$ 位，有 $3$ 个相关的量：</p>
+<ul>
+<li>$x$ 这一位是不是 $1$</li>
+<li>$a$ 中有多少个数这一位是 $1$ （接下来会产生进位）</li>
+<li>前面 $k-1$ 为的进位对这一位产生的贡献</li>
+</ul>
+<p>前两个好处理，就是第三个不好处理。</p>
+<p>如果 bitmask 枚举前面那些数，那么复杂度就爆炸了（$2^n$），显然过不去。</p>
+<p>又是一个对我来说不显然的结论，就是对于最低的 $k-1$ 位来说，对第 $k$ 位产生进位的一定是那些 $a$ 中对 $2^{k-1}$ 取模后从大到小排序的一个前缀。证明显然。</p>
+<p>令 $dp_{i,j}$ 表示考虑了最低的 $i$ 位，上一位有 $j$ 个进位时的答案。</p>
+<p>可以发现我们不关心这个数到底是多少，只关心 $1$ 的数量和进位的数量</p>
+<p>令 $cnt$ 为 $a$ 中这一位数中 $1$ 的总数，$tot$ 为前 $j$ 个数这一位 $1$ 的总数。</p>
+<ul>
+<li>上次进位，这一位是 $1$，有 $tot$ 个。</li>
+<li>上次进位，这一位是 $0$，有 $j-tot$ 个。</li>
+<li>上次未进位，这一位是 $1$，$cnt-tot$ 个。</li>
+<li>上次未进位，这一位是 $0$，$n-j-(cnt-tot)$ 个。</li>
+</ul>
+<p>这一位取 $1$，则 $1,2,3$ 进位，$1,4$ 这一位是 $1$。</p>
+<p>这一位取 $0$，则 $1$ 进位，$2,3$ 这一位是1。</p>
+<p>没了。有就是这玩意和基数排序很像，这么写可以减小常数。</p>
+<h1 id="4-CF739E-Gosha-is-hunting"><a href="#4-CF739E-Gosha-is-hunting" class="headerlink" title="4.CF739E Gosha is hunting"></a>4.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF739E">CF739E Gosha is hunting</a></h1><p>题目大意：</p>
+<p>你要抓神奇宝贝！<br>现在一共有 $n$ 只神奇宝贝。<br>你有 $a$ 个『宝贝球』和 $b$ 个『超级球』。<br>『宝贝球』抓到第 $i$ 只神奇宝贝的概率是 $p_i$，『超级球』抓到的概率则是 $u_i$。<br>不能往同一只神奇宝贝上使用超过一个同种的『球』，但是可以往同一只上既使用『宝贝球』又使用『超级球』（都抓到算一个）。<br>请合理分配每个球抓谁，使得你抓到神奇宝贝的总个数期望最大，并输出这个值。</p>
+<p>$n \leq 2000$。</p>
+<p>我可以出到 $n \le 10^5$。</p>
+<p>难度：Easy—，*3000</p>
+<p>就这也配*3000？？？</p>
+<p>裸的wqs二分，套一次可以做到 $n^2\log n$ 过原题，套两次就可以做到 $n\log ^2n$ 过 $1e5$。</p>
+<p>那就简单写一下什么是wqs二分。</p>
+<p>原题没有代价只有次数限制，现在我们想办法取消这个次数限制。</p>
+<p>如果直接取消那么肯定是全部用掉最优，所以我们对每次用就加上一个代价。</p>
+<p>然后二分这个代价，直到贪心（或者dp）后得到使用的次数和限制相同且答案最大。</p>
+<h1 id="5-CF1463F-Max-Correct-Set"><a href="#5-CF1463F-Max-Correct-Set" class="headerlink" title="5.CF1463F Max Correct Set"></a>5.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF1463F">CF1463F Max Correct Set</a></h1><p>题目大意：</p>
+<p>规定一组正整数 $S$。当且仅当满足以下条件时该组正整数成立：</p>
+<ul>
+<li>$S \subseteq {1,2,…,n}$</li>
+<li>如果 $a \in s$ 并且 $b \in s$，那么 $|a - b| \not &#x3D;{x}$ 并且 $|a - b| \not &#x3D;{y}$</li>
+</ul>
+<p>对于给定的数值 $n,x,y$，你需要找到成立数组的最大长度。</p>
+<p>$1 \le n \le 10^9, 1 \le x,y \le 22$</p>
+<p>难度：Normal+，*3100</p>
+<p>神奇的思维题，和我之前做过的一道MO题好像？？？</p>
+<p>结论是可以有个长度为 $x+y$ 的循环节。钦定 $x \ge y$，然后令 $dp_{i,j}$ 表示考虑到了第 $i$ 位，最后 $x$ 位的 mask 位 $j$ 时的答案。（这样我们只用存 $x$ 位而不是 $x+y$ 位了，是个trick）</p>
+<p>证明挺难的，可以参考 <a target="_blank" rel="noopener" href="https://www.luogu.com.cn/blog/119261/solution-cf1463f">7KByte大爷的</a> 或者 <a target="_blank" rel="noopener" href="https://www.luogu.com.cn/blog/feecle6418/solution-cf1463f">feecle6418大爷的</a> 。</p>
+<h1 id="6-CF1616H-Keep-XOR-Low"><a href="#6-CF1616H-Keep-XOR-Low" class="headerlink" title="6.CF1616H Keep XOR Low"></a>6.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF1616H">CF1616H Keep XOR Low</a></h1><p>题目大意：</p>
+<p>给你 $n$ 个整数 $a_1,a_2,\cdots,a_n$ 和一个整数 $x$。</p>
+<p>你需要求出 ${1,2,\cdots,n}$ 的一个子集 $S$，满足 $S$ 中任意两个不同的元素 $i,j$，满足 $a_i<del>{\rm xor}</del>a_j\le x$。</p>
+<p>求选取 $S$ 的方案数，对 $998244353$ 取模的结果。</p>
+<p>$1\le n\le 150000,0\le a_i,x&lt; 2^{30}$</p>
+<p>难度：Normal+（可能我不熟悉这类题），*3000</p>
+<p>一眼异或，鉴定为 01-trie。设计 $dp_{u}$ 表示考虑到以 $u$ 为根的子树中，两两异或都 $\le x$ 的方案数。</p>
+<p>这么dp会寄掉，应为当这一位是 $1$ 的时候它的两个子树间互相还有限制。</p>
+<p>怎么办？大胆点，令 $dp_{u1,u2}$ 表示在 $u1$ 和 $u2$ 中选若干个数，两两异或都 $\le x$ 的方案数。</p>
+<p>看起来这个玩意很扯淡，但是是可行的。（记当前考虑到第 $d$ 层）</p>
+<p>若 $x$ 的第 $d$ 位为 $1$，那么 $u1$ 的左儿子和 $u2$ 的左儿子的子树内的数异或起来一定不会大于 $x$ 了，$u1$ 的右儿子和 $u2$ 的右儿子同理。所以现在我们只需要考虑 $u1$ 的左儿子和 $u2$ 的右儿子，以及 $u2$ 的左儿子和 $u1$ 的右儿子之间的限制，直接把两个 $dp$ 值乘一下就行了。</p>
+<p>若 $x$ 的第 $d$ 位为 $0$，那么 $u1$ 的左儿子和 $u2$ 的右儿子不能同时选数，$u1$ 的右儿子和 $u2$ 的左儿子同理。所以把这两个dp值加一下，再加上单独在某个儿子里选数的方案就可以了。</p>
+<h1 id="7-AGC024F-Simple-Subsequence-Problem"><a href="#7-AGC024F-Simple-Subsequence-Problem" class="headerlink" title="7.[AGC024F] Simple Subsequence Problem"></a>7.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/AT3963">[AGC024F] Simple Subsequence Problem</a></h1><p>题目大意：</p>
+<p>有一个 <code>01</code> 串集合 $S$，其中每个串的长度都不超过 $N$，你要求出至少是 $S$ 中 $K$ 个串的子序列的最长串，如果有多解，输出字典序最小的那组解。</p>
+<p>由于 $S$ 可能很大，因此我们是这样描述 $S$ 的：</p>
+<ul>
+<li>你将得到 $(N+1)$ 个 <code>01</code> 串，第 $i$ 个串的长度为 $2^{i-1}$。</li>
+<li>第 $i$ 个字符串的第 $j$ 个字符，代表数字 $(j-1)$ 的、长度为 $(i-1)$ 的二进制表示是否出现在 $S$ 中。</li>
+</ul>
+<p>$N \leq 20$。</p>
+<p>难度：Hard（？），difficulty 3544</p>
+<p>这是我的子序列自动机入门题。</p>
+<p>题目相当于对于每个串，对其所有子序列的值+1，问你最后所有可能的01串的值的最大值是多少。</p>
+<p>我们不可以枚举每个串的所有子序列，所以这之后就要用到一个叫做子序列自动机的玩意。</p>
+<p>考虑如何贪心的去确定一个01串是不是另外一个01串的子序列。假设当前匹配串的开头是 $p$，那么我们要在模式串中找到开头第一个 $p$ 去和他对应。</p>
+<p>所以我们就可以模拟这个过程，令 $A$ 为当前已经匹配好的串，$B$ 为模式串剩余的部分，然后可以发现每种状态有两种出路（把模式串的开头匹配掉和从头开始第一个和开头不同的字符匹配掉）。</p>
+<p>由于 $|A+B|\le 20$，所以我们就可以记录 $|A+B|$ 和 $A+B$，然后dp的时候枚举 $A$ 的长度，就可以方便的转移了（这样做可以直接省掉两个开头互相匹配的情况，十分方便）</p>
+<p><a target="_blank" rel="noopener" href="https://atcoder.jp/contests/agc024/submissions/35449177">参考代码</a></p>
+<h1 id="8-AGC016F-Games-on-DAG"><a href="#8-AGC016F-Games-on-DAG" class="headerlink" title="8.[AGC016F] Games on DAG"></a>8.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/AT2390">[AGC016F] Games on DAG</a></h1><p>题目大意：</p>
+<p>给定一个$n$个点$m$条边的DAG，对于每条边$(u,v)$都满足$u&lt;v$，$1,2$号点各一个石头，每次可以沿DAG上的边移动一颗石头，不能移动则输，求所有$2^{m}$个边的子集中，只保留这个子集先手必胜的方案个数</p>
+<p>难度：Normal（？）,difficulty 3754</p>
+<p>我的博弈论入门题</p>
+<p>这题本质上就是要求SG(1) 和 SG(2) 不相同，然后可以转化为 $2^m$ 减去相同的情况。</p>
+<p>SG(i) 的定义：它的所有邻居的SG()的mex</p>
+<p>所以我们就可以每次枚举新的SG()值为0的点，要求满足他们之间不能互相连边，之前枚举的所有不是0的点至少要向这些点中的一个点连边，这些点向不是0的点的连边没有要求</p>
+<p>然后就是1号点和2号点要么同时在不是0的点，要么同时是新的0。</p>
+<p>这是个子集枚举，复杂度 $O(n\times3^n)$</p>
+<h1 id="9-CF1149D-Abandoning-Roads"><a href="#9-CF1149D-Abandoning-Roads" class="headerlink" title="9.CF1149D Abandoning Roads"></a>9.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF1149D">CF1149D Abandoning Roads</a></h1><p>题目大意：</p>
+<p>一张 $n$ 个点 $m$ 条边的无向图，只有 $a,b$ 两种边权（$a&lt;b$），对于每个 $i$，求图中所有的最小生成树中，从 $1$ 到 $i$ 距离的最小值。</p>
+<p>$n \le 70$</p>
+<p>难度：Hard++++，*3000</p>
+<p>溜去看题解了。</p>
+<p>你告诉我这只有3000？？？</p>
+<p>这复杂度是人能想出来的？？？？</p>
+<p>由于是在所有<strong>最小生成树</strong>中，所以有这么一个性质：一条连续的全为 $a$ 的路径肯定会出现在至少一棵MST中。</p>
+<p>就有了这么一个结论：如果把原图中所有重边删掉，会剩下一些联通块。一条路径可能在最小生成树上，当且仅当它没有离开一个联通块后再回到原来那个联通块中。</p>
+<p>然后就是令 $dp_{u,S}$ 表示考虑已经走了状压后集合为 $S$ 的连通块，当前走到 $U$ 时最短路径的长度。转移用最短路转移。</p>
+<p>这个方法时 $O(2^n\log(2^n(n+m)))$ 的，铁定过不去。</p>
+<p>但是现在还有这么一个结论：我们不用考虑所有大小 $\le 3$ 的连通块，因为这种连通块我们就算不把它压进去，它光是靠dijkstra就可以把它排除不会再进来了。（出去再回来至少要 $2\times b$，而内部光靠 $a$ 就可以做到 $2\times a$，更优）</p>
+<p>结束了。妙死了啊！时间复杂度 $O(2^{\frac{n}{4}}\log(2^{\frac{n}{4}}<br>+m))$，如果用01bfs代替dijksta可以砍掉这个 $\log$。</p>
+<h1 id="10-APC001F-XOR-Tree"><a href="#10-APC001F-XOR-Tree" class="headerlink" title="10.APC001F XOR Tree"></a>10.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/AT3913">APC001F XOR Tree</a></h1><p>题目大意：</p>
+<p>给你一棵有$N$个节点的树，节点编号从$0$到$N-1$，<br>树边编号从$1$到$N-1$。第$i$条边连接节点$x_i$和$y_i$，其权值为$a_i$。</p>
+<p>你可以对树执行任意次操作，每次操作选取一条链和一个非负整数$x$，将链上的边的权值与$x$异或成为该边的新权值。</p>
+<p>问最少需要多少次操作，使得所有边的权值都为0。</p>
+<p>$2\leq N \leq 10^5 , 0\leq a_i \leq 15$</p>
+<p>难度：easy-，difficulty 2865</p>
+<p>就这也能黑题？洛谷恶评严重。</p>
+<p>一个套路是将比边权下放到点权，令每个点的点权为它周围一圈边的权值的异或和。</p>
+<p>现在如果对一条 $u$ 到 $v$ 的路径做异或，那么就相当于对点 $u$ 和 $v$ 的权值做异或，最终目标就是让所有点的权值都为 $0$。</p>
+<p>最后就是玩消消乐，消完以后每种权值的数量不会超过 $1$，子集dp一下就行了。</p>
+<h1 id="11-CF232E-Quick-Tortoise"><a href="#11-CF232E-Quick-Tortoise" class="headerlink" title="11.CF232E Quick Tortoise"></a>11.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF232E">CF232E Quick Tortoise</a></h1><p>题目大意：</p>
+<p>在一个 $n \times m(1 \le n,m\le 500)$ 的网格上，有一些格子是障碍。给定 $q(1\le q \le6\times10^5)$ 个询问，每次询问是否能只通过向下走和向右走从格子 $(x_1,y_1)$ 走到格子 $(x_2,y_2)$。</p>
+<p>难度：Normal，*3000</p>
+<p>有点套路的题，考虑分治。</p>
+<p>如果当前这些询问中满足存在一行使得所有询问可能的路径都必须经过这一行的一个点，那么这些询问可以在 $O(\frac{n^3}{\omega}+\frac{qn}{\omega})$ 的时间内完成。我们可以对这个网格上的每一个点维护一个bitset，第 $i$ 为表示能不能到那一行（所有询问必须经过的那一行）的第 $i$ 个点，转移的话随便或一下就可以了。</p>
+<p>然后就可以分治了。起点和终点都在 $mid$ 行上面、都在 $mid$ 下面、剩下的都是必须经过 $mid$ 行的。</p>
+<h1 id="12-CF1707E-Replace"><a href="#12-CF1707E-Replace" class="headerlink" title="12.CF1707E Replace"></a>12.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF1707E">CF1707E Replace</a></h1><p>题目大意：</p>
+<p>给定一个长为 $n$ 的序列 $a_1,\ldots,a_n$，其中对于任意的 $i$ 满足 $1 \leq a_i \leq n$。</p>
+<p>定义一个二元组函数如下：</p>
+<p>你需要回答 $q$ 次询问，每次给定 $(l_i,r_i)$，问其最少经过多少次 $f$ 的调用（即 $(l,r) \rightarrow f((l,r))$）使得 $(l_i,r_i)$ 变成 $(1,n)$，若无解请输出 <code>-1</code>。</p>
+<p>难度：Hard++，清新思维题，*3500</p>
+<p>这题中有区间max&#x2F;min，就很自然的想到了ST表和倍增。</p>
+<p>如果裸的倍增会很烦，因为有 $n^2$ 种区间，寄。</p>
+<p>考虑能不能用类似ST表的方法来处理，就是用两个较大的、有交集的区间并称一个大区间，就能将 $n^2$ 缩小为 $n\log n$ 了。</p>
+<p>注意到 $f(l,r)&#x3D;f(l,l+1)\cup f(l+1,l+2)\cup\dots f(r-1,r)$，然后可以证明 $f^k(l,r)&#x3D;f^k(l,l+1)\cup f^k(l+1,l+2)\cup\dots f^k(r-1,r)$，这就可以用倍增维护了。</p>
+<h1 id="13-CF1710D-Recover-the-Tree"><a href="#13-CF1710D-Recover-the-Tree" class="headerlink" title="13.CF1710D Recover the Tree"></a>13.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF1710D">CF1710D Recover the Tree</a></h1><p>题目大意：</p>
+<p>你需要根据题目给出的信息构造出一棵树，满足如下条件：</p>
+<ol>
+<li>树的节点个数为 $n$。</li>
+<li>对于每个区间 $[l,r]$ 给出是或不是连通块。</li>
+</ol>
+<p>数据保证有解，$n\le 2000$。</p>
+<p>难度：Normal++，*3400</p>
+<p>好题。</p>
+<p>我们从小到大考虑所有可能的区间（类似区间dp的套路）。</p>
+<p>假设我们当前考虑到有一个联通的区间 $[l,r]$，其中他们分别属于 $[x_1,x_2-1],[x_2,x_3-1]\dots [x_{k-1},x_k-1]$，其中 $l \geq x_1, r\le x_k-1$。可以发现 $k$ 为 $[l,r]$ 中所有点属于的不同的连通块个数。如果 $k&#x3D;3$ 的时候可以发现无解，$k&#x3D;2$ 的时候可以直接连接 $(l,r)$，如果 $k&gt;3$ 的时候可以这么连接：$(l,x_{k-1}-1), (x_i,r)(i &lt; k-1)$。这样就可以保证 $l$ 和 $r$ 前面一个连通块之间的所有连通块不能构成一个大的连通块，而 $l$ 到 $r$ 就可以了。</p>
+<h1 id="14-CF1616G-Just-Add-an-Edge"><a href="#14-CF1616G-Just-Add-an-Edge" class="headerlink" title="14.CF1616G Just Add an Edge"></a>14.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF1616G">CF1616G Just Add an Edge</a></h1><p>这场的H也在这篇blog中，是#6，但应该没有这个G难&#x2F;hsh</p>
+<p>题目大意：</p>
+<p>给定一个 DAG，边一定从编号小的点连向编号大的点，求有多少对 $(x,y)$ 使得 $x&gt;y$ 且添加 $(x,y)$ 这条边后的图存在哈密顿路径。</p>
+<p>$n \le 150000$</p>
+<p>难度：Hard+(*114514)，不会！</p>
+<p>先咕着，明天中午看题解。</p>
+<p>我超，终于看懂了，神仙题。</p>
+<p>$n^2$ 暴力很trivial。唯一的路径方式比较显然，就是 $1 \rightarrow x-1 \rightarrow y-1 \rightarrow x \rightarrow y \rightarrow n$，其中 $y-1 \rightarrow x$ 是一步到位，$1 \rightarrow x-1$ 和 $y \rightarrow n$ 是一步一步跳。</p>
+<p>所以我们可以枚举 $y$ 考虑有多少个 $x$ 满足条件。令 $f_{i,0&#x2F;1}$ 表示考虑到一个位置 $i$，能否由当前枚举的 $(y-1,y)$ 走到 $(i-1,i)$ 或者 $(i,i-1)$，转移显然。</p>
+<p>考虑怎么优化。我们找到一个最靠做的 $p$ 满足 $p-1$ 和 $p$ 之间没有边，此时 $p$ 即为必经之路。我们可以将这 $n$ 个数断开来，左边和右边分别dp，然后容斥一下答案就行了。</p>
+<p>证明可达的话，如果左边的 $(a,a+1)$ 能到 $(p,p+1)$，$(p,p+1)$ 能到右边的 $b,b+1$，那么显然 $(a,a+1)$ 能到 $(b,b+1)$，反之 $(p+1,p)$ 同理。</p>
+<p>注意一些细节。以及注意当 $p&#x3D;2$ 时不好定义 $f_{0,0&#x2F;1}$，所以这才是要加上 $0$ 和 $n+1$ 两个虚点的理由。</p>
+<h1 id="15-AGC010E-Rearranging"><a href="#15-AGC010E-Rearranging" class="headerlink" title="15.[AGC010E] Rearranging"></a>15.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/AT_agc010_e">[AGC010E] Rearranging</a></h1><p>题目大意：</p>
+<p>有一个 $n$ 个数组成的序列 $a_i$。</p>
+<p>高桥君会把整个序列任意排列，然后青木君可以进行任意次操作，每次选择两个相邻的互质的数交换位置。</p>
+<p>高桥君希望最终序列的字典序尽量小，而青木君希望字典序尽量大。求最终序列。</p>
+<p>$n \le 2000$</p>
+<p>难度：Normal，difficulty 3887</p>
+<p>有这么难吗？洛谷和AT都恶评？我独立切了好吧。</p>
+<p>哦等下我不会证明这个结论&#x2F;qd</p>
+<p>反正就是说，我们考虑建立图论模型。如果 $a_i$ 和 $a_j$ 不互质，那么怎么交换 $a_i$ 和 $a_j$ 之间的相对位置也不会改变。</p>
+<p>所以，第一个人的操作就相当于对这个无向图定向，第二个人的擦欧总相当于求出这张DAG的一个最大拓扑序。</p>
+<p>手玩以后可以发现结论：对于每个连通块，我们从最小的一个数入手，每到一个点 $x$，从小到大枚举其所有邻居 $y$，搜 $y$，并把 $x$ 指向 $y$。</p>
+<p>然后用个priority_queue进行topsort就行了。</p>
+<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/blog/George1123/solution-at2306">证明：贺的。</a></p>
+<h1 id="16-AGC027E-ABBreviate"><a href="#16-AGC027E-ABBreviate" class="headerlink" title="16.[AGC027E] ABBreviate"></a>16.<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/AT_agc027_e">[AGC027E] ABBreviate</a></h1><p>题目大意：</p>
+<p>给定一个只含小写字母 $\mathtt{a}, \mathtt{b}$ 的字符串 $s$，每次你可以执行以下两种操作：</p>
+<ol>
+<li>选取 $s$ 中连续的两个字符 $\mathtt{aa}$，把它们删去，替换成一个字符 $\mathtt{b}$。</li>
+<li>选取 $s$ 中连续的两个字符 $\mathtt{bb}$，把它们删去，替换成一个字符 $\mathtt{a}$。</li>
+</ol>
+<p>请你求出执行若干次操作后，能够得到的本质不同的字符串有多少个，答案对 $({10}^9 + 7)$ 取模。</p>
+<ul>
+<li>$1 \le |s| \le {10}^5$。</li>
+</ul>
+<p>难度：Hard，difficulty *3634</p>
+<p>根据大眼观察可以发现，如果令 $a$ 为 $1$，$b$ 为 $2$，那么每次操作过后这个 $s$ 的总和是不变的。</p>
+<p>我们考虑什么 $t$ 能由 $s$ 得到。对于 $t$ 中的每一个字符，都对应了 $s$ 中的一段字符，当且仅当 $s$ 中的这段字符的和和 $t$ 中这个字符的权值在模 $3$ 意义下同余，且 $s$ 中这段字符不是形如 $ababa\dots$ 的结构。</p>
+<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/blog/PinkRabbit/solution-at4379">证明参考小粉兔的blog</a></p>
+<p>然后就可以dp了。记录以下前缀和，和一个 $r_{i,j}$ 数组表示后面第一个到 $i$ 的和模 $3$ 为 $j$ 的位置。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"># 笔记</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/03/18/%E8%BF%9C%E5%8F%A4ARC-D%E9%A2%98%E9%80%89%E5%81%9A/" rel="prev" title="远古ARC-D题选做">
+                  <i class="fa fa-angle-left"></i> 远古ARC-D题选做
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/03/18/%E6%9A%B4%E5%8A%9B%E7%BE%8E%E5%AD%A6%E2%80%94%E2%80%94%E6%B5%85%E8%B0%88%E6%A0%B9%E5%8F%B7%E5%88%86%E6%B2%BB/" rel="next" title="暴力美学——浅谈根号分治">
+                  暴力美学——浅谈根号分治 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2022 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">paulzrm</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>
