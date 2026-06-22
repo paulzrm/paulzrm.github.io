@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 8.1.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"paulzrm.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"language":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="本文迁移自洛谷原文。  CF372C Watching Fireworks is Fun 我们可以换种思考方式来解决这个问题。 显然 $b_i$ 是一个很无关紧要的东西，我们可以把它们先全部累加到 $ans$ 里。然后题目就变成了要让 $\sum -|a_i-x|$ 最大，所以就可以看为要使得 $\sum |a_i-x|$ 最小。 令 $f(x)$ 表示考虑到某个时间点，此时你的坐标为 $x$">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CF372C Watching Fireworks is Fun 题解">
+<meta property="og:url" content="https://paulzrm.github.io/2022/11/07/CF372C%20Watching%20Fireworks%20is%20Fun%20%E9%A2%98%E8%A7%A3/index.html">
+<meta property="og:site_name" content="paulzrm 的小窝">
+<meta property="og:description" content="本文迁移自洛谷原文。  CF372C Watching Fireworks is Fun 我们可以换种思考方式来解决这个问题。 显然 $b_i$ 是一个很无关紧要的东西，我们可以把它们先全部累加到 $ans$ 里。然后题目就变成了要让 $\sum -|a_i-x|$ 最大，所以就可以看为要使得 $\sum |a_i-x|$ 最小。 令 $f(x)$ 表示考虑到某个时间点，此时你的坐标为 $x$">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-11-07T14:23:04.000Z">
+<meta property="article:modified_time" content="2022-11-07T14:23:04.000Z">
+<meta property="article:author" content="paulzrm">
+<meta property="article:tag" content="洛谷">
+<meta property="article:tag" content="题解">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://paulzrm.github.io/2022/11/07/CF372C%20Watching%20Fireworks%20is%20Fun%20%E9%A2%98%E8%A7%A3/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://paulzrm.github.io/2022/11/07/CF372C%20Watching%20Fireworks%20is%20Fun%20%E9%A2%98%E8%A7%A3/","path":"2022/11/07/CF372C Watching Fireworks is Fun 题解/","title":"CF372C Watching Fireworks is Fun 题解"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>CF372C Watching Fireworks is Fun 题解 | paulzrm 的小窝</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js" defer></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">paulzrm 的小窝</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="paulzrm"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">paulzrm</p>
+  <div class="site-description" itemprop="description">一个存一些奇奇怪怪的东西的地方</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/paulzrm" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;paulzrm" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://paulzrm.github.io/2022/11/07/CF372C%20Watching%20Fireworks%20is%20Fun%20%E9%A2%98%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="paulzrm">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="paulzrm 的小窝">
+      <meta itemprop="description" content="一个存一些奇奇怪怪的东西的地方">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="CF372C Watching Fireworks is Fun 题解 | paulzrm 的小窝">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CF372C Watching Fireworks is Fun 题解
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-11-07 22:23:04" itemprop="dateCreated datePublished" datetime="2022-11-07T22:23:04+08:00">2022-11-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%A2%98%E8%A7%A3/" itemprop="url" rel="index"><span itemprop="name">题解</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><blockquote>
+<p>本文迁移自<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/article/xap3la6s">洛谷原文</a>。</p>
+</blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/CF372C">CF372C Watching Fireworks is Fun</a></p>
+<p>我们可以换种思考方式来解决这个问题。</p>
+<p>显然 $b_i$ 是一个很无关紧要的东西，我们可以把它们先全部累加到 $ans$ 里。然后题目就变成了要让 $\sum -|a_i-x|$ 最大，所以就可以看为要使得 $\sum |a_i-x|$ 最小。</p>
+<p>令 $f(x)$ 表示考虑到某个时间点，此时你的坐标为 $x$ 的最小的 $\sum |a_i-x|$。</p>
+<p>假设我们已经考虑了前 $i$ 场烟花，此时我们要考虑加入第 $i+1$ 场烟花带来的影响。</p>
+<p>令 $\Delta t&#x3D;t_{i+1}-t_i, s&#x3D;\Delta t\times d$，则我们就相当于执行 $f(x)&#x3D;\min(f(x-d)\dots f(x+d))$。</p>
+<p>然后每燃放一场烟花，我们就相当于对 $f(x)$ 加上一个 $|a_i-x|$ 的函数。</p>
+<p>综上，可以发现，这个 $f(x)$ 是一个折线函数，且段数是 $O(m)$ 的，计算相邻时间和加入新烟花秀都可以在 $O(m)$ 的时间内解决，故我们得到了一个时间复杂度为 $O(m^2)$ 的做法。</p>
+<p>考虑继续优化。</p>
+<p>发现这个 $f(x)$ 的每条折线的斜率从左往右可以看作依次为 $-i,-i+1,\dots,0,\dots i-1,i$。</p>
+<p>这启发我们可以维护两个优先队列一样的东西，一个维护左半段斜率小于 $0$ 的部分的转折点的 $x$ 坐标，另一个维护右半段的东西。</p>
+<p>我们考虑在这种维护方式下，等待时间和加入烟花秀各有什么影响。</p>
+<p>由于这个 $f(x)$ 是先降后增的，所以这个等待一段时间就变得非常好处理。就是让 $L$ 中的所有元素减去 $s$，$R$ 中的所有元素加上 $s$，中间多出一段斜率为 $0$ 的段。</p>
+<p>当然，我们没有必要真的去减一遍，我们只需要维护两个全局减去&#x2F;加上的 $sL$ 和 $sR$，每次就让 $sL-s,sR+s$，然后再 $L,R$ 中加入新元素的时候就加入 $l+sL,r-sR$。</p>
+<p>再考虑这个加入烟花的操作。</p>
+<p>令左半段最右边的转折点横坐标为 $l$，右半段最左边的转折点横坐标为 $r$。</p>
+<ul>
+<li>$l&lt;a_i&lt;r$</li>
+</ul>
+<p>此时就相当于 $L,R$ 都多了一个转折点 $a_i$，都push。</p>
+<ul>
+<li>$a_i \le l$</li>
+</ul>
+<p>此时 $L$ 的最右边的转折点就成为了 $a$，且斜率为 $-1$ 的转折点消失了，但不妨碍我们维护，因为我们可以想象它和斜率为 $0$ 的转折点重合了。</p>
+<p>所以我们加入两边 $a$ 至 $L$，然后把 $l$ 加到 $R$ 即可。</p>
+<ul>
+<li>$a_i \ge r$</li>
+</ul>
+<p>和上一种情况同理。</p>
+<p>综上，时间复杂度 $O(m\log m)$，可以加强到 $n&#x3D;10^9,m&#x3D;2\times10^5$，甚至比原题的单调队列优化dp好写的多。</p>
+<p>Code:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> int long long</span></span><br><span class="line"><span class="type">int</span> n,m,d,ans,tag,pre;</span><br><span class="line">priority_queue&lt;<span class="type">int</span>&gt;L;</span><br><span class="line">priority_queue&lt;<span class="type">int</span>,vector&lt;<span class="type">int</span>&gt;,greater&lt;<span class="type">int</span>&gt; &gt;R;</span><br><span class="line"><span class="function"><span class="type">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	ios_base::<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>);</span><br><span class="line">	cin.<span class="built_in">tie</span>(<span class="number">0</span>),cout.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">	cin&gt;&gt;n&gt;&gt;m&gt;&gt;d;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=m;++i)&#123;</span><br><span class="line">		<span class="type">int</span> a,b,t;cin&gt;&gt;a&gt;&gt;b&gt;&gt;t;</span><br><span class="line">		ans+=b;</span><br><span class="line">		<span class="keyword">if</span>(i==<span class="number">1</span>)L.<span class="built_in">push</span>(a),R.<span class="built_in">push</span>(a),pre=t;</span><br><span class="line">		<span class="keyword">else</span>&#123;</span><br><span class="line">			tag+=d*(t-pre);</span><br><span class="line">			<span class="type">int</span> l=L.<span class="built_in">top</span>()-tag,r=R.<span class="built_in">top</span>()+tag;</span><br><span class="line">			<span class="keyword">if</span>(a&lt;l)L.<span class="built_in">pop</span>(),L.<span class="built_in">push</span>(a+tag),L.<span class="built_in">push</span>(a+tag),R.<span class="built_in">push</span>(l-tag),ans-=l-a;</span><br><span class="line">			<span class="keyword">else</span> <span class="keyword">if</span>(a&gt;r)R.<span class="built_in">pop</span>(),R.<span class="built_in">push</span>(a-tag),R.<span class="built_in">push</span>(a-tag),L.<span class="built_in">push</span>(r+tag),ans-=a-r;</span><br><span class="line">			<span class="keyword">else</span> L.<span class="built_in">push</span>(a+tag),R.<span class="built_in">push</span>(a-tag);</span><br><span class="line">		&#125;</span><br><span class="line">		pre=t;</span><br><span class="line">	&#125;</span><br><span class="line">	cout&lt;&lt;ans&lt;&lt;<span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E9%A2%98%E8%A7%A3/" rel="tag"># 题解</a>
+              <a href="/tags/%E6%B4%9B%E8%B0%B7/" rel="tag"># 洛谷</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/11/02/P8817%20%5BCSP-S%202022%5D%20%E5%81%87%E6%9C%9F%E8%AE%A1%E5%88%92%20%E9%A2%98%E8%A7%A3/" rel="prev" title="P8817 [CSP-S 2022] 假期计划 题解">
+                  <i class="fa fa-angle-left"></i> P8817 [CSP-S 2022] 假期计划 题解
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/11/13/CF1073F%20Choosing%20Two%20Paths%20%E9%A2%98%E8%A7%A3/" rel="next" title="CF1073F Choosing Two Paths 题解">
+                  CF1073F Choosing Two Paths 题解 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2022 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">paulzrm</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

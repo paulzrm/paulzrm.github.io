@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 8.1.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"paulzrm.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"language":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="本文迁移自洛谷原文。  做为出题人来一发（ 首先，我们可以想到，敌人有很多是重复的，所以每一个位置上只留一个敌人即可。 然后，我们可以贪心的想：走到一个位置以后，等着别人来送死。 如何求出这个位置？ 将这棵树，以任意一个节点为根，遍历一遍。 然后我们需要截取出“有用”的一块。（定义“有用”的一块为会被至少一个人走过的路径） 于是，我们可以让自己的初始位置为根，遍历一边这棵老树。 从所有有用的点出">
+<meta property="og:type" content="article">
+<meta property="og:title" content="P6584 重拳出击 题解">
+<meta property="og:url" content="https://paulzrm.github.io/2020/06/05/P6584%20%E9%87%8D%E6%8B%B3%E5%87%BA%E5%87%BB%20%E9%A2%98%E8%A7%A3/index.html">
+<meta property="og:site_name" content="paulzrm 的小窝">
+<meta property="og:description" content="本文迁移自洛谷原文。  做为出题人来一发（ 首先，我们可以想到，敌人有很多是重复的，所以每一个位置上只留一个敌人即可。 然后，我们可以贪心的想：走到一个位置以后，等着别人来送死。 如何求出这个位置？ 将这棵树，以任意一个节点为根，遍历一遍。 然后我们需要截取出“有用”的一块。（定义“有用”的一块为会被至少一个人走过的路径） 于是，我们可以让自己的初始位置为根，遍历一边这棵老树。 从所有有用的点出">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-06-05T10:36:03.000Z">
+<meta property="article:modified_time" content="2020-06-05T10:36:03.000Z">
+<meta property="article:author" content="paulzrm">
+<meta property="article:tag" content="洛谷">
+<meta property="article:tag" content="题解">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://paulzrm.github.io/2020/06/05/P6584%20%E9%87%8D%E6%8B%B3%E5%87%BA%E5%87%BB%20%E9%A2%98%E8%A7%A3/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://paulzrm.github.io/2020/06/05/P6584%20%E9%87%8D%E6%8B%B3%E5%87%BA%E5%87%BB%20%E9%A2%98%E8%A7%A3/","path":"2020/06/05/P6584 重拳出击 题解/","title":"P6584 重拳出击 题解"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>P6584 重拳出击 题解 | paulzrm 的小窝</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js" defer></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">paulzrm 的小窝</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%B4%AA%E5%BF%83-%E8%AF%81%E6%98%8E"><span class="nav-number">1.</span> <span class="nav-text">贪心 证明</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="paulzrm"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">paulzrm</p>
+  <div class="site-description" itemprop="description">一个存一些奇奇怪怪的东西的地方</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/paulzrm" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;paulzrm" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://paulzrm.github.io/2020/06/05/P6584%20%E9%87%8D%E6%8B%B3%E5%87%BA%E5%87%BB%20%E9%A2%98%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="paulzrm">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="paulzrm 的小窝">
+      <meta itemprop="description" content="一个存一些奇奇怪怪的东西的地方">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="P6584 重拳出击 题解 | paulzrm 的小窝">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          P6584 重拳出击 题解
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2020-06-05 18:36:03" itemprop="dateCreated datePublished" datetime="2020-06-05T18:36:03+08:00">2020-06-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%A2%98%E8%A7%A3/" itemprop="url" rel="index"><span itemprop="name">题解</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><blockquote>
+<p>本文迁移自<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/article/4g4e1rjk">洛谷原文</a>。</p>
+</blockquote>
+<p>做为出题人来一发（</p>
+<p>首先，我们可以想到，敌人有很多是重复的，所以每一个位置上只留一个敌人即可。</p>
+<p>然后，我们可以贪心的想：走到一个位置以后，等着别人来送死。</p>
+<p>如何求出这个位置？</p>
+<p>将这棵树，以任意一个节点为根，遍历一遍。</p>
+<p>然后我们需要截取出“有用”的一块。（定义“有用”的一块为会被至少一个人走过的路径）</p>
+<p>于是，我们可以让自己的初始位置为根，遍历一边这棵老树。</p>
+<p>从所有有用的点出发，往上遍历，途中所有的点都变成有用的点。</p>
+<p>然后删掉所有没有用的点即可。</p>
+<p>然后，在这棵新的树上，找到最长链。</p>
+<p>这个“最优点”一定就是这条最长链的中点了。（它到所有的叶子的距离的最大值最小。）</p>
+<p>然后二分答案即可。</p>
+<p>对于每一个二分到的值，循环所有有人站着的点，判断它的mid被祖先与你的初始位置的mid辈祖先之间的距离是否$\le k$。</p>
+<p>这个距离也可以用LCA求出:<code>deep[x]+deep[y]-deep[LCA(x,y)]*2</code></p>
+<p>复杂度：$O(n \times (log n)^2)$</p>
+<hr>
+<p>优化：对于最后一步，每一次二分只需要枚举3个点(自己，最长链的两端)即可。</p>
+<p>并且将二分去掉，直接暴力即可。（删了那个预处理的$nlogn$）</p>
+<p>复杂度：$O(n)$</p>
+<hr>
+<h2 id="贪心-证明"><a href="#贪心-证明" class="headerlink" title="贪心 证明"></a>贪心 证明</h2><p>为什么这个贪心是正确的？</p>
+<p>你要走的话，必定向着敌人走。而且是最远的，不然没有意义。</p>
+<p>首先，我们可以选出两个敌人($x$和$y$)，使得他们和自己组成一个三人组，并且x到y的最短路径经过你，且你们三个人之间互相到达的最小距离最大。</p>
+<p>然后，假设你和$x$的距离为$a$,你和$y$的距离为$b$。</p>
+<p>如果你走向x，杀死他后再返回杀死$y$，那么你走到路程为$max((a-k)&#x2F;2,0)+max((b-k)&#x2F;2,0)$</p>
+<p>待着不动的话，结果为$max(max(a-k,0),max(b-k,0)) $</p>
+<p>当a,b均小于k:都为$0$。√</p>
+<p>当$a$或$b$小于$k$(一个):化简为</p>
+<p>走向：$(a-k)&#x2F;2$</p>
+<p>不动： $a-k$</p>
+<p>于是这个可以特判（??</p>
+<p>不，（详细见后文） </p>
+<p>$a,b$均大于$k$：</p>
+<p>走向：$(a-k)&#x2F;2+(b-k)&#x2F;2&#x3D;(a+b)&#x2F;2-k$</p>
+<p>不动： $max(a-k,b-k)&#x3D;max(a,b)-k$    (这里出问题了？？？ </p>
+<p>不，其实没有</p>
+<p>因为我们要走到的标准位置上，$a&#x3D;b$或者$abs(a-b)&#x3D;1$ </p>
+<p>证毕。 </p>
+<p>代码：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> uint unsigned int</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">class</span> <span class="title class_">T</span>&gt;</span><br><span class="line"><span class="keyword">class</span> <span class="title class_">myVector</span>&#123;</span><br><span class="line">    <span class="keyword">private</span>:</span><br><span class="line">        T* data;</span><br><span class="line">        <span class="type">int</span> len;</span><br><span class="line">        <span class="type">int</span> size;</span><br><span class="line">    <span class="keyword">public</span>:</span><br><span class="line">        <span class="built_in">myVector</span>()&#123;</span><br><span class="line">            data=<span class="literal">NULL</span>;</span><br><span class="line">            len=size=<span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="function"><span class="type">void</span> <span class="title">clear</span><span class="params">()</span></span>&#123;</span><br><span class="line">            data=<span class="literal">NULL</span>;</span><br><span class="line">            len=size=<span class="number">0</span>;</span><br><span class="line">		&#125;</span><br><span class="line">        <span class="built_in">myVector</span>(<span class="type">int</span> _len)&#123;</span><br><span class="line">            data=<span class="keyword">new</span> T[_len];</span><br><span class="line">            len=_len;</span><br><span class="line">            size=<span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        T&amp; <span class="keyword">operator</span>[](<span class="type">int</span> index)&#123;<span class="keyword">return</span> data[index];&#125;</span><br><span class="line">        <span class="function"><span class="type">const</span> myVector&amp; <span class="title">push_back</span><span class="params">(<span class="type">const</span> T tmp)</span></span>&#123;</span><br><span class="line">            <span class="keyword">if</span>(size&gt;=len)&#123;</span><br><span class="line">                T* newData=<span class="keyword">new</span> T[len*<span class="number">2</span><span class="number">+1</span>];</span><br><span class="line">                <span class="built_in">memcpy</span>(newData,data,len*<span class="built_in">sizeof</span>(T));</span><br><span class="line">                <span class="keyword">delete</span> []data;</span><br><span class="line">                data=newData;</span><br><span class="line">                len=<span class="number">2</span>*len<span class="number">+1</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            data[size++]=tmp;</span><br><span class="line">            <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="function"><span class="type">int</span> <span class="title">getSize</span><span class="params">()</span></span>&#123;<span class="keyword">return</span> size;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="type">const</span> uint mxn=<span class="number">4e5</span><span class="number">+5</span>;</span><br><span class="line">myVector&lt;uint&gt;g[mxn];</span><br><span class="line">uint n,m,k,p[mxn],hv[mxn],son[mxn];</span><br><span class="line">uint deg[mxn],par[mxn],deep[mxn];</span><br><span class="line">myVector&lt;uint&gt;alive;</span><br><span class="line"><span class="type">bool</span> used[mxn];</span><br><span class="line"><span class="type">bool</span> ban[mxn];</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">goup</span><span class="params">(<span class="keyword">register</span> uint x)</span></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(used[x] <span class="keyword">or</span> ban[x])<span class="keyword">return</span>;</span><br><span class="line">	used[x]=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">register</span> uint i=<span class="number">0</span>;i&lt;g[x].<span class="built_in">getSize</span>();++i)<span class="keyword">if</span>(deep[g[x][i]]&lt;deep[x])<span class="built_in">goup</span>(g[x][i]);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function">uint <span class="title">dfs</span><span class="params">(<span class="keyword">register</span> uint x,uint pa,uint dep)</span></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(ban[x])<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	par[x]=pa,deep[x]=dep,son[x]=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">register</span> uint i=<span class="number">0</span>;i&lt;g[x].<span class="built_in">getSize</span>();++i)<span class="keyword">if</span>(g[x][i]!=pa)son[x]+=<span class="built_in">dfs</span>(g[x][i],x,dep<span class="number">+1</span>);</span><br><span class="line">	<span class="keyword">return</span> son[x];</span><br><span class="line">&#125;</span><br><span class="line">myVector&lt;uint&gt;needs;</span><br><span class="line"><span class="type">const</span> uint maxn=<span class="number">5000</span>;</span><br><span class="line"><span class="type">char</span> buffer[maxn],*S,*T;</span><br><span class="line"><span class="function"><span class="type">char</span> <span class="title">Get_Char</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(S==T)&#123;</span><br><span class="line">        T=(S=buffer)+<span class="built_in">fread</span>(buffer,<span class="number">1</span>,maxn,stdin);</span><br><span class="line">        <span class="keyword">if</span>(S==T)<span class="keyword">return</span> EOF;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> *S++;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">uint <span class="title">read</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="type">char</span> c;</span><br><span class="line">    uint re=<span class="number">0</span>,f=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(c=<span class="built_in">Get_Char</span>();c&lt;<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> c&gt;<span class="string">&#x27;9&#x27;</span>;c=<span class="built_in">Get_Char</span>())<span class="keyword">if</span>(c==<span class="string">&#x27;-&#x27;</span>)f=<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span>(;c&gt;=<span class="string">&#x27;0&#x27;</span> <span class="keyword">and</span> c&lt;=<span class="string">&#x27;9&#x27;</span>;)re=(re&lt;&lt;<span class="number">1</span>)+(re&lt;&lt;<span class="number">3</span>)+(c-<span class="string">&#x27;0&#x27;</span>),c=<span class="built_in">Get_Char</span>();</span><br><span class="line">    <span class="keyword">if</span>(f)<span class="keyword">return</span> -re;</span><br><span class="line">    <span class="keyword">return</span> re;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">read</span><span class="params">(<span class="keyword">register</span> uint&amp;x)</span></span>&#123;</span><br><span class="line">    <span class="type">char</span> c;</span><br><span class="line">    uint re=<span class="number">0</span>,f=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(c=<span class="built_in">Get_Char</span>();c&lt;<span class="string">&#x27;0&#x27;</span> <span class="keyword">or</span> c&gt;<span class="string">&#x27;9&#x27;</span>;c=<span class="built_in">Get_Char</span>())<span class="keyword">if</span>(c==<span class="string">&#x27;-&#x27;</span>)f=<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span>(;c&gt;=<span class="string">&#x27;0&#x27;</span> <span class="keyword">and</span> c&lt;=<span class="string">&#x27;9&#x27;</span>;)re=(re&lt;&lt;<span class="number">1</span>)+(re&lt;&lt;<span class="number">3</span>)+(c-<span class="string">&#x27;0&#x27;</span>),c=<span class="built_in">Get_Char</span>();</span><br><span class="line">    <span class="keyword">if</span>(f)x=-re;</span><br><span class="line">    <span class="keyword">else</span> x=re;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">int</span> <span class="title">lca</span><span class="params">(<span class="type">int</span> a,<span class="type">int</span> b)</span></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(deep[a]&gt;deep[b])<span class="built_in">swap</span>(a,b);</span><br><span class="line">	<span class="keyword">for</span>(;deep[b]&gt;deep[a];)b=par[b];</span><br><span class="line">	<span class="keyword">for</span>(;a!=b;)a=par[a],b=par[b];</span><br><span class="line">	<span class="keyword">return</span> a;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	ios_base::<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>);</span><br><span class="line">	cin.<span class="built_in">tie</span>(<span class="number">0</span>),cout.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">	<span class="built_in">read</span>(n);</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">register</span> uint i=<span class="number">1</span>,u,v;i&lt;n;++i)&#123;</span><br><span class="line">		<span class="built_in">read</span>(u),<span class="built_in">read</span>(v);</span><br><span class="line">		g[u].<span class="built_in">push_back</span>(v);</span><br><span class="line">		g[v].<span class="built_in">push_back</span>(u);</span><br><span class="line">		++deg[u],++deg[v];</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">read</span>(m);</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">register</span> uint i=<span class="number">1</span>;i&lt;=m;++i)<span class="built_in">read</span>(p[i]),hv[p[i]]=<span class="number">1</span>;</span><br><span class="line">	<span class="built_in">read</span>(k),<span class="built_in">read</span>(p[m<span class="number">+1</span>]);hv[p[m<span class="number">+1</span>]]=<span class="number">1</span>;</span><br><span class="line">	<span class="built_in">dfs</span>(<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>);</span><br><span class="line">	myVector&lt;uint&gt;vhv;vhv.<span class="built_in">clear</span>();</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">register</span> uint i=<span class="number">1</span>;i&lt;=n;++i)<span class="keyword">if</span>(hv[i])vhv.<span class="built_in">push_back</span>(i);</span><br><span class="line">	uint Root=vhv[<span class="number">0</span>];</span><br><span class="line">	<span class="built_in">dfs</span>(Root,Root,<span class="number">1</span>);</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">register</span> uint i=<span class="number">0</span>;i&lt;vhv.<span class="built_in">getSize</span>();++i)<span class="built_in">goup</span>(vhv[i]);</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">register</span> uint i=<span class="number">1</span>;i&lt;=n;++i)<span class="keyword">if</span>(!used[i])ban[i]=<span class="number">1</span>;</span><br><span class="line">	alive.<span class="built_in">clear</span>();</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">register</span> uint i=<span class="number">1</span>;i&lt;=n;++i)<span class="keyword">if</span>(!ban[i])alive.<span class="built_in">push_back</span>(i);</span><br><span class="line">	<span class="keyword">if</span>(!alive.<span class="built_in">getSize</span>())&#123;</span><br><span class="line">		cout&lt;&lt;<span class="number">1</span>&lt;&lt;endl;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">memset</span>(par,<span class="number">0</span>,<span class="built_in">sizeof</span>(par));</span><br><span class="line">	<span class="built_in">dfs</span>(alive[<span class="number">0</span>],alive[<span class="number">0</span>],<span class="number">1</span>);</span><br><span class="line">	uint mx=<span class="number">0</span>,wz=<span class="number">0</span>;</span><br><span class="line">	uint po1,po2;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">register</span> uint i=<span class="number">1</span>;i&lt;=n;++i)<span class="keyword">if</span>(!ban[i] <span class="keyword">and</span> deep[i]&gt;mx)&#123;</span><br><span class="line">		mx=deep[i];</span><br><span class="line">		wz=i;</span><br><span class="line">	&#125;</span><br><span class="line">	po1=wz; 	</span><br><span class="line">	<span class="built_in">dfs</span>(wz,wz,<span class="number">1</span>);</span><br><span class="line">	mx=<span class="number">0</span>,wz=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">register</span> uint i=<span class="number">1</span>;i&lt;=n;++i)<span class="keyword">if</span>(!ban[i] <span class="keyword">and</span> deep[i]&gt;mx)&#123;</span><br><span class="line">		mx=deep[i];</span><br><span class="line">		wz=i;</span><br><span class="line">	&#125;</span><br><span class="line">	po2=wz;</span><br><span class="line">	uint mypos=p[m<span class="number">+1</span>];</span><br><span class="line">	uint ln=deep[po2]<span class="number">-1</span>;</span><br><span class="line">	uint md=po2;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">register</span> uint i=<span class="number">1</span>;i&lt;=ln/<span class="number">2</span>;++i)md=par[md];</span><br><span class="line">	<span class="built_in">dfs</span>(md,md,<span class="number">1</span>);Root=md;</span><br><span class="line">	needs.<span class="built_in">push_back</span>(po1);needs.<span class="built_in">push_back</span>(po2);needs.<span class="built_in">push_back</span>(p[m<span class="number">+1</span>]);</span><br><span class="line">	uint a=po1,b=po2,c=p[m<span class="number">+1</span>];</span><br><span class="line">	<span class="type">bool</span> da=<span class="number">0</span>,db=<span class="number">0</span>;</span><br><span class="line">	<span class="type">int</span> lac=<span class="built_in">lca</span>(a,c),lbc=<span class="built_in">lca</span>(b,c);</span><br><span class="line">	<span class="type">bool</span> ha=<span class="number">0</span>,hb=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">register</span> uint ans=<span class="number">1</span>;ans&lt;=ln;++ans)&#123;</span><br><span class="line">		<span class="keyword">if</span>(!da <span class="keyword">and</span> deep[c]+deep[a]<span class="number">-2</span>*deep[lac]&lt;=k)da=<span class="number">1</span>;</span><br><span class="line">		<span class="keyword">if</span>(!db <span class="keyword">and</span> deep[c]+deep[b]<span class="number">-2</span>*deep[lbc]&lt;=k)db=<span class="number">1</span>;</span><br><span class="line">		<span class="keyword">if</span>(da <span class="keyword">and</span> db)&#123;</span><br><span class="line">			cout&lt;&lt;ans&lt;&lt;<span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">			<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span>(a==lac <span class="keyword">or</span> c==lac)ha=<span class="number">1</span>;</span><br><span class="line">		<span class="keyword">if</span>(b==lbc <span class="keyword">or</span> c==lbc)hb=<span class="number">1</span>;</span><br><span class="line">		<span class="keyword">if</span>(a!=md)a=par[a];</span><br><span class="line">		<span class="keyword">if</span>(b!=md)b=par[b];</span><br><span class="line">		<span class="keyword">if</span>(c!=md)c=par[c];</span><br><span class="line">		<span class="keyword">if</span>(ha)lac=par[lac];</span><br><span class="line">		<span class="keyword">if</span>(hb)lbc=par[lbc];</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E9%A2%98%E8%A7%A3/" rel="tag"># 题解</a>
+              <a href="/tags/%E6%B4%9B%E8%B0%B7/" rel="tag"># 洛谷</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2020/04/19/P6433%20%E3%80%8CEZEC-1%E3%80%8D%E5%87%BA%E9%A2%98%20%E9%A2%98%E8%A7%A3/" rel="prev" title="P6433 「EZEC-1」出题 题解">
+                  <i class="fa fa-angle-left"></i> P6433 「EZEC-1」出题 题解
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2020/07/22/CF1381B%20Unmerge%20%E9%A2%98%E8%A7%A3/" rel="next" title="CF1381B Unmerge 题解">
+                  CF1381B Unmerge 题解 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2022 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">paulzrm</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

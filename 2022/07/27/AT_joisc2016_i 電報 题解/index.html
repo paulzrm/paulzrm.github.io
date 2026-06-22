@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 8.1.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"paulzrm.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"language":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="本文迁移自洛谷原文。  题目意思很清楚不解释。 我们一共有 $n$ 个点，但只有 $n$ 条有向边，还想让这张图强连通，显然是要求我们把这张图变为一个环。 稍微思考一下即可发现，这个题目等价于保留代价最大的那些链，然后删掉剩余的边进行缝缝补补。（因为最后是要变为一个环，换上每个点的入读和出度均为 $1$，如果保留的不是链的形式那么肯定有点出度或者入度大于 $1$，肯定不合法） 回头看看这个图。$">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AT_joisc2016_i 電報 题解">
+<meta property="og:url" content="https://paulzrm.github.io/2022/07/27/AT_joisc2016_i%20%E9%9B%BB%E5%A0%B1%20%E9%A2%98%E8%A7%A3/index.html">
+<meta property="og:site_name" content="paulzrm 的小窝">
+<meta property="og:description" content="本文迁移自洛谷原文。  题目意思很清楚不解释。 我们一共有 $n$ 个点，但只有 $n$ 条有向边，还想让这张图强连通，显然是要求我们把这张图变为一个环。 稍微思考一下即可发现，这个题目等价于保留代价最大的那些链，然后删掉剩余的边进行缝缝补补。（因为最后是要变为一个环，换上每个点的入读和出度均为 $1$，如果保留的不是链的形式那么肯定有点出度或者入度大于 $1$，肯定不合法） 回头看看这个图。$">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2022-07-27T09:49:31.000Z">
+<meta property="article:modified_time" content="2022-07-27T09:49:31.000Z">
+<meta property="article:author" content="paulzrm">
+<meta property="article:tag" content="洛谷">
+<meta property="article:tag" content="题解">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://paulzrm.github.io/2022/07/27/AT_joisc2016_i%20%E9%9B%BB%E5%A0%B1%20%E9%A2%98%E8%A7%A3/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://paulzrm.github.io/2022/07/27/AT_joisc2016_i%20%E9%9B%BB%E5%A0%B1%20%E9%A2%98%E8%A7%A3/","path":"2022/07/27/AT_joisc2016_i 電報 题解/","title":"AT_joisc2016_i 電報 题解"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>AT_joisc2016_i 電報 题解 | paulzrm 的小窝</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js" defer></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">paulzrm 的小窝</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="paulzrm"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">paulzrm</p>
+  <div class="site-description" itemprop="description">一个存一些奇奇怪怪的东西的地方</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/paulzrm" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;paulzrm" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://paulzrm.github.io/2022/07/27/AT_joisc2016_i%20%E9%9B%BB%E5%A0%B1%20%E9%A2%98%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="paulzrm">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="paulzrm 的小窝">
+      <meta itemprop="description" content="一个存一些奇奇怪怪的东西的地方">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="AT_joisc2016_i 電報 题解 | paulzrm 的小窝">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          AT_joisc2016_i 電報 题解
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-07-27 17:49:31" itemprop="dateCreated datePublished" datetime="2022-07-27T17:49:31+08:00">2022-07-27</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%A2%98%E8%A7%A3/" itemprop="url" rel="index"><span itemprop="name">题解</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><blockquote>
+<p>本文迁移自<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/article/ilbvs1nv">洛谷原文</a>。</p>
+</blockquote>
+<p>题目意思很清楚不解释。</p>
+<p>我们一共有 $n$ 个点，但只有 $n$ 条有向边，还想让这张图强连通，显然是要求我们把这张图变为一个环。</p>
+<p>稍微思考一下即可发现，这个题目等价于保留代价最大的那些链，然后删掉剩余的边进行缝缝补补。（因为最后是要变为一个环，换上每个点的入读和出度均为 $1$，如果保留的不是链的形式那么肯定有点出度或者入度大于 $1$，肯定不合法）</p>
+<p>回头看看这个图。$n$ 个点，$n$ 条边，是一个基环树的形式。按照套路把环和树分开来看。</p>
+<p>对于一个树点，由于要删掉大部分边使得它的入度变为 $1$，我们就可以只保留到它的边权最大的那条边。</p>
+<p>由于这张图可能是个基环树森林，我们需要把所有的环也拼接起来，所以说，每个环上至少要断开一个点。</p>
+<p>对于一个环，我们令 $mx_i$ 表示点 $i$ 的所有树节点儿子到 $i$ 的那条边上权值的最大值，$sum_i$ 为这些权值的和。令 $val_i$ 表示环上指向 $i$ 的那个点到 $i$ 的这条边的边权。</p>
+<p>统计 $cnt$ 为对于一个环 $ring$ 上面的点，满足 $val_i&lt;mx_i$ 的点的个数。</p>
+<p>如果这个环的 $cnt &gt; 0$，那么我们想不断白不断（管它是环点还是树点，都只能有一条入边，且断了环边仍是合法的）。</p>
+<p>如果这个环的 $cnt&#x3D;0$，那么为了满足“每个环至少要断开一个点”这个条件，我们就要找到 $val_i-mx_i$ 最小的那个点断开，使得代价最小。</p>
+<p>ps. 有一个特例，整张图只有一个大环，且这个大环包括了所有点的时候，它既不需要和其他环拼接，也不需要让其他树点挤进来，所以答案就是 $0$。</p>
+<p>Code:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ll long long</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> int ll</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> mxn=<span class="number">2e5</span><span class="number">+5</span>;</span><br><span class="line">vector&lt;<span class="type">int</span>&gt;g[mxn];</span><br><span class="line">vector&lt;pair&lt;<span class="type">int</span>,<span class="type">int</span>&gt; &gt;tos[mxn];</span><br><span class="line"><span class="type">int</span> n,a[mxn],c[mxn];</span><br><span class="line"><span class="type">int</span> used[mxn],cused;</span><br><span class="line"><span class="type">int</span> ord[mxn],cord;</span><br><span class="line"><span class="type">int</span> inring[mxn];</span><br><span class="line"><span class="type">int</span> sum[mxn],ma[mxn];</span><br><span class="line">vector&lt;vector&lt;<span class="type">int</span>&gt; &gt;rings;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">dfs</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(used[x]==cused)&#123;<span class="comment">//find a ring</span></span><br><span class="line">		ord[++cord]=x;</span><br><span class="line">		vector&lt;<span class="type">int</span>&gt;ring;</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> i=cord<span class="number">-1</span>;i;--i)&#123;</span><br><span class="line">			inring[ord[i]]=<span class="number">1</span>;</span><br><span class="line">			ring.<span class="built_in">push_back</span>(ord[i]);</span><br><span class="line">			<span class="keyword">if</span>(ord[i]==x)<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		rings.<span class="built_in">push_back</span>(ring);</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(used[x])<span class="keyword">return</span>;</span><br><span class="line">	ord[++cord]=x;</span><br><span class="line">	used[x]=cused;</span><br><span class="line">	<span class="built_in">dfs</span>(a[x]);</span><br><span class="line">	--cord;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">signed</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	ios_base::<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>);</span><br><span class="line">	cin.<span class="built_in">tie</span>(<span class="number">0</span>),cout.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">	cin&gt;&gt;n;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;++i)&#123;</span><br><span class="line">		cin&gt;&gt;a[i]&gt;&gt;c[i];</span><br><span class="line">		g[i].<span class="built_in">push_back</span>(a[i]);</span><br><span class="line">		tos[a[i]].<span class="built_in">push_back</span>(&#123;i,c[i]&#125;);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;++i)&#123;</span><br><span class="line">		<span class="keyword">if</span>(!used[i])&#123;</span><br><span class="line">			++cused;</span><br><span class="line">			cord=<span class="number">0</span>;</span><br><span class="line">			<span class="built_in">dfs</span>(i);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span>(rings.<span class="built_in">size</span>()==<span class="number">1</span> <span class="keyword">and</span> rings[<span class="number">0</span>].<span class="built_in">size</span>()==n)&#123;</span><br><span class="line">		cout&lt;&lt;<span class="number">0</span>&lt;&lt;endl;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	ll ans=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;++i)&#123;</span><br><span class="line">		<span class="keyword">if</span>(!inring[i])&#123;</span><br><span class="line">			<span class="type">int</span> mx=<span class="number">0</span>,sm=<span class="number">0</span>;</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">auto</span> p:tos[i])&#123;</span><br><span class="line">				mx=<span class="built_in">max</span>(mx,p.second);</span><br><span class="line">				sm+=p.second;</span><br><span class="line">			&#125;</span><br><span class="line">			ans+=sm-mx;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(vector&lt;<span class="type">int</span>&gt;ring:rings)&#123;</span><br><span class="line">		ll tot=<span class="number">0</span>;</span><br><span class="line">		<span class="type">int</span> cnt=<span class="number">0</span>,tval,delta=<span class="number">0</span>;</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> i:ring)&#123;</span><br><span class="line">			<span class="type">int</span> mx=<span class="number">0</span>,sm=<span class="number">0</span>;</span><br><span class="line">			<span class="keyword">for</span>(<span class="keyword">auto</span> p:tos[i])&#123;</span><br><span class="line">				<span class="keyword">if</span>(!inring[p.first])&#123;</span><br><span class="line">					mx=<span class="built_in">max</span>(mx,p.second);</span><br><span class="line">					sm+=p.second;</span><br><span class="line">				&#125;<span class="keyword">else</span> tval=c[p.first];</span><br><span class="line">			&#125;</span><br><span class="line">			ma[i]=mx;</span><br><span class="line">			sum[i]=sm;</span><br><span class="line">			tot+=sum[i];</span><br><span class="line">			<span class="keyword">if</span>(tval&lt;mx)++cnt,delta+=mx-tval;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span>(cnt==<span class="number">0</span>)&#123;</span><br><span class="line">			ll res=<span class="number">11451491919810</span>;</span><br><span class="line">			<span class="keyword">for</span>(<span class="type">int</span> i:ring)&#123;</span><br><span class="line">				<span class="type">int</span> j=a[i];</span><br><span class="line">				res=<span class="built_in">min</span>(res,tot-ma[j]+c[i]);</span><br><span class="line">			&#125;</span><br><span class="line">			ans+=res;			</span><br><span class="line">		&#125;<span class="keyword">else</span> ans+=tot-delta;</span><br><span class="line">	&#125;</span><br><span class="line">	cout&lt;&lt;ans&lt;&lt;endl;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E9%A2%98%E8%A7%A3/" rel="tag"># 题解</a>
+              <a href="/tags/%E6%B4%9B%E8%B0%B7/" rel="tag"># 洛谷</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/07/21/P5901%20%5BIOI%202009%5D%20Regions%20%E9%A2%98%E8%A7%A3/" rel="prev" title="P5901 [IOI 2009] Regions 题解">
+                  <i class="fa fa-angle-left"></i> P5901 [IOI 2009] Regions 题解
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2022/11/02/P8817%20%5BCSP-S%202022%5D%20%E5%81%87%E6%9C%9F%E8%AE%A1%E5%88%92%20%E9%A2%98%E8%A7%A3/" rel="next" title="P8817 [CSP-S 2022] 假期计划 题解">
+                  P8817 [CSP-S 2022] 假期计划 题解 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2022 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">paulzrm</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>
