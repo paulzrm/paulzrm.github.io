@@ -3,6 +3,8 @@ public/
 .deploy_git/
 db.json
 *.log
+__pycache__/
+*.pyc
 backup/
 output/
 tmp/
