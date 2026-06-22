@@ -1252,7 +1252,7 @@ pre code {
   vertical-align: middle;
 }
 .links-of-author a::before {
-  background: #bd305e;
+  background: #ffa891;
   display: inline-block;
   margin-right: 3px;
   transform: translateY(-2px);
@@ -2545,5 +2545,203 @@ header.header {
   }
   .sidebar-active .footer-fixed {
     left: 320px;
+  }
+}
+:root {
+  --site-ink: #14213d;
+  --site-muted: #667085;
+  --site-green: #087f5b;
+  --site-green-soft: #e9f7f1;
+  --site-blue: #1769aa;
+  --site-line: #dce5ea;
+  --site-card: rgba(255,255,255,0.94);
+}
+html {
+  scroll-behavior: smooth;
+}
+body {
+  background: radial-gradient(circle at 8% 0%, rgba(44,177,125,0.13), transparent 28rem), radial-gradient(circle at 96% 14%, rgba(23,105,170,0.11), transparent 26rem), #f7faf9;
+  color: var(--site-ink);
+  font-family: "Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", sans-serif;
+}
+a {
+  color: var(--site-green);
+  border-bottom-color: rgba(8,127,91,0.28);
+}
+a:hover {
+  color: var(--site-blue);
+  border-bottom-color: var(--site-blue);
+}
+.header-inner,
+.main-inner,
+.footer-inner {
+  box-sizing: border-box;
+  width: 960px;
+  max-width: calc(100% - 36px);
+}
+.header {
+  background: transparent;
+}
+.header-inner {
+  margin-top: 22px;
+  overflow: hidden;
+  background: var(--site-card);
+  border: 1px solid rgba(220,229,234,0.92);
+  border-radius: 24px;
+  box-shadow: 0 16px 48px rgba(20,33,61,0.08);
+}
+.site-brand-container {
+  background: linear-gradient(135deg, #087f5b, #1769aa);
+}
+.site-title,
+.site-subtitle {
+  color: #fff;
+}
+.site-title {
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+.site-nav {
+  padding: 4px 18px 12px;
+}
+.menu-item a {
+  border-radius: 999px;
+  color: var(--site-ink);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.menu-item a:hover,
+.menu-item-active a {
+  background: var(--site-green-soft);
+  color: var(--site-green);
+}
+.main {
+  padding-bottom: 32px;
+}
+.post-block,
+.pagination,
+.collection-title,
+.comments,
+.sidebar-inner {
+  background: var(--site-card);
+  border: 1px solid rgba(220,229,234,0.94);
+  border-radius: 24px;
+  box-shadow: 0 16px 48px rgba(20,33,61,0.07);
+}
+.post-block {
+  margin-top: 24px;
+  padding: clamp(24px, 5vw, 54px);
+}
+.post-title {
+  color: var(--site-ink);
+  font-size: clamp(1.7rem, 4vw, 2.45rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.25;
+}
+.post-title-link {
+  color: var(--site-ink);
+}
+.post-title-link::before {
+  background-color: var(--site-green);
+}
+.post-meta,
+.post-meta a,
+.post-footer {
+  color: var(--site-muted);
+}
+.post-body {
+  color: #26334d;
+  font-size: 16px;
+  line-height: 1.9;
+}
+.post-body h1,
+.post-body h2,
+.post-body h3,
+.post-body h4 {
+  color: var(--site-ink);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.post-body h2 {
+  margin-top: 2.2em;
+  padding-bottom: 0.35em;
+  border-bottom: 1px solid var(--site-line);
+}
+.post-body blockquote {
+  margin: 1.5em 0;
+  padding: 16px 20px;
+  background: var(--site-green-soft);
+  border-left: 4px solid var(--site-green);
+  border-radius: 0 14px 14px 0;
+  color: #385163;
+}
+.post-body img {
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(20,33,61,0.12);
+}
+.post-body table {
+  overflow: hidden;
+  border-radius: 14px;
+}
+.post-body code {
+  color: #0b6b51;
+  background: #edf7f3;
+}
+.post-body .highlight,
+.post-body pre {
+  border-radius: 16px;
+  box-shadow: 0 10px 26px rgba(20,33,61,0.1);
+}
+.post-button .btn {
+  padding: 8px 16px;
+  color: #fff;
+  background: linear-gradient(135deg, var(--site-green), var(--site-blue));
+  border: 0;
+  border-radius: 999px;
+}
+.posts-collapse .post-header {
+  border-bottom-color: var(--site-line);
+}
+.posts-collapse .post-title-link {
+  color: var(--site-ink);
+}
+.posts-collapse .collection-title::before,
+.posts-collapse .post-header::before {
+  background: var(--site-green);
+}
+.pagination {
+  margin-top: 24px;
+  padding: 12px 18px;
+}
+.pagination .page-number.current {
+  background: var(--site-green);
+  border-radius: 999px;
+}
+.tag-cloud a,
+.category-list-link {
+  color: var(--site-green);
+}
+.footer {
+  color: var(--site-muted);
+  background: transparent;
+}
+@media (max-width: 767px) {
+  .header-inner,
+  .main-inner,
+  .footer-inner {
+    width: calc(100% - 20px);
+    max-width: 960px;
+  }
+  .header-inner {
+    margin-top: 10px;
+    border-radius: 18px;
+  }
+  .post-block {
+    margin-top: 14px;
+    padding: 22px 18px;
+    border-radius: 18px;
+  }
+  .post-body {
+    font-size: 15px;
   }
 }

@@ -17,13 +17,13 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"paulzrm.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"language":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"paulzrm.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"hide","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"language":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
 
     <meta name="description" content="本文迁移自洛谷原文。  做为出题人来一发（ 首先，我们可以想到，敌人有很多是重复的，所以每一个位置上只留一个敌人即可。 然后，我们可以贪心的想：走到一个位置以后，等着别人来送死。 如何求出这个位置？ 将这棵树，以任意一个节点为根，遍历一遍。 然后我们需要截取出“有用”的一块。（定义“有用”的一块为会被至少一个人走过的路径） 于是，我们可以让自己的初始位置为根，遍历一边这棵老树。 从所有有用的点出">
 <meta property="og:type" content="article">
 <meta property="og:title" content="P6584 重拳出击 题解">
 <meta property="og:url" content="https://paulzrm.github.io/2020/06/05/P6584%20%E9%87%8D%E6%8B%B3%E5%87%BA%E5%87%BB%20%E9%A2%98%E8%A7%A3/index.html">
-<meta property="og:site_name" content="paulzrm 的小窝">
+<meta property="og:site_name" content="paulzrm&#39;s blog">
 <meta property="og:description" content="本文迁移自洛谷原文。  做为出题人来一发（ 首先，我们可以想到，敌人有很多是重复的，所以每一个位置上只留一个敌人即可。 然后，我们可以贪心的想：走到一个位置以后，等着别人来送死。 如何求出这个位置？ 将这棵树，以任意一个节点为根，遍历一遍。 然后我们需要截取出“有用”的一块。（定义“有用”的一块为会被至少一个人走过的路径） 于是，我们可以让自己的初始位置为根，遍历一边这棵老树。 从所有有用的点出">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-06-05T10:36:03.000Z">
@@ -40,7 +40,7 @@
 <script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://paulzrm.github.io/2020/06/05/P6584%20%E9%87%8D%E6%8B%B3%E5%87%BA%E5%87%BB%20%E9%A2%98%E8%A7%A3/","path":"2020/06/05/P6584 重拳出击 题解/","title":"P6584 重拳出击 题解"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>P6584 重拳出击 题解 | paulzrm 的小窝</title>
+<title>P6584 重拳出击 题解 | paulzrm's blog</title>
   
 
 
@@ -96,7 +96,7 @@
 
     <a href="/" class="brand" rel="start">
       <i class="logo-line"></i>
-      <p class="site-title">paulzrm 的小窝</p>
+      <p class="site-title">paulzrm's blog</p>
       <i class="logo-line"></i>
     </a>
   </div>
@@ -150,17 +150,17 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-count">74</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">分类</span>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">18</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -200,12 +200,12 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="paulzrm 的小窝">
+      <meta itemprop="name" content="paulzrm's blog">
       <meta itemprop="description" content="一个存一些奇奇怪怪的东西的地方">
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="P6584 重拳出击 题解 | paulzrm 的小窝">
+      <meta itemprop="name" content="P6584 重拳出击 题解 | paulzrm's blog">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">

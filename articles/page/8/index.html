@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 8.1.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"paulzrm.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"hide","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"language":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="一个存一些奇奇怪怪的东西的地方">
+<meta property="og:type" content="website">
+<meta property="og:title" content="paulzrm&#39;s blog">
+<meta property="og:url" content="https://paulzrm.github.io/articles/page/8/index.html">
+<meta property="og:site_name" content="paulzrm&#39;s blog">
+<meta property="og:description" content="一个存一些奇奇怪怪的东西的地方">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="paulzrm">
+<meta property="article:tag" content="算法, ACM, ICPC, 题解, 笔记">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://paulzrm.github.io/articles/page/8/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":true,"isPost":false,"lang":"zh-CN","comments":"","permalink":"","path":"articles/page/8/index.html","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>paulzrm's blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/js/third-party/math/mathjax.js" defer></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">paulzrm's blog</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-文章列表"><a href="/articles/" rel="section"><i class="fa fa-list fa-fw"></i>文章列表</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-题解"><a href="/categories/%E9%A2%98%E8%A7%A3/" rel="section"><i class="fa fa-code fa-fw"></i>题解</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="paulzrm"
+      src="/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">paulzrm</p>
+  <div class="site-description" itemprop="description">一个存一些奇奇怪怪的东西的地方</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">74</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/paulzrm" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;paulzrm" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://paulzrm.github.io/2019/12/16/CF1271D%20Portals%20%E9%A2%98%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="paulzrm">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="paulzrm's blog">
+      <meta itemprop="description" content="一个存一些奇奇怪怪的东西的地方">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | paulzrm's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/12/16/CF1271D%20Portals%20%E9%A2%98%E8%A7%A3/" class="post-title-link" itemprop="url">CF1271D Portals 题解</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-12-16 20:58:30" itemprop="dateCreated datePublished" datetime="2019-12-16T20:58:30+08:00">2019-12-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%A2%98%E8%A7%A3/" itemprop="url" rel="index"><span itemprop="name">题解</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p>本文迁移自<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/article/vflrpd4s">洛谷原文</a>。</p>
+</blockquote>
+<p>在1:43时A掉了这一题，成功翻盘，rank34</p>
+<hr>
+<p>题解：</p>
+<p>贪心+dp</p>
+<p>首先我们可以发现，如果一个城堡是可以被守卫的，那么，我们就会尽可能的让他往后被守卫。</p>
+<p>为什么呢？</p>
+<p>因为，如果在前面就守卫了，也许就会影响到后面的关卡过不去。而到了最后，如果你再不守卫的话，那么就没有机会了。但是如果到最后再守卫，造成的代价与之前一样，但是可以让他有更多的机会去进攻。</p>
+<p>dp:</p>
+<p>令dp[i][j]表示考虑到第i个城堡时，剩余了j个人时的最大成果。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">solve</span><span class="params">()</span></span>&#123;</span><br><span class="line">	cin&gt;&gt;n&gt;&gt;m&gt;&gt;k;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;++i)cin&gt;&gt;a[i]&gt;&gt;b[i]&gt;&gt;c[i];  <span class="comment">//读入</span></span><br><span class="line">	<span class="built_in">checkbad</span>();                       <span class="comment">//特判-1</span></span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=m;++i)&#123;</span><br><span class="line">		<span class="type">int</span> u,v;</span><br><span class="line">		cin&gt;&gt;u&gt;&gt;v;</span><br><span class="line">		lst[v]=<span class="built_in">max</span>(lst[v],u);             <span class="comment">//找最后</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;++i)&#123;</span><br><span class="line">		lst[i]=<span class="built_in">max</span>(lst[i],i);</span><br><span class="line">		v[lst[i]].<span class="built_in">push_back</span>(i);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;++i)<span class="built_in">sort</span>(v[i].<span class="built_in">begin</span>(),v[i].<span class="built_in">end</span>(),cmp);  <span class="comment">//贪心</span></span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;++i)<span class="keyword">for</span>(<span class="type">int</span> j=<span class="number">0</span>;j&lt;=<span class="number">5000</span>;++j)dp[i][j]=-INf; <span class="comment">//初始化</span></span><br><span class="line">	dp[<span class="number">1</span>][k]=<span class="number">0</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;++i)&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> j=a[i];j&lt;=<span class="number">5000</span>;++j)&#123;</span><br><span class="line">			dp[i<span class="number">+1</span>][j+b[i]]=<span class="built_in">max</span>(dp[i<span class="number">+1</span>][j+b[i]],dp[i][j]);  <span class="comment">//不选</span></span><br><span class="line">			<span class="type">int</span> sum=<span class="number">0</span>,cnt=<span class="number">0</span>;</span><br><span class="line">			<span class="keyword">for</span>(<span class="type">int</span> f:v[i])&#123;  <span class="comment">//贪心的选</span></span><br><span class="line">				sum+=c[f];</span><br><span class="line">				++cnt;</span><br><span class="line">				<span class="keyword">if</span>(j+b[i]-cnt&gt;=<span class="number">0</span>)dp[i<span class="number">+1</span>][j+b[i]-cnt]=<span class="built_in">max</span>(dp[i<span class="number">+1</span>][j+b[i]-cnt],dp[i][j]+sum);</span><br><span class="line">				<span class="keyword">else</span> <span class="keyword">break</span>;   <span class="comment">//优化</span></span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://paulzrm.github.io/2019/11/10/P5634%20%E6%95%B0%E7%A0%81%E6%8E%92%E5%BA%8F%E3%80%90%E5%8A%A0%E5%BC%BA%E7%89%88%E3%80%91%20%E9%A2%98%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="paulzrm">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="paulzrm's blog">
+      <meta itemprop="description" content="一个存一些奇奇怪怪的东西的地方">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | paulzrm's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/11/10/P5634%20%E6%95%B0%E7%A0%81%E6%8E%92%E5%BA%8F%E3%80%90%E5%8A%A0%E5%BC%BA%E7%89%88%E3%80%91%20%E9%A2%98%E8%A7%A3/" class="post-title-link" itemprop="url">P5634 数码排序【加强版】 题解</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-11-10 09:14:25" itemprop="dateCreated datePublished" datetime="2019-11-10T09:14:25+08:00">2019-11-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%A2%98%E8%A7%A3/" itemprop="url" rel="index"><span itemprop="name">题解</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p>本文迁移自<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/article/4rhoep79">洛谷原文</a>。</p>
+</blockquote>
+<p>高精度对于 Python 来说不是个事。</p>
+<p>思路与原版相同。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> math</span><br><span class="line">n = <span class="built_in">int</span>(<span class="built_in">input</span>())</span><br><span class="line">l = <span class="built_in">int</span>(math.log(n - <span class="number">1</span>, <span class="number">2</span>)) + <span class="number">1</span></span><br><span class="line">res = n * l</span><br><span class="line">res = res - <span class="number">2</span> ** l</span><br><span class="line">res = res + <span class="number">1</span></span><br><span class="line">t = n * (n - <span class="number">1</span>) // <span class="number">2</span></span><br><span class="line"><span class="built_in">print</span>(<span class="built_in">min</span>(res, t) % <span class="number">100000007</span>)</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://paulzrm.github.io/2019/11/07/CF1242B%200-1%20MST%20%E9%A2%98%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="paulzrm">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="paulzrm's blog">
+      <meta itemprop="description" content="一个存一些奇奇怪怪的东西的地方">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | paulzrm's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/11/07/CF1242B%200-1%20MST%20%E9%A2%98%E8%A7%A3/" class="post-title-link" itemprop="url">CF1242B 0-1 MST 题解</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-11-07 10:19:26" itemprop="dateCreated datePublished" datetime="2019-11-07T10:19:26+08:00">2019-11-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%A2%98%E8%A7%A3/" itemprop="url" rel="index"><span itemprop="name">题解</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p>本文迁移自<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/article/nrxrtm7u">洛谷原文</a>。</p>
+</blockquote>
+<p>水题，直接暴力就能过</p>
+<hr>
+<p>由于图很大，所以就不能直接连边最小生成树</p>
+<p>所以我们可以换一个角度考虑:</p>
+<p>求出所有可以用0边连成的联通块，那么将这些联通快连起来，就可以构造出一颗最小生成树</p>
+<p>那么怎么求联通快呢?</p>
+<p>直接dfs是可以的！</p>
+<p>但是需要剪枝</p>
+<hr>
+<p>最短代码</p>
+<p>set<int> s:还有哪些点没有被访问过<br>  由于只有一些边是1边，所以几次下来，就几乎全访问过了</p>
+<p>  map&lt;int,int&gt; g[]: 存所有的1边</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="type">int</span> n,m,cnt;</span><br><span class="line">map&lt;<span class="type">int</span>,<span class="type">int</span>&gt;g[<span class="number">200005</span>];</span><br><span class="line">set&lt;<span class="type">int</span>&gt;s,ns;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">dfs</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;</span><br><span class="line">	vector&lt;<span class="type">int</span>&gt;v;v.<span class="built_in">clear</span>();ns.<span class="built_in">clear</span>();</span><br><span class="line">	<span class="keyword">for</span>(set&lt;<span class="type">int</span>&gt;::iterator it=s.<span class="built_in">begin</span>();it!=s.<span class="built_in">end</span>();it++)<span class="keyword">if</span>(!g[x][*it])v.<span class="built_in">push_back</span>(*it);<span class="keyword">else</span> ns.<span class="built_in">insert</span>(*it);  <span class="comment">//只用在没有经过的点中找</span></span><br><span class="line">	s=ns;<span class="comment">//更新</span></span><br><span class="line">  <span class="keyword">for</span>(<span class="type">int</span> i:v)<span class="built_in">dfs</span>(i);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>,&amp;n,&amp;m);</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>,u,v;i&lt;=m;++i)<span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>,&amp;u,&amp;v),g[u][v]=<span class="number">1</span>,g[v][u]=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;++i)s.<span class="built_in">insert</span>(i);</span><br><span class="line">	<span class="keyword">for</span>(;s.<span class="built_in">size</span>();)&#123;++cnt;<span class="type">int</span> t=*s.<span class="built_in">begin</span>();s.<span class="built_in">erase</span>(t);<span class="built_in">dfs</span>(t);&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,cnt<span class="number">-1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://paulzrm.github.io/2019/11/06/CF903D%20Almost%20Difference%20%E9%A2%98%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="paulzrm">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="paulzrm's blog">
+      <meta itemprop="description" content="一个存一些奇奇怪怪的东西的地方">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | paulzrm's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/11/06/CF903D%20Almost%20Difference%20%E9%A2%98%E8%A7%A3/" class="post-title-link" itemprop="url">CF903D Almost Difference 题解</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-11-06 16:27:36" itemprop="dateCreated datePublished" datetime="2019-11-06T16:27:36+08:00">2019-11-06</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%A2%98%E8%A7%A3/" itemprop="url" rel="index"><span itemprop="name">题解</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p>本文迁移自<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/article/va2v9dsy">洛谷原文</a>。</p>
+</blockquote>
+<p>这是什么题目啊，竟然回爆long long…..</p>
+<p>这里介绍一个不用压位的方法</p>
+<hr>
+<p>思路：</p>
+<p>分类讨论即可</p>
+<p>1.直接加上所有的y-x</p>
+<p>2.单独处理所有的|x-y|$\le$1的情况</p>
+<p>复杂度:O(n)</p>
+<p>map是O(n log n)</p>
+<p>注意:对于爆long long 的情况，可以用long double</p>
+<p>只不过会慢一点，而且精度只比long long 大一点</p>
+<hr>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ld long double</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ll long long</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> mxn=<span class="number">200005</span>;</span><br><span class="line">map&lt;ld,ld&gt;cnt_m;</span><br><span class="line">ld l_cnt[mxn],h_cnt[mxn],sum[mxn],ans,n,a[mxn];</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	cin&gt;&gt;n;</span><br><span class="line">	<span class="keyword">for</span>(ll i=<span class="number">1</span>;i&lt;=n;++i)cin&gt;&gt;a[i];</span><br><span class="line">	<span class="keyword">for</span>(ll i=n;i;--i)&#123;            <span class="comment">//从后往前统计，就不用二分了</span></span><br><span class="line">		++cnt_m[a[i]];</span><br><span class="line">		l_cnt[i]=cnt_m[a[i]<span class="number">-1</span>];</span><br><span class="line">		h_cnt[i]=cnt_m[a[i]<span class="number">+1</span>];</span><br><span class="line">		sum[i]=sum[i<span class="number">+1</span>]+a[i];</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(ll i=<span class="number">1</span>;i&lt;=n;++i)ans+=sum[i]-a[i]*(n-i<span class="number">+1</span>)+l_cnt[i]-h_cnt[i];</span><br><span class="line">	cout&lt;&lt;fixed&lt;&lt;<span class="built_in">setprecision</span>(<span class="number">0</span>)&lt;&lt;ans&lt;&lt;endl;  <span class="comment">//一定要控制输出的小数位为0！否则会输出类似于1e9+09之类的东西</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/articles/page/7/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/articles/">1</a><span class="space">&hellip;</span><a class="page-number" href="/articles/page/7/">7</a><span class="page-number current">8</span>
+  </nav>
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2022 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">paulzrm</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

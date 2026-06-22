@@ -17,13 +17,13 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"paulzrm.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"language":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"paulzrm.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"hide","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"language":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
 
     <meta name="description" content="本文迁移自洛谷原文。  link 题目大意： 有一个 $n\times n$（$1\le n \le 5000$）的正方形矩阵，初始全部为 $0$，下标从 $0$ 开始。 有 $q$（$1 \le q \le 5000$）次操作：  $1$ $a$ $b$ $c$ 将所有满足 $a \le x+y \le b$ 的点 $(x,y)$ 的值加上 $c$。  $2$ $a$ $b$ $c$ 将所有满">
 <meta property="og:type" content="article">
 <meta property="og:title" content="AT_arc047_d [ARC047D] ナナメクエリ 题解">
 <meta property="og:url" content="https://paulzrm.github.io/2023/01/29/AT_arc047_d%20%5BARC047D%5D%20%E3%83%8A%E3%83%8A%E3%83%A1%E3%82%AF%E3%82%A8%E3%83%AA%20%E9%A2%98%E8%A7%A3/index.html">
-<meta property="og:site_name" content="paulzrm 的小窝">
+<meta property="og:site_name" content="paulzrm&#39;s blog">
 <meta property="og:description" content="本文迁移自洛谷原文。  link 题目大意： 有一个 $n\times n$（$1\le n \le 5000$）的正方形矩阵，初始全部为 $0$，下标从 $0$ 开始。 有 $q$（$1 \le q \le 5000$）次操作：  $1$ $a$ $b$ $c$ 将所有满足 $a \le x+y \le b$ 的点 $(x,y)$ 的值加上 $c$。  $2$ $a$ $b$ $c$ 将所有满">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2023-01-29T12:52:02.000Z">
@@ -40,7 +40,7 @@
 <script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://paulzrm.github.io/2023/01/29/AT_arc047_d%20%5BARC047D%5D%20%E3%83%8A%E3%83%8A%E3%83%A1%E3%82%AF%E3%82%A8%E3%83%AA%20%E9%A2%98%E8%A7%A3/","path":"2023/01/29/AT_arc047_d [ARC047D] ナナメクエリ 题解/","title":"AT_arc047_d [ARC047D] ナナメクエリ 题解"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>AT_arc047_d [ARC047D] ナナメクエリ 题解 | paulzrm 的小窝</title>
+<title>AT_arc047_d [ARC047D] ナナメクエリ 题解 | paulzrm's blog</title>
   
 
 
@@ -96,7 +96,7 @@
 
     <a href="/" class="brand" rel="start">
       <i class="logo-line"></i>
-      <p class="site-title">paulzrm 的小窝</p>
+      <p class="site-title">paulzrm's blog</p>
       <i class="logo-line"></i>
     </a>
   </div>
@@ -149,17 +149,17 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-count">74</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">分类</span>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">18</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -199,12 +199,12 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="paulzrm 的小窝">
+      <meta itemprop="name" content="paulzrm's blog">
       <meta itemprop="description" content="一个存一些奇奇怪怪的东西的地方">
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="AT_arc047_d [ARC047D] ナナメクエリ 题解 | paulzrm 的小窝">
+      <meta itemprop="name" content="AT_arc047_d [ARC047D] ナナメクエリ 题解 | paulzrm's blog">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">

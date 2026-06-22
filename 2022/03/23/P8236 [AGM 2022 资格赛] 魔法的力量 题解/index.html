@@ -17,13 +17,13 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"paulzrm.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"post","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"language":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"paulzrm.github.io","root":"/","images":"/images","scheme":"Muse","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"hide","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"language":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/js/config.js" defer></script>
 
     <meta name="description" content="本文迁移自洛谷原文。  说句题外话，这题刚搬过来时精度要求是 $10^{-10}$ 级别的，人直接崩溃 然后顺便拿到了在洛谷上的一血 题解： 显然如果不考虑价值只考虑算进答案的次数的话，所有堆都是相同的。 所以我们可以计算每一堆石子期望被算进答案的次数。（如果合并的一堆产生了贡献，组成它的所有堆都相当于被算进了答案一次） 设 $f(n)$ 表示还剩下 $n$ 堆石子的时候，每堆石子以后被算进答案">
 <meta property="og:type" content="article">
 <meta property="og:title" content="P8236 [AGM 2022 资格赛] 魔法的力量 题解">
 <meta property="og:url" content="https://paulzrm.github.io/2022/03/23/P8236%20%5BAGM%202022%20%E8%B5%84%E6%A0%BC%E8%B5%9B%5D%20%E9%AD%94%E6%B3%95%E7%9A%84%E5%8A%9B%E9%87%8F%20%E9%A2%98%E8%A7%A3/index.html">
-<meta property="og:site_name" content="paulzrm 的小窝">
+<meta property="og:site_name" content="paulzrm&#39;s blog">
 <meta property="og:description" content="本文迁移自洛谷原文。  说句题外话，这题刚搬过来时精度要求是 $10^{-10}$ 级别的，人直接崩溃 然后顺便拿到了在洛谷上的一血 题解： 显然如果不考虑价值只考虑算进答案的次数的话，所有堆都是相同的。 所以我们可以计算每一堆石子期望被算进答案的次数。（如果合并的一堆产生了贡献，组成它的所有堆都相当于被算进了答案一次） 设 $f(n)$ 表示还剩下 $n$ 堆石子的时候，每堆石子以后被算进答案">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-03-23T03:58:53.000Z">
@@ -40,7 +40,7 @@
 <script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://paulzrm.github.io/2022/03/23/P8236%20%5BAGM%202022%20%E8%B5%84%E6%A0%BC%E8%B5%9B%5D%20%E9%AD%94%E6%B3%95%E7%9A%84%E5%8A%9B%E9%87%8F%20%E9%A2%98%E8%A7%A3/","path":"2022/03/23/P8236 [AGM 2022 资格赛] 魔法的力量 题解/","title":"P8236 [AGM 2022 资格赛] 魔法的力量 题解"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>P8236 [AGM 2022 资格赛] 魔法的力量 题解 | paulzrm 的小窝</title>
+<title>P8236 [AGM 2022 资格赛] 魔法的力量 题解 | paulzrm's blog</title>
   
 
 
@@ -96,7 +96,7 @@
 
     <a href="/" class="brand" rel="start">
       <i class="logo-line"></i>
-      <p class="site-title">paulzrm 的小窝</p>
+      <p class="site-title">paulzrm's blog</p>
       <i class="logo-line"></i>
     </a>
   </div>
@@ -149,17 +149,17 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-count">74</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">分类</span>
       </div>
       <div class="site-state-item site-state-tags">
           <a href="/tags/">
-        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-count">18</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -199,12 +199,12 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="paulzrm 的小窝">
+      <meta itemprop="name" content="paulzrm's blog">
       <meta itemprop="description" content="一个存一些奇奇怪怪的东西的地方">
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="P8236 [AGM 2022 资格赛] 魔法的力量 题解 | paulzrm 的小窝">
+      <meta itemprop="name" content="P8236 [AGM 2022 资格赛] 魔法的力量 题解 | paulzrm's blog">
       <meta itemprop="description" content="">
     </span>
       <header class="post-header">
