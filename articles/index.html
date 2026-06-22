@@ -146,7 +146,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">74</span>
+          <span class="site-state-item-count">73</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -261,6 +261,102 @@
 <p>建好初始线段树后，根的最小危险度就是线段树全局最小值；之后每次交换只做两次 $\operatorname{Side}$ 更新，再输出全局最小值。</p>
 <p>预处理、离线统计和建初值的复杂度为 $O(n\log n)$，每次交换复杂度为 $O(\log n)$。总时间复杂度为</p>
 <p>$$<br>O((n+q)\log n).<br>$$</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://paulzrm.github.io/2026/06/22/SCCPC2026%20D%20%E9%82%A3%E4%B8%80%E5%A4%A9%E7%9A%84%E5%9B%9E%E6%96%87%E5%AD%97%E7%AC%A6%E4%B8%B2%20%E9%A2%98%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="paulzrm">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="paulzrm's blog">
+      <meta itemprop="description" content="一个存一些奇奇怪怪的东西的地方">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | paulzrm's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2026/06/22/SCCPC2026%20D%20%E9%82%A3%E4%B8%80%E5%A4%A9%E7%9A%84%E5%9B%9E%E6%96%87%E5%AD%97%E7%AC%A6%E4%B8%B2%20%E9%A2%98%E8%A7%A3/" class="post-title-link" itemprop="url">SCCPC2026 D 那一天的回文字符串 题解</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2026-06-22 23:48:27" itemprop="dateCreated datePublished" datetime="2026-06-22T23:48:27+08:00">2026-06-22</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E9%A2%98%E8%A7%A3/" itemprop="url" rel="index"><span itemprop="name">题解</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>题目链接：<a target="_blank" rel="noopener" href="https://qoj.ac/contest/3789/problem/18470">QOJ Contest 3789 Problem D</a></p>
+<p>这题的操作看起来是在“重排字符串”，但真正不变的是每个位置的奇偶性：奇数下标上的字符永远只能留在奇数下标集合里，偶数下标上的字符也一样。</p>
+<p>因此我们不需要关心字符的具体位置，只需要分别统计两类位置中每个字母出现了多少次。</p>
+<p>记：</p>
+<p>$$<br>cnt_1(c)&#x3D;c\text{ 在奇数下标中出现的次数},\qquad<br>cnt_0(c)&#x3D;c\text{ 在偶数下标中出现的次数}.<br>$$</p>
+<p>接下来只要看回文串中一对对称位置 $i$ 和 $n+1-i$ 的奇偶性。</p>
+<p>如果 $n$ 是偶数，那么 $i$ 和 $n+1-i$ 的奇偶性一定不同。也就是说，每一对相等字符都必须由一个奇数下标位置和一个偶数下标位置提供。所以对每个字母 $c$，必须有</p>
+<p>$$<br>cnt_0(c)&#x3D;cnt_1(c).<br>$$</p>
+<p>如果 $n$ 是奇数，那么 $i$ 和 $n+1-i$ 的奇偶性一定相同。中心位置是奇数下标，因此：</p>
+<ul>
+<li>偶数下标中的字符必须全部两两配对；</li>
+<li>奇数下标中的字符允许有一个字母剩下来放在中心。</li>
+</ul>
+<p>也就是要求</p>
+<p>$$<br>#{c\mid cnt_0(c)\text{ 为奇数}}&#x3D;0,<br>$$</p>
+<p>并且</p>
+<p>$$<br>#{c\mid cnt_1(c)\text{ 为奇数}}\le 1.<br>$$</p>
+<p>满足对应条件就输出 <code>YES</code>，否则输出 <code>NO</code>。</p>
+<p>复杂度为 $O(|s|)$。</p>
 
       
     </div>
@@ -612,102 +708,6 @@
 </ul>
 <p>这样得到的图就是一张合法的基环树。</p>
 <p>找桥、缩点和扫描边都可以线性完成，时间复杂度和空间复杂度都是 $O(n+m)$。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://paulzrm.github.io/2026/06/22/SCCPC2026%20D%20%E9%82%A3%E4%B8%80%E5%A4%A9%E7%9A%84%E5%9B%9E%E6%96%87%E5%AD%97%E7%AC%A6%E4%B8%B2%20%E9%A2%98%E8%A7%A3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="paulzrm">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="paulzrm's blog">
-      <meta itemprop="description" content="一个存一些奇奇怪怪的东西的地方">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | paulzrm's blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2026/06/22/SCCPC2026%20D%20%E9%82%A3%E4%B8%80%E5%A4%A9%E7%9A%84%E5%9B%9E%E6%96%87%E5%AD%97%E7%AC%A6%E4%B8%B2%20%E9%A2%98%E8%A7%A3/" class="post-title-link" itemprop="url">SCCPC2026 D 那一天的回文字符串 题解</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2026-06-22 23:48:27" itemprop="dateCreated datePublished" datetime="2026-06-22T23:48:27+08:00">2026-06-22</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E9%A2%98%E8%A7%A3/" itemprop="url" rel="index"><span itemprop="name">题解</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>题目链接：<a target="_blank" rel="noopener" href="https://qoj.ac/contest/3789/problem/18470">QOJ Contest 3789 Problem D</a></p>
-<p>这题的操作看起来是在“重排字符串”，但真正不变的是每个位置的奇偶性：奇数下标上的字符永远只能留在奇数下标集合里，偶数下标上的字符也一样。</p>
-<p>因此我们不需要关心字符的具体位置，只需要分别统计两类位置中每个字母出现了多少次。</p>
-<p>记：</p>
-<p>$$<br>cnt_1(c)&#x3D;c\text{ 在奇数下标中出现的次数},\qquad<br>cnt_0(c)&#x3D;c\text{ 在偶数下标中出现的次数}.<br>$$</p>
-<p>接下来只要看回文串中一对对称位置 $i$ 和 $n+1-i$ 的奇偶性。</p>
-<p>如果 $n$ 是偶数，那么 $i$ 和 $n+1-i$ 的奇偶性一定不同。也就是说，每一对相等字符都必须由一个奇数下标位置和一个偶数下标位置提供。所以对每个字母 $c$，必须有</p>
-<p>$$<br>cnt_0(c)&#x3D;cnt_1(c).<br>$$</p>
-<p>如果 $n$ 是奇数，那么 $i$ 和 $n+1-i$ 的奇偶性一定相同。中心位置是奇数下标，因此：</p>
-<ul>
-<li>偶数下标中的字符必须全部两两配对；</li>
-<li>奇数下标中的字符允许有一个字母剩下来放在中心。</li>
-</ul>
-<p>也就是要求</p>
-<p>$$<br>#{c\mid cnt_0(c)\text{ 为奇数}}&#x3D;0,<br>$$</p>
-<p>并且</p>
-<p>$$<br>#{c\mid cnt_1(c)\text{ 为奇数}}\le 1.<br>$$</p>
-<p>满足对应条件就输出 <code>YES</code>，否则输出 <code>NO</code>。</p>
-<p>复杂度为 $O(|s|)$。</p>
 
       
     </div>

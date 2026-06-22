@@ -146,7 +146,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">74</span>
+          <span class="site-state-item-count">73</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -178,122 +178,6 @@
     </div>
 
     <div class="main-inner index posts-expand">
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://paulzrm.github.io/2023/01/25/AT_arc048_d%20%5BARC048D%5D%20%E3%81%9F%E3%81%93%E7%84%BC%E3%81%8D%E5%B1%8B%E3%81%A8Q%E4%BA%BA%E3%81%AE%E9%AB%98%E6%A9%8B%E5%90%9B%20%E9%A2%98%E8%A7%A3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="paulzrm">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="paulzrm's blog">
-      <meta itemprop="description" content="一个存一些奇奇怪怪的东西的地方">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content=" | paulzrm's blog">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/01/25/AT_arc048_d%20%5BARC048D%5D%20%E3%81%9F%E3%81%93%E7%84%BC%E3%81%8D%E5%B1%8B%E3%81%A8Q%E4%BA%BA%E3%81%AE%E9%AB%98%E6%A9%8B%E5%90%9B%20%E9%A2%98%E8%A7%A3/" class="post-title-link" itemprop="url">AT_arc048_d [ARC048D] たこ焼き屋とQ人の高橋君 题解</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2023-01-25 20:51:28" itemprop="dateCreated datePublished" datetime="2023-01-25T20:51:28+08:00">2023-01-25</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">分类于</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E9%A2%98%E8%A7%A3/" itemprop="url" rel="index"><span itemprop="name">题解</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <blockquote>
-<p>本文迁移自<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/article/uncnaxx6">洛谷原文</a>。</p>
-</blockquote>
-<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/AT_arc048_d">link</a></p>
-<p>题目大意：</p>
-<p>给你一棵有 $n$ ($1 \le n \le 10^5$) 个节点的树，其中一些节点是特殊节点，相邻两个点的距离为 $1$。</p>
-<p>有 $q$ ($1 \le q \le 10^5$) 次询问，每次给你两个点 $u,v$，你需要求出从 $u$ 走到 $v$ 的最小时间。</p>
-<p>一开始，你的速度是每 $2$ 个时间单位走 $1$ 个距离单位。假设在某一时刻你到了一个特殊节点，那么你的速度就会变为 $1$ 个时间单位走 $1$ 个距离单位，这次询问内有效。</p>
-<p>题解：</p>
-<p>显然有两种过程：</p>
-<ul>
-<li><p>从 $u$ 直接走到 $v$，花费时间 $2\times dist(u,v)$。</p>
-</li>
-<li><p>从 $u$ 走到 $u,v$ 链上某个节点 $x$，再从 $x$ 走到某个特殊节点 $y$，再从 $y$ 返回 $x$，最后从 $x$ 走到 $v$。</p>
-</li>
-</ul>
-<p>第一种情况平凡，我们考虑第二种。</p>
-<p>有以下结论：</p>
-<ul>
-<li><p>第二种情况下的答案 $ans&#x3D;dist(u,v)+dist(u,x)+3\times dist(x,y)$</p>
-</li>
-<li><p>$y$ 一定是到 $x$ 距离最近的特殊节点。显然，因为 $y$ 只和 $3\times dist(x,y)$ 一项有关。</p>
-</li>
-</ul>
-<p>所以我们可以跑一遍 bfs 处理出到所有节点最近的特殊节点的距离 $\times 3$ （记为 $C(x)$） 是多少。</p>
-<p>然后在 $u,v$ 已知的情况下，$dist(u,v)$ 容易算出，我们只需要求出 $dist(u,x)+3\times C(x)$ 的最小值就可以了。</p>
-<p>$dist(u,x)$ 比较难算，但我们可以用一个分类讨论的套路把它拆开来：</p>
-<p>令 $l$ 为 $u,v$ 的 LCA，进行分类：</p>
-<ul>
-<li>$x$ 在 $u \rightarrow l$ 这条链上</li>
-</ul>
-<p>此时 $dist(u,x)&#x3D;deep_u-deep_x$（$deep_x$ 为节点 $x$ 的深度），所以在 $u$ 给定的情况下，我们需要求得的是 $C(x)-deep_x$ 的最小值，可以直接树剖或者倍增维护。</p>
-<ul>
-<li>$x$ 在 $l\rightarrow v$ 这条链上</li>
-</ul>
-<p>同理，不过 $dist(u,x)$ 变为 $deep_u+deep_x-2\times deep_l$，维护 $C(x)+deep_x$ 的最小值即可。</p>
-<hr>
-<p>Code:</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> mxn=<span class="number">1e5</span><span class="number">+5</span>;</span><br><span class="line">string s;</span><br><span class="line"><span class="type">int</span> n,k,dst[mxn],top[mxn],sz[mxn],dep[mxn],ord[mxn],cc,fa[mxn],son[mxn];</span><br><span class="line"><span class="type">int</span> st[mxn],ed[mxn];</span><br><span class="line">vector&lt;<span class="type">int</span>&gt;g[mxn];</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">dfs</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> par=<span class="number">1</span>)</span></span>&#123;              <span class="comment">//树剖</span></span><br><span class="line">	fa[x]=par;sz[x]=<span class="number">1</span>;dep[x]=dep[par]<span class="number">+1</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> y:g[x])<span class="keyword">if</span>(y!=par)&#123;</span><br><span class="line">		<span class="built_in">dfs</span>(y,x);</span><br><span class="line">		<span class="keyword">if</span>(sz[y]&gt;sz[son[x]])son[x]=y;</span><br><span class="line">		sz[x]+=sz[y];</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">go</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> par=<span class="number">1</span>,<span class="type">int</span> tpf=<span class="number">1</span>)</span></span>&#123;</span><br><span class="line">	st[x]=++cc;ord[cc]=x,top[x]=tpf;</span><br><span class="line">	<span class="keyword">if</span>(son[x])&#123;</span><br><span class="line">		<span class="built_in">go</span>(son[x],x,tpf);</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> y:g[x])<span class="keyword">if</span>(y!=par <span class="keyword">and</span> y!=son[x])<span class="built_in">go</span>(y,x,y);</span><br><span class="line">	&#125;</span><br><span class="line">	ed[x]=cc;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">F1</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;<span class="keyword">return</span> dst[x]-dep[x];&#125;<span class="comment">//left</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">F2</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;<span class="keyword">return</span> dst[x]+dep[x];&#125;<span class="comment">//right</span></span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">SP</span>&#123;</span><br><span class="line">	<span class="type">int</span> VAL[mxn],val[mxn&lt;&lt;<span class="number">2</span>];</span><br><span class="line">	<span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">build</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> l,<span class="type">int</span> r)</span></span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(l==r)&#123;val[x]=VAL[ord[l]];<span class="keyword">return</span>;&#125;</span><br><span class="line">		<span class="type">int</span> md=l+r&gt;&gt;<span class="number">1</span>;</span><br><span class="line">		<span class="built_in">build</span>(x&lt;&lt;<span class="number">1</span>,l,md);</span><br><span class="line">		<span class="built_in">build</span>(x&lt;&lt;<span class="number">1</span>|<span class="number">1</span>,md<span class="number">+1</span>,r);</span><br><span class="line">		val[x]=<span class="built_in">min</span>(val[x&lt;&lt;<span class="number">1</span>],val[x&lt;&lt;<span class="number">1</span>|<span class="number">1</span>]);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">inline</span> <span class="type">int</span> <span class="title">ask</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> l,<span class="type">int</span> r,<span class="type">int</span> a,<span class="type">int</span> b)</span></span>&#123;</span><br><span class="line">		<span class="keyword">if</span>(a&lt;=l <span class="keyword">and</span> r&lt;=b)<span class="keyword">return</span> val[x];</span><br><span class="line">		<span class="keyword">if</span>(b&lt;l <span class="keyword">or</span> r&lt;a)<span class="keyword">return</span> <span class="number">1145141</span>;</span><br><span class="line">		<span class="type">int</span> md=l+r&gt;&gt;<span class="number">1</span>;</span><br><span class="line">		<span class="keyword">return</span> <span class="built_in">min</span>(<span class="built_in">ask</span>(x&lt;&lt;<span class="number">1</span>,l,md,a,b),<span class="built_in">ask</span>(x&lt;&lt;<span class="number">1</span>|<span class="number">1</span>,md<span class="number">+1</span>,r,a,b));</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">init</span><span class="params">(<span class="type">int</span> (*F)(<span class="type">int</span>))</span></span>&#123;</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;++i)VAL[i]=<span class="built_in">F</span>(i);</span><br><span class="line">		<span class="built_in">build</span>(<span class="number">1</span>,<span class="number">1</span>,n);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">inline</span> <span class="type">int</span> <span class="title">qryRange</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> y)</span></span>&#123;</span><br><span class="line">		<span class="type">int</span> ans=<span class="number">1145141</span>;</span><br><span class="line">		<span class="keyword">for</span>(;top[x]!=top[y];)&#123;</span><br><span class="line">			<span class="keyword">if</span>(dep[top[x]]&gt;dep[top[y]])<span class="built_in">swap</span>(x,y);</span><br><span class="line">			ans=<span class="built_in">min</span>(ans,<span class="built_in">ask</span>(<span class="number">1</span>,<span class="number">1</span>,n,st[top[y]],st[y]));</span><br><span class="line">			y=top[y],y=fa[y];</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span>(dep[x]&gt;dep[y])<span class="built_in">swap</span>(x,y);</span><br><span class="line">		ans=<span class="built_in">min</span>(ans,<span class="built_in">ask</span>(<span class="number">1</span>,<span class="number">1</span>,n,st[x],st[y]));</span><br><span class="line">		<span class="keyword">return</span> ans;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">inline</span> <span class="type">int</span> <span class="title">lca</span><span class="params">(<span class="type">int</span> x,<span class="type">int</span> y)</span></span>&#123;</span><br><span class="line">		<span class="keyword">for</span>(;top[x]!=top[y];)&#123;</span><br><span class="line">			<span class="keyword">if</span>(dep[top[x]]&gt;dep[top[y]])<span class="built_in">swap</span>(x,y);</span><br><span class="line">			y=top[y],y=fa[y];</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span>(dep[x]&gt;dep[y])<span class="built_in">swap</span>(x,y);</span><br><span class="line">		<span class="keyword">return</span> x;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;s1,s2;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	ios_base::<span class="built_in">sync_with_stdio</span>(<span class="literal">false</span>);</span><br><span class="line">	cin.<span class="built_in">tie</span>(<span class="number">0</span>),cout.<span class="built_in">tie</span>(<span class="number">0</span>);</span><br><span class="line">	cin&gt;&gt;n&gt;&gt;k;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>,u,v;i&lt;n;++i)&#123;</span><br><span class="line">		cin&gt;&gt;u&gt;&gt;v;</span><br><span class="line">		g[u].<span class="built_in">push_back</span>(v);</span><br><span class="line">		g[v].<span class="built_in">push_back</span>(u);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="built_in">dfs</span>(<span class="number">1</span>);<span class="built_in">go</span>(<span class="number">1</span>);</span><br><span class="line">	cin&gt;&gt;s;s=<span class="string">&quot; &quot;</span>+s;queue&lt;<span class="type">int</span>&gt;q;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;++i)dst[i]=<span class="number">6</span>*n;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;++i)<span class="keyword">if</span>(s[i]==<span class="string">&#x27;1&#x27;</span>)dst[i]=<span class="number">0</span>,q.<span class="built_in">push</span>(i);  <span class="comment">//bfs</span></span><br><span class="line">	<span class="keyword">for</span>(;q.<span class="built_in">size</span>();)&#123;</span><br><span class="line">		<span class="type">int</span> x=q.<span class="built_in">front</span>();q.<span class="built_in">pop</span>();</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> y:g[x])<span class="keyword">if</span>(dst[y]&gt;dst[x]<span class="number">+3</span>)&#123;</span><br><span class="line">			dst[y]=dst[x]<span class="number">+3</span>;</span><br><span class="line">			q.<span class="built_in">push</span>(y);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	s<span class="number">1.</span><span class="built_in">init</span>(F1);</span><br><span class="line">	s<span class="number">2.</span><span class="built_in">init</span>(F2);</span><br><span class="line">	<span class="keyword">for</span>(;k--;)&#123;</span><br><span class="line">		<span class="type">int</span> u,v,l;cin&gt;&gt;u&gt;&gt;v;</span><br><span class="line">		l=s<span class="number">1.l</span>ca(u,v);</span><br><span class="line">		cout&lt;&lt;dep[u]+dep[v]<span class="number">-2</span>*dep[l]+<span class="built_in">min</span>(<span class="built_in">min</span>(dep[u]+s<span class="number">1.</span><span class="built_in">qryRange</span>(u,l),dep[u]+s<span class="number">2.</span><span class="built_in">qryRange</span>(l,v)<span class="number">-2</span>*dep[l]),dep[u]+dep[v]<span class="number">-2</span>*dep[l])&lt;&lt;<span class="string">&#x27;\n&#x27;</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
 
     
 
@@ -1123,6 +1007,89 @@
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2022/05/02/%E4%B8%8D%E5%AE%9A%E6%9C%9F%E6%9B%B4%E6%96%B0%E7%9A%84%E6%9D%BF%E5%AD%90%E5%BA%93/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://paulzrm.github.io/2022/05/02/%E7%AC%AC46%E5%B1%8AICPC%E4%BA%9A%E6%B4%B2%E5%8C%BA%E5%9F%9F%E8%B5%9B%EF%BC%88%E6%98%86%E6%98%8E%EF%BC%89(%E6%AD%A3%E5%BC%8F%E8%B5%9B%EF%BC%89%20J.%20Just%20Another%20String%20Problem/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="paulzrm">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="paulzrm's blog">
+      <meta itemprop="description" content="一个存一些奇奇怪怪的东西的地方">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content=" | paulzrm's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2022/05/02/%E7%AC%AC46%E5%B1%8AICPC%E4%BA%9A%E6%B4%B2%E5%8C%BA%E5%9F%9F%E8%B5%9B%EF%BC%88%E6%98%86%E6%98%8E%EF%BC%89(%E6%AD%A3%E5%BC%8F%E8%B5%9B%EF%BC%89%20J.%20Just%20Another%20String%20Problem/" class="post-title-link" itemprop="url">第46届ICPC亚洲区域赛（昆明）(正式赛） J.Just Another String Problem 题解</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2022-05-02 00:00:00" itemprop="dateCreated datePublished" datetime="2022-05-02T00:00:00+08:00">2022-05-02</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p><a target="_blank" rel="noopener" href="https://ac.nowcoder.com/acm/contest/32708/J">link</a></p>
+<p>题目大意：</p>
+<p>定义一个好集合 $T$：</p>
+<ul>
+<li>所有元素均为字符串</li>
+<li>$T$ 中不包含两个串 $p,q$，满足 $p$ 是 $q$ 的后缀</li>
+</ul>
+<p>先给你一个长度为 $n$ 的字符串$s$，和一个长度为 $n$ 的数组 $v$。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2022/05/02/%E7%AC%AC46%E5%B1%8AICPC%E4%BA%9A%E6%B4%B2%E5%8C%BA%E5%9F%9F%E8%B5%9B%EF%BC%88%E6%98%86%E6%98%8E%EF%BC%89(%E6%AD%A3%E5%BC%8F%E8%B5%9B%EF%BC%89%20J.%20Just%20Another%20String%20Problem/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
