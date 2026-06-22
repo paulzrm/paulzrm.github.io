@@ -74,7 +74,7 @@ hexo.extend.generator.register('custom-homepage', function(locals) {
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="${escapeHTML(this.config.description)}">
   <title>${escapeHTML(this.config.title)} - 首页</title>
-  <link rel="icon" href="/images/favicon-32x32-next.png">
+  <link rel="icon" href="${this.config.root}images/favicon-32x32-next.png">
   <style>
     :root {
       --ink: #14213d;
@@ -225,10 +225,10 @@ hexo.extend.generator.register('custom-homepage', function(locals) {
   <header class="shell nav">
     <a class="brand" href="/"><i></i>${escapeHTML(this.config.title)}</a>
     <nav class="nav-links">
-      <a href="/articles/">文章列表</a>
+      <a href="${this.config.root}articles/">文章列表</a>
       <a href="#explore">内容检索</a>
-      <a href="/tags/">标签</a>
-      <a href="/archives/">归档</a>
+      <a href="${this.config.root}tags/">标签</a>
+      <a href="${this.config.root}archives/">归档</a>
       <a href="https://github.com/paulzrm">GitHub</a>
     </nav>
   </header>
@@ -279,7 +279,7 @@ hexo.extend.generator.register('custom-homepage', function(locals) {
     <section class="shell" id="explore">
       <div class="section-head">
         <div><h2>检索全部内容</h2><p>支持题号、名称、摘要关键字与年份组合筛选。</p></div>
-        <a href="/articles/">查看传统文章列表 →</a>
+        <a href="${this.config.root}articles/">查看传统文章列表 →</a>
       </div>
       <div class="workspace">
         <form class="search-box" id="inline-search" style="margin:0 0 17px;box-shadow:none">

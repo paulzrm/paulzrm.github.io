@@ -57,10 +57,10 @@ lightdark:
 # ---------------------------------------------------------------
 
 favicon:
-  small: /images/favicon-16x16-next.png
-  medium: /images/favicon-32x32-next.png
-  apple_touch_icon: /images/apple-touch-icon-next.png
-  safari_pinned_tab: /images/logo.svg
+  small: /blog/images/favicon-16x16-next.png
+  medium: /blog/images/favicon-32x32-next.png
+  apple_touch_icon: /blog/images/apple-touch-icon-next.png
+  safari_pinned_tab: /blog/images/logo.svg
   #android_manifest: /manifest.json
 
 # Custom Logo (Warning: Do not support scheme Mist)
@@ -102,12 +102,12 @@ open_graph:
 # Value before `||` delimiter is the target link, value after `||` delimiter is the name of Font Awesome icon.
 # External url should start with http:// or https://
 menu:
-  home: / || fa fa-home
-  文章列表: /articles/ || fa fa-list
+  home: /blog/ || fa fa-home
+  文章列表: /blog/articles/ || fa fa-list
   #about: /about/ || fa fa-user
-  tags: /tags/ || fa fa-tags
+  tags: /blog/tags/ || fa fa-tags
   题解: /categories/题解/ || fa fa-code
-  archives: /archives/ || fa fa-archive
+  archives: /blog/archives/ || fa fa-archive
   #schedule: /schedule/ || fa fa-calendar
   #sitemap: /sitemap.xml || fa fa-sitemap
   #commonweal: /404/ || fa fa-heartbeat
@@ -150,7 +150,7 @@ sidebar:
 # Sidebar Avatar
 avatar:
   # Replace the default image and set the url here.
-  url: /images/avatar.gif
+  url: /blog/images/avatar.gif
   # If true, the avatar will be displayed in circle.
   rounded: false
   # If true, the avatar will be rotated with the cursor.
