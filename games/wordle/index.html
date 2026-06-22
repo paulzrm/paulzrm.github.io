@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wordle · Ruimin Zhang</title>
+  <link rel="stylesheet" href="../../assets/styles.css">
+</head>
+<body>
+  <header class="shell nav">
+    <a class="brand" href="../../"><i></i>Ruimin Zhang</a>
+    <nav class="nav-links"><a href="../../">主页</a><a href="../../#games">Games</a><a href="https://paulzrm.github.io/blog/">Blog</a></nav>
+  </header>
+  <main class="shell game-page">
+    <section class="game-shell">
+      <div class="game-header">
+        <div><div class="eyebrow">GAME 01</div><h1>Wordle</h1><p>六次机会，猜出一个五字母英文单词。</p></div>
+        <button class="button" id="new-word">换一个单词</button>
+      </div>
+      <div class="status" id="wordle-status" aria-live="polite"></div>
+      <div class="wordle-board" id="wordle-board" aria-label="Wordle 棋盘"></div>
+      <div class="keyboard" id="keyboard"></div>
+      <p class="wordle-help">绿色：位置正确；黄色：字母存在但位置错误；灰色：答案中没有该字母。可直接使用电脑键盘。</p>
+    </section>
+  </main>
+  <script src="./wordle.js"></script>
+</body>
+</html>

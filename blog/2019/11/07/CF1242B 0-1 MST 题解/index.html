@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 8.1.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/blog/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/blog/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"paulzrm.github.io","root":"/blog/","images":"/blog/images","scheme":"Muse","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"hide","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"language":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/blog/js/config.js" defer></script>
+
+    <meta name="description" content="本文迁移自洛谷原文。  水题，直接暴力就能过  由于图很大，所以就不能直接连边最小生成树 所以我们可以换一个角度考虑: 求出所有可以用0边连成的联通块，那么将这些联通快连起来，就可以构造出一颗最小生成树 那么怎么求联通快呢? 直接dfs是可以的！ 但是需要剪枝  最短代码 set s:还有哪些点没有被访问过  由于只有一些边是1边，所以几次下来，就几乎全访问过了   map&lt;int,int">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CF1242B 0-1 MST 题解">
+<meta property="og:url" content="https://paulzrm.github.io/blog/2019/11/07/CF1242B%200-1%20MST%20%E9%A2%98%E8%A7%A3/index.html">
+<meta property="og:site_name" content="paulzrm&#39;s blog">
+<meta property="og:description" content="本文迁移自洛谷原文。  水题，直接暴力就能过  由于图很大，所以就不能直接连边最小生成树 所以我们可以换一个角度考虑: 求出所有可以用0边连成的联通块，那么将这些联通快连起来，就可以构造出一颗最小生成树 那么怎么求联通快呢? 直接dfs是可以的！ 但是需要剪枝  最短代码 set s:还有哪些点没有被访问过  由于只有一些边是1边，所以几次下来，就几乎全访问过了   map&lt;int,int">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-11-07T02:19:26.000Z">
+<meta property="article:modified_time" content="2019-11-07T02:19:26.000Z">
+<meta property="article:author" content="paulzrm">
+<meta property="article:tag" content="洛谷">
+<meta property="article:tag" content="题解">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://paulzrm.github.io/blog/2019/11/07/CF1242B%200-1%20MST%20%E9%A2%98%E8%A7%A3/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://paulzrm.github.io/blog/2019/11/07/CF1242B%200-1%20MST%20%E9%A2%98%E8%A7%A3/","path":"2019/11/07/CF1242B 0-1 MST 题解/","title":"CF1242B 0-1 MST 题解"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>CF1242B 0-1 MST 题解 | paulzrm's blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/blog/js/utils.js" defer></script><script src="/blog/js/motion.js" defer></script><script src="/blog/js/sidebar.js" defer></script><script src="/blog/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/blog/js/third-party/math/mathjax.js" defer></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/blog/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/blog/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">paulzrm's blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/blog/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-文章列表"><a href="/blog/articles/" rel="section"><i class="fa fa-list fa-fw"></i>文章列表</a></li><li class="menu-item menu-item-tags"><a href="/blog/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-题解"><a href="/blog/categories/%E9%A2%98%E8%A7%A3/" rel="section"><i class="fa fa-code fa-fw"></i>题解</a></li><li class="menu-item menu-item-archives"><a href="/blog/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="paulzrm"
+      src="/blog/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">paulzrm</p>
+  <div class="site-description" itemprop="description">一个存一些奇奇怪怪的东西的地方</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/blog/archives/">
+          <span class="site-state-item-count">73</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/blog/tags/">
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/paulzrm" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;paulzrm" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://paulzrm.github.io/blog/2019/11/07/CF1242B%200-1%20MST%20%E9%A2%98%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blog/images/avatar.gif">
+      <meta itemprop="name" content="paulzrm">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="paulzrm's blog">
+      <meta itemprop="description" content="一个存一些奇奇怪怪的东西的地方">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="CF1242B 0-1 MST 题解 | paulzrm's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          CF1242B 0-1 MST 题解
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-11-07 10:19:26" itemprop="dateCreated datePublished" datetime="2019-11-07T10:19:26+08:00">2019-11-07</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/blog/categories/%E9%A2%98%E8%A7%A3/" itemprop="url" rel="index"><span itemprop="name">题解</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><blockquote>
+<p>本文迁移自<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/article/nrxrtm7u">洛谷原文</a>。</p>
+</blockquote>
+<p>水题，直接暴力就能过</p>
+<hr>
+<p>由于图很大，所以就不能直接连边最小生成树</p>
+<p>所以我们可以换一个角度考虑:</p>
+<p>求出所有可以用0边连成的联通块，那么将这些联通快连起来，就可以构造出一颗最小生成树</p>
+<p>那么怎么求联通快呢?</p>
+<p>直接dfs是可以的！</p>
+<p>但是需要剪枝</p>
+<hr>
+<p>最短代码</p>
+<p>set<int> s:还有哪些点没有被访问过<br>  由于只有一些边是1边，所以几次下来，就几乎全访问过了</p>
+<p>  map&lt;int,int&gt; g[]: 存所有的1边</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="type">int</span> n,m,cnt;</span><br><span class="line">map&lt;<span class="type">int</span>,<span class="type">int</span>&gt;g[<span class="number">200005</span>];</span><br><span class="line">set&lt;<span class="type">int</span>&gt;s,ns;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">dfs</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;</span><br><span class="line">	vector&lt;<span class="type">int</span>&gt;v;v.<span class="built_in">clear</span>();ns.<span class="built_in">clear</span>();</span><br><span class="line">	<span class="keyword">for</span>(set&lt;<span class="type">int</span>&gt;::iterator it=s.<span class="built_in">begin</span>();it!=s.<span class="built_in">end</span>();it++)<span class="keyword">if</span>(!g[x][*it])v.<span class="built_in">push_back</span>(*it);<span class="keyword">else</span> ns.<span class="built_in">insert</span>(*it);  <span class="comment">//只用在没有经过的点中找</span></span><br><span class="line">	s=ns;<span class="comment">//更新</span></span><br><span class="line">  <span class="keyword">for</span>(<span class="type">int</span> i:v)<span class="built_in">dfs</span>(i);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>,&amp;n,&amp;m);</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>,u,v;i&lt;=m;++i)<span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>,&amp;u,&amp;v),g[u][v]=<span class="number">1</span>,g[v][u]=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;++i)s.<span class="built_in">insert</span>(i);</span><br><span class="line">	<span class="keyword">for</span>(;s.<span class="built_in">size</span>();)&#123;++cnt;<span class="type">int</span> t=*s.<span class="built_in">begin</span>();s.<span class="built_in">erase</span>(t);<span class="built_in">dfs</span>(t);&#125;</span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">&quot;%d\n&quot;</span>,cnt<span class="number">-1</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/blog/tags/%E9%A2%98%E8%A7%A3/" rel="tag"># 题解</a>
+              <a href="/blog/tags/%E6%B4%9B%E8%B0%B7/" rel="tag"># 洛谷</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/blog/2019/11/06/CF903D%20Almost%20Difference%20%E9%A2%98%E8%A7%A3/" rel="prev" title="CF903D Almost Difference 题解">
+                  <i class="fa fa-angle-left"></i> CF903D Almost Difference 题解
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/blog/2019/11/10/P5634%20%E6%95%B0%E7%A0%81%E6%8E%92%E5%BA%8F%E3%80%90%E5%8A%A0%E5%BC%BA%E7%89%88%E3%80%91%20%E9%A2%98%E8%A7%A3/" rel="next" title="P5634 数码排序【加强版】 题解">
+                  P5634 数码排序【加强版】 题解 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2022 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">paulzrm</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

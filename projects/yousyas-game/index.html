@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Yousya's Game：由 Ruimin Zhang 独立完成的 C++ 控制台剧情 RPG。">
+  <title>Yousya's Game · Projects</title>
+  <link rel="stylesheet" href="../../assets/styles.css">
+</head>
+<body>
+  <header class="shell nav">
+    <a class="brand" href="../../"><i></i>Ruimin Zhang</a>
+    <nav class="nav-links"><a href="../../">主页</a><a href="../../about/">About Me</a><a href="https://paulzrm.github.io/blog/">Blog</a><a href="../../#projects">Projects</a></nav>
+  </header>
+  <main class="shell article-layout">
+    <article class="article-card">
+      <div class="article-kicker">MY PROJECTS · C++</div>
+      <h1>Yousya's Game</h1>
+      <p class="lead">《勇者的游戏》是一款 Windows 平台的 C++ 控制台剧情 RPG，由我在 2026 年 1 月至 2 月独立完成。</p>
+      <div class="hero-actions">
+        <a class="button primary" href="https://github.com/paulzrm/yousyas-game">GitHub Repository</a>
+        <a class="button" href="https://github.com/paulzrm/yousyas-game/blob/main/readme(%E5%89%A7%E9%80%8F%E5%90%91).md">剧情设定（剧透）</a>
+      </div>
+
+      <h2>项目概述</h2>
+      <p>玩家扮演一名被召唤到异世界的“勇者”，在彩色字符地图中移动、收集金币、躲避或对抗敌人，并随着任务推进逐渐接近故事的真相。</p>
+      <p>游戏的灵感来自《安德的游戏》式的叙事错位：玩家所理解的世界，与程序背后真正记录的世界并不完全相同。项目还设计了剧情分支和多个结局，让玩家此前的行动影响最后的选择。</p>
+
+      <h2>玩法与系统</h2>
+      <div class="account-grid">
+        <div class="account-card"><small>World</small><strong>彩色字符地图</strong><p>使用 ANSI 颜色和实时控制台刷新表现地图、玩家、武器、敌人和资源。</p></div>
+        <div class="account-card"><small>Combat</small><strong>方向性战斗</strong><p>移动和武器朝向相互独立，碰撞关系决定攻击与受伤。</p></div>
+        <div class="account-card"><small>Enemy AI</small><strong>视野与追踪</strong><p>敌人具有方向、视野范围、移动频率和特殊生成逻辑。</p></div>
+        <div class="account-card"><small>Progress</small><strong>存档与多结局</strong><p>支持新游戏、继续、读取存档，以及已解锁结局查看。</p></div>
+      </div>
+
+      <h2>操作</h2>
+      <ul>
+        <li><code>W / A / S / D</code>：移动</li>
+        <li>方向键：改变武器方向并攻击</li>
+        <li><code>C</code>：在身后放置障碍</li>
+        <li><code>F</code>：传送</li>
+      </ul>
+
+      <h2>实现</h2>
+      <p>项目按玩家、敌人、地图、战斗、剧情步骤、结局与文件存档拆分模块。敌人的移动和碰撞判定与固定刷新时钟协同工作，地图则维护角色身体、武器、障碍和金币等不同单元。</p>
+      <p>原始工程使用本地中文代码页。整理公开版本时，全部源码和文档已转换为 UTF-8；程序启动时会显式设置 Windows 控制台 UTF-8 输入输出，并启用 ANSI 颜色。CMake 配置也会为 MSVC 和 MinGW 分别设置 UTF-8 编译参数。</p>
+
+      <blockquote>这是一个完整但仍保留实验感的个人作品：从战斗规则、敌人行为到剧情反转和结局收集，均由我独立设计与实现。</blockquote>
+    </article>
+  </main>
+  <footer class="site-footer"><div class="shell">© 2026 Ruimin Zhang · Yousya's Game</div></footer>
+</body>
+</html>

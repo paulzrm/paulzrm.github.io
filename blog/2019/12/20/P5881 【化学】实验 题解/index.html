@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 8.1.2">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/blog/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/blog/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/blog/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/blog/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/blog/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"paulzrm.github.io","root":"/blog/","images":"/blog/images","scheme":"Muse","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"hide","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"language":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/blog/js/config.js" defer></script>
+
+    <meta name="description" content="本文迁移自洛谷原文。  自己的题，怎么能不写题解呢？ 考察点：构图 我们可以新建$n$个点:$n+1 \dots2n$ 第$i$个点表示$i-n$这个数 对于所有的$a_i$，将i与所有是$a_i$的约数的平方数的平方根所对应的节点号连一条边，权值为这个平方根 这样就可以转换成一个图论问题了！ 也就是说，对于这张图，选出最大数量的点，使得两两之间不能由权值大于$x$的边相连。 我们很容易就可以发">
+<meta property="og:type" content="article">
+<meta property="og:title" content="P5881 【化学】实验 题解">
+<meta property="og:url" content="https://paulzrm.github.io/blog/2019/12/20/P5881%20%E3%80%90%E5%8C%96%E5%AD%A6%E3%80%91%E5%AE%9E%E9%AA%8C%20%E9%A2%98%E8%A7%A3/index.html">
+<meta property="og:site_name" content="paulzrm&#39;s blog">
+<meta property="og:description" content="本文迁移自洛谷原文。  自己的题，怎么能不写题解呢？ 考察点：构图 我们可以新建$n$个点:$n+1 \dots2n$ 第$i$个点表示$i-n$这个数 对于所有的$a_i$，将i与所有是$a_i$的约数的平方数的平方根所对应的节点号连一条边，权值为这个平方根 这样就可以转换成一个图论问题了！ 也就是说，对于这张图，选出最大数量的点，使得两两之间不能由权值大于$x$的边相连。 我们很容易就可以发">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-12-20T13:44:14.000Z">
+<meta property="article:modified_time" content="2019-12-20T13:44:14.000Z">
+<meta property="article:author" content="paulzrm">
+<meta property="article:tag" content="洛谷">
+<meta property="article:tag" content="题解">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://paulzrm.github.io/blog/2019/12/20/P5881%20%E3%80%90%E5%8C%96%E5%AD%A6%E3%80%91%E5%AE%9E%E9%AA%8C%20%E9%A2%98%E8%A7%A3/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://paulzrm.github.io/blog/2019/12/20/P5881%20%E3%80%90%E5%8C%96%E5%AD%A6%E3%80%91%E5%AE%9E%E9%AA%8C%20%E9%A2%98%E8%A7%A3/","path":"2019/12/20/P5881 【化学】实验 题解/","title":"P5881 【化学】实验 题解"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>P5881 【化学】实验 题解 | paulzrm's blog</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/blog/js/utils.js" defer></script><script src="/blog/js/motion.js" defer></script><script src="/blog/js/sidebar.js" defer></script><script src="/blog/js/next-boot.js" defer></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+  
+
+  <script class="next-config" data-name="enableMath" type="application/json">true</script><script class="next-config" data-name="mathjax" type="application/json">{"enable":true,"tags":"none","js":{"url":"https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.js","integrity":"sha256-MASABpB4tYktI2Oitl4t+78w/lyA+D7b/s9GEP0JOGI="}}</script>
+<script src="/blog/js/third-party/math/mathjax.js" defer></script>
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/blog/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/blog/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">paulzrm's blog</p>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/blog/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-文章列表"><a href="/blog/articles/" rel="section"><i class="fa fa-list fa-fw"></i>文章列表</a></li><li class="menu-item menu-item-tags"><a href="/blog/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-题解"><a href="/blog/categories/%E9%A2%98%E8%A7%A3/" rel="section"><i class="fa fa-code fa-fw"></i>题解</a></li><li class="menu-item menu-item-archives"><a href="/blog/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="paulzrm"
+      src="/blog/images/avatar.gif">
+  <p class="site-author-name" itemprop="name">paulzrm</p>
+  <div class="site-description" itemprop="description">一个存一些奇奇怪怪的东西的地方</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/blog/archives/">
+          <span class="site-state-item-count">73</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/blog/tags/">
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/paulzrm" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;paulzrm" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://paulzrm.github.io/blog/2019/12/20/P5881%20%E3%80%90%E5%8C%96%E5%AD%A6%E3%80%91%E5%AE%9E%E9%AA%8C%20%E9%A2%98%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/blog/images/avatar.gif">
+      <meta itemprop="name" content="paulzrm">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="paulzrm's blog">
+      <meta itemprop="description" content="一个存一些奇奇怪怪的东西的地方">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="P5881 【化学】实验 题解 | paulzrm's blog">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          P5881 【化学】实验 题解
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2019-12-20 21:44:14" itemprop="dateCreated datePublished" datetime="2019-12-20T21:44:14+08:00">2019-12-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/blog/categories/%E9%A2%98%E8%A7%A3/" itemprop="url" rel="index"><span itemprop="name">题解</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody"><blockquote>
+<p>本文迁移自<a target="_blank" rel="noopener" href="https://www.luogu.com.cn/article/391fczq0">洛谷原文</a>。</p>
+</blockquote>
+<p>自己的题，怎么能不写题解呢？</p>
+<p>考察点：构图</p>
+<p>我们可以新建$n$个点:$n+1 \dots2n$</p>
+<p>第$i$个点表示$i-n$这个数</p>
+<p>对于所有的$a_i$，将i与所有是$a_i$的约数的平方数的平方根所对应的节点号连一条边，权值为这个平方根</p>
+<p>这样就可以转换成一个图论问题了！</p>
+<p>也就是说，对于这张图，选出最大数量的点，使得两两之间不能由权值大于$x$的边相连。</p>
+<p>我们很容易就可以发现， 在一个由权值大于$x$所组成的联通快中，最多只能选择一个。</p>
+<p>所以跑$n$边dfs就可以了！</p>
+<p>注意点1:</p>
+<p>由于有$2 \times 10^5$个点和询问，所以裸的$O(nm)$是过不了的</p>
+<p>通过打表可以发现，有很大一部分询问的答案是相同的</p>
+<p>最多只需要查找$\sqrt{max{a_i}}&#x3D;200$次即可。</p>
+<p>所以只需要找到这个临界值就可以了</p>
+<p>2.如何O($b_i^{\frac{1}{3}}$)求出$c_i$?</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">res=<span class="number">1</span>;i=<span class="number">1</span></span><br><span class="line"><span class="keyword">while</span> i*i*i&lt;=b[i]:</span><br><span class="line">	cnt=<span class="number">0</span></span><br><span class="line">	<span class="keyword">while</span> b[i]%i==<span class="number">0</span>:</span><br><span class="line">		cnt=cnt<span class="number">+1</span></span><br><span class="line">		b[i]=b[i]/i</span><br><span class="line">	res=<span class="built_in">max</span>(res,cnt)</span><br><span class="line">last_b=b[i]</span><br><span class="line">tmp=<span class="built_in">sqrt</span>(b[i])</span><br><span class="line"><span class="keyword">if</span> tmp*tmp==b[i]:res=<span class="built_in">max</span>(res,<span class="number">2</span>)</span><br><span class="line"><span class="keyword">return</span> res</span><br></pre></td></tr></table></figure>
+
+<p>为什么这段代码是正确的？</p>
+<p>假设 $last_b&#x3D;p*q$</p>
+<p>因为所有$\le b_i^{\frac{1}{3}}$的 因数都已经被while除完了</p>
+<p>所以$p,q$一定为两个挺大的，互质的数</p>
+<p>所以只要特判一下$p,q$是否相等即可</p>
+<p><strong>std:</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;bits/stdc++.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> mp make_pair</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ll long long</span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> std;</span><br><span class="line"><span class="type">const</span> <span class="type">int</span> mxn=<span class="number">1000005</span>;<span class="comment">//real: 200000</span></span><br><span class="line"><span class="type">int</span> n,m;</span><br><span class="line"><span class="type">int</span> a[mxn],b[mxn],c[mxn];</span><br><span class="line">vector&lt;<span class="type">int</span>&gt;g[mxn];</span><br><span class="line"><span class="type">int</span> overban,t_o,mx;</span><br><span class="line"><span class="type">bool</span> use[mxn];</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">dfs</span><span class="params">(<span class="type">int</span> x)</span></span>&#123;</span><br><span class="line">	<span class="keyword">if</span>(use[x])<span class="keyword">return</span>;</span><br><span class="line">	use[x]=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">if</span>(x&lt;=n)mx=<span class="built_in">max</span>(mx,c[x]);</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> it=<span class="number">0</span>;it&lt;g[x].<span class="built_in">size</span>();++it)&#123;</span><br><span class="line">		<span class="type">int</span> y=g[x][it];</span><br><span class="line">		<span class="type">int</span> ma=<span class="built_in">max</span>(x,y);</span><br><span class="line">		<span class="keyword">if</span>(ma&lt;=overban)<span class="keyword">continue</span>;</span><br><span class="line">		<span class="built_in">dfs</span>(y);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> pair&lt;<span class="type">int</span>,<span class="type">int</span>&gt; <span class="title">solve</span><span class="params">(<span class="type">int</span> xx)</span></span>&#123;</span><br><span class="line">	overban=xx;</span><br><span class="line">	t_o=xx-n;</span><br><span class="line">	<span class="type">int</span> res=<span class="number">0</span>,cnt=<span class="number">0</span>;</span><br><span class="line">	<span class="built_in">memset</span>(use,<span class="number">0</span>,<span class="built_in">sizeof</span>(use));</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;++i)&#123;</span><br><span class="line">		<span class="keyword">if</span>(!use[i])&#123;</span><br><span class="line">			mx=<span class="number">0</span>;</span><br><span class="line">			<span class="built_in">dfs</span>(i);</span><br><span class="line">			<span class="keyword">if</span>(mx)++cnt;</span><br><span class="line">			res+=mx;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="built_in">mp</span>(cnt,res);</span><br><span class="line">&#125;</span><br><span class="line">pair&lt;<span class="type">int</span>,<span class="type">int</span>&gt;ans[mxn];</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>,&amp;n,&amp;m);</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;++i)&#123;</span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,a+i);</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> x=<span class="number">2</span>;x*x&lt;=a[i];++x)&#123;</span><br><span class="line">			<span class="keyword">if</span>(a[i]%(x*x)==<span class="number">0</span>)&#123;</span><br><span class="line">				g[i].<span class="built_in">push_back</span>(n+x);</span><br><span class="line">				g[n+x].<span class="built_in">push_back</span>(i);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=n;++i)&#123;   <span class="comment">//b[i]^(1/3) calc c[i]</span></span><br><span class="line">		<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,b+i);</span><br><span class="line">		<span class="type">int</span> t=b[i],res=<span class="number">1</span>;</span><br><span class="line">		<span class="keyword">for</span>(<span class="type">int</span> x=<span class="number">2</span>;x*x*x&lt;=t;++x)&#123;</span><br><span class="line">			<span class="type">int</span> c=<span class="number">0</span>;</span><br><span class="line">			<span class="keyword">for</span>(;t%x==<span class="number">0</span>;t/=x)++c;</span><br><span class="line">			res=<span class="built_in">max</span>(res,c);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="type">int</span> t2=<span class="built_in">sqrt</span>(t);</span><br><span class="line">		<span class="keyword">if</span>(t2*t2==t)res=<span class="built_in">max</span>(res,<span class="number">2</span>);</span><br><span class="line">		<span class="keyword">else</span> res=<span class="built_in">max</span>(res,<span class="number">1</span>);</span><br><span class="line">		c[i]=res;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=<span class="number">200000</span>;++i)&#123;</span><br><span class="line">	    <span class="keyword">if</span>(ans[i<span class="number">-1</span>].first==n)&#123;</span><br><span class="line">	        ans[i]=ans[i<span class="number">-1</span>];</span><br><span class="line">	        <span class="keyword">continue</span>;</span><br><span class="line">	    &#125;</span><br><span class="line">	    ans[i]=<span class="built_in">solve</span>(i+n);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span>(<span class="type">int</span> i=<span class="number">1</span>;i&lt;=m;++i)&#123;</span><br><span class="line">		<span class="type">int</span> x;<span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;x);</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d %d\n&quot;</span>,ans[x].first,ans[x].second);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/blog/tags/%E9%A2%98%E8%A7%A3/" rel="tag"># 题解</a>
+              <a href="/blog/tags/%E6%B4%9B%E8%B0%B7/" rel="tag"># 洛谷</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/blog/2019/12/16/CF1271D%20Portals%20%E9%A2%98%E8%A7%A3/" rel="prev" title="CF1271D Portals 题解">
+                  <i class="fa fa-angle-left"></i> CF1271D Portals 题解
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/blog/2020/03/09/CF194A%20Exams%20%E9%A2%98%E8%A7%A3/" rel="next" title="CF194A Exams 题解">
+                  CF194A Exams 题解 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 2022 – 
+    <span itemprop="copyrightYear">2026</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">paulzrm</span>
+  </div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+</body>
+</html>

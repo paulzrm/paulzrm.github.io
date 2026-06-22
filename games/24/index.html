@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>在线 24 点 · Ruimin Zhang</title>
+  <link rel="stylesheet" href="../../assets/styles.css">
+</head>
+<body>
+  <header class="shell nav">
+    <a class="brand" href="../../"><i></i>Ruimin Zhang</a>
+    <nav class="nav-links"><a href="../../">主页</a><a href="../../#games">Games</a><a href="https://paulzrm.github.io/blog/">Blog</a></nav>
+  </header>
+  <main class="shell game-page">
+    <section class="game-shell">
+      <div class="game-header">
+        <div><div class="eyebrow">GAME 02</div><h1>在线 24 点</h1><p>使用四个数字各一次，通过加减乘除得到 24。</p></div>
+        <button class="button" id="new-puzzle">换一道题</button>
+      </div>
+      <div class="status" id="game-status" aria-live="polite">把两个数字拖入左右区域，再把运算符拖到中间。</div>
+      <div class="puzzle-numbers" id="number-pool"></div>
+      <div class="operator-pool" id="operator-pool">
+        <div class="operator-card" draggable="true" data-operator="+">+</div>
+        <div class="operator-card" draggable="true" data-operator="-">−</div>
+        <div class="operator-card" draggable="true" data-operator="*">×</div>
+        <div class="operator-card" draggable="true" data-operator="/">÷</div>
+      </div>
+      <div class="operation-zone">
+        <div class="drop-slot" data-slot="left">左侧数字</div>
+        <div class="drop-slot" data-slot="operator">运算符</div>
+        <div class="drop-slot" data-slot="right">右侧数字</div>
+        <button class="button primary" id="combine">合并</button>
+      </div>
+      <div class="game-tools">
+        <button class="button" id="clear-slots">清空操作区</button>
+        <button class="button" id="restart">重新开始</button>
+      </div>
+      <div class="history-list" id="history"></div>
+    </section>
+  </main>
+  <script src="./game24.js"></script>
+</body>
+</html>
