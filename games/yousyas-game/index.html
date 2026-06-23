@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Yousya's Game · Web Edition</title>
+  <link rel="stylesheet" href="../../assets/styles.css">
+  <link rel="stylesheet" href="./game.css">
+</head>
+<body>
+  <header class="shell nav">
+    <a class="brand" href="../../"><i></i>Ruimin Zhang</a>
+    <nav class="nav-links"><a href="../../">主页</a><a href="../../#games">Games</a><a href="../../projects/yousyas-game/">项目介绍</a><a href="https://paulzrm.github.io/blog/">Blog</a></nav>
+  </header>
+  <main class="shell yousya-page">
+    <section class="yousya-shell">
+      <header class="yousya-heading">
+        <div><div class="eyebrow">GAME 03 · WEB EDITION</div><h1>Yousya's Game</h1><p>文字与字符画构成的回合制剧情 RPG。你的每次移动，都会让棋盘上的时间前进一步。</p></div>
+        <div class="save-actions"><button class="button" id="save-button">存档管理</button><button class="button" id="help-button">操作说明</button></div>
+      </header>
+      <div class="game-layout">
+        <section class="terminal-panel">
+          <div class="terminal-bar"><span><i></i><i></i><i></i></span><b id="scene-name">YOUSYA // AWAITING SIGNAL</b><span id="turn-counter">TURN 0000</span></div>
+          <div class="ascii-stage" id="ascii-stage"><div class="title-art"><strong>ＹＯＵＳＹＡ’Ｓ</strong><span>Ｇ　Ａ　Ｍ　Ｅ</span></div></div>
+          <div class="dialogue-box"><small id="speaker">SYSTEM</small><p id="dialogue">等待勇者回应。</p></div>
+          <div class="choice-list" id="choice-list"></div>
+        </section>
+        <aside class="game-sidebar">
+          <section class="side-card"><div class="side-label">STATUS</div><div class="stat-grid"><div><span>生命</span><b id="stat-hp">—</b></div><div><span>金币</span><b id="stat-money">—</b></div><div><span>击破</span><b id="stat-kills">—</b></div><div><span>章节</span><b id="stat-stage">序章</b></div></div></section>
+          <section class="side-card objective-card"><div class="side-label">CURRENT OBJECTIVE</div><h2 id="objective-title">开始游戏</h2><p id="objective-detail">选择新游戏，或读取浏览器中的本地存档。</p><div class="objective-progress"><i id="objective-bar"></i></div></section>
+          <section class="side-card controls-card"><div class="side-label">CONTROLS</div><div class="control-line"><kbd>W A S D</kbd><span>移动</span></div><div class="control-line"><kbd>方向键</kbd><span>转剑 / 攻击</span></div><div class="control-line"><kbd>C</kbd><span>障碍 · 3 金币</span></div><div class="control-line"><kbd>F</kbd><span>信标 · 5 金币</span></div><div class="control-line"><kbd>E</kbd><span>调查</span></div></section>
+          <section class="side-card legend-card"><div class="side-label">LEGEND</div><p><b class="blue-text">O</b> 勇者　<b class="red-text">O</b> 魔物　<b class="gold-text">$</b> 金币</p><p><b class="green-text">P</b> 信标　<b>*</b> 障碍　<b class="purple-text">◆</b> 圣器碎片</p></section>
+          <div class="touch-controls">
+            <div class="touch-move"><button data-key="w">W</button><button data-key="a">A</button><button data-key="s">S</button><button data-key="d">D</button></div>
+            <div class="touch-action"><button data-key="ArrowUp">↑</button><button data-key="ArrowLeft">←</button><button data-key="ArrowDown">↓</button><button data-key="ArrowRight">→</button><button data-key="c">C</button><button data-key="f">F</button></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+  <dialog class="game-modal" id="save-modal"><form method="dialog"><div class="modal-heading"><div><div class="eyebrow">SAVE TERMINAL</div><h2>存档管理</h2></div><button class="modal-close" value="cancel">×</button></div><p>关键进度会自动保存到浏览器。导出码使用 AES-GCM 加密并带完整性校验，可复制到其他设备导入。</p><textarea id="save-code" rows="6" spellcheck="false" placeholder="点击导出，或粘贴存档码"></textarea><div class="modal-actions"><button class="button" id="export-save" type="button">导出存档</button><button class="button primary" id="import-save" type="button">导入并读取</button><button class="button danger-button" id="clear-save" type="button">清除本地存档</button></div><p class="modal-status" id="save-status"></p></form></dialog>
+  <dialog class="game-modal" id="help-modal"><form method="dialog"><div class="modal-heading"><div><div class="eyebrow">FIELD MANUAL</div><h2>操作说明</h2></div><button class="modal-close" value="cancel">×</button></div><ul><li>移动或转剑都会推进一回合，你始终先于敌人行动。</li><li>剑碰到敌人即可击破；敌人的身体或武器碰到你会损失生命。</li><li>敌人拥有正前方 120° 视野，发现你后会追踪，但不会绕开障碍。</li><li>屏幕上的浅红点为当前可见的敌人警戒区域。</li></ul><button class="button primary modal-full-button" value="ok">明白了</button></form></dialog>
+  <script src="./game.js"></script>
+</body>
+</html>

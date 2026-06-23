@@ -226,6 +226,10 @@ section { padding: 30px 0 58px; }
 }
 .game-card.wordle { background: linear-gradient(145deg, #163b2f, #087f5b); }
 .game-card.twenty-four { background: linear-gradient(145deg, #17345c, #1769aa); }
+.game-card.yousya {
+  grid-column: 1 / -1;
+  background: linear-gradient(135deg, #0b1320, #17345c 58%, #087f5b);
+}
 .game-card .game-mark { font-size: 54px; font-weight: 900; letter-spacing: .08em; opacity: .92; }
 .game-card h3 { margin: 26px 0 6px; font-size: 27px; }
 .game-card p { max-width: 470px; margin: 0; color: rgba(255, 255, 255, .76); }
