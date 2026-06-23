@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Yousya's Game · Web Edition</title>
   <link rel="stylesheet" href="../../assets/styles.css">
-  <link rel="stylesheet" href="./game.css">
+  <link rel="stylesheet" href="./game.css?v=realtime-1">
 </head>
 <body>
   <header class="shell nav">
@@ -15,8 +15,8 @@
   <main class="shell yousya-page">
     <section class="yousya-shell">
       <header class="yousya-heading">
-        <div><div class="eyebrow">GAME 03 · WEB EDITION</div><h1>Yousya's Game</h1><p>文字与字符画构成的回合制剧情 RPG。你的每次移动，都会让棋盘上的时间前进一步。</p></div>
-        <div class="save-actions"><button class="button" id="save-button">存档管理</button><button class="button" id="help-button">操作说明</button></div>
+        <div><div class="eyebrow">GAME 03 · WEB EDITION</div><h1>Yousya's Game</h1><p>文字与字符画构成的实时剧情 RPG。即使停在原地，棋盘上的时间也仍会前进。</p></div>
+        <div class="save-actions"><button class="button primary" id="pause-button">暂停</button><button class="button" id="save-button">存档管理</button><button class="button" id="help-button">操作说明</button></div>
       </header>
       <div class="game-layout">
         <section class="terminal-panel">
@@ -39,7 +39,7 @@
     </section>
   </main>
   <dialog class="game-modal" id="save-modal"><form method="dialog"><div class="modal-heading"><div><div class="eyebrow">SAVE TERMINAL</div><h2>存档管理</h2></div><button class="modal-close" value="cancel">×</button></div><p>关键进度会自动保存到浏览器。导出码使用 AES-GCM 加密并带完整性校验，可复制到其他设备导入。</p><textarea id="save-code" rows="6" spellcheck="false" placeholder="点击导出，或粘贴存档码"></textarea><div class="modal-actions"><button class="button" id="export-save" type="button">导出存档</button><button class="button primary" id="import-save" type="button">导入并读取</button><button class="button danger-button" id="clear-save" type="button">清除本地存档</button></div><p class="modal-status" id="save-status"></p></form></dialog>
-  <dialog class="game-modal" id="help-modal"><form method="dialog"><div class="modal-heading"><div><div class="eyebrow">FIELD MANUAL</div><h2>操作说明</h2></div><button class="modal-close" value="cancel">×</button></div><ul><li>移动或转剑都会推进一回合，你始终先于敌人行动。</li><li>剑碰到敌人即可击破；敌人的身体或武器碰到你会损失生命。</li><li>敌人拥有正前方 120° 视野，发现你后会追踪，但不会绕开障碍。</li><li>屏幕上的浅红点为当前可见的敌人警戒区域。</li></ul><button class="button primary modal-full-button" value="ok">明白了</button></form></dialog>
-  <script src="./game.js"></script>
+  <dialog class="game-modal" id="help-modal"><form method="dialog"><div class="modal-heading"><div><div class="eyebrow">FIELD MANUAL</div><h2>操作说明</h2></div><button class="modal-close" value="cancel">×</button></div><ul><li>世界拥有独立时间流速；即使不按键，敌人也会继续行动。</li><li>点击“暂停”或按 Space / P 可暂停与恢复游戏。</li><li>剑碰到敌人即可击破；敌人的身体或武器碰到你会损失生命。</li><li>敌人拥有正前方 120° 视野，发现你后会追踪，但不会绕开障碍。</li><li>打开剧情选项、操作说明、存档窗口或切到其他标签页时会自动暂停。</li></ul><button class="button primary modal-full-button" value="ok">明白了</button></form></dialog>
+  <script src="./game.js?v=realtime-1"></script>
 </body>
 </html>
