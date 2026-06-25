@@ -19,12 +19,12 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"paulzrm.github.io","root":"/blog/","images":"/blog/images","scheme":"Muse","darkmode":false,"version":"8.27.0","exturl":false,"sidebar":{"position":"left","width_expanded":320,"width_dual_column":240,"display":"hide","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":true,"style":null},"fold":{"enable":false,"height":500},"language":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":false,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}}</script><script src="/blog/js/config.js" defer></script>
 
-    <meta name="description" content="本文迁移自洛谷原文。  来个python题解 由于只是要求A是B的子串，而没有限制长度最短（如果限制的话就比这难得多了），所以我们可以贪心的让B为A+A的反串。 代码如下： 123456s&#x3D;input()print(&quot;zrmtcl&quot;+s+s[::-1]+&quot;lctmrz&quot;)# s[::-1]表示s的反串# 由于限制B长度远大于A的长度的2倍，所以我们可以加一">
+    <meta name="description" content="本文迁移自洛谷原文。  来个python题解 由于只是要求A是B的子串，而没有限制长度最短（如果限制的话就比这难得多了），所以我们可以贪心的让B为A+A的反串。 代码如下： 123456s&#x3D;input()print(&quot;zrmtcl&quot;+s+s[::-1]+&quot;lctmrz&quot;)# s[::-1]表示s的反串# 由于限制B长度远大于A的长度的2倍，所以我们可以加一些私货（雾">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CF932A Palindromic Supersequence 题解">
 <meta property="og:url" content="https://paulzrm.github.io/blog/2020/07/29/CF932A%20Palindromic%20Supersequence%20%E9%A2%98%E8%A7%A3/index.html">
 <meta property="og:site_name" content="paulzrm&#39;s blog">
-<meta property="og:description" content="本文迁移自洛谷原文。  来个python题解 由于只是要求A是B的子串，而没有限制长度最短（如果限制的话就比这难得多了），所以我们可以贪心的让B为A+A的反串。 代码如下： 123456s&#x3D;input()print(&quot;zrmtcl&quot;+s+s[::-1]+&quot;lctmrz&quot;)# s[::-1]表示s的反串# 由于限制B长度远大于A的长度的2倍，所以我们可以加一">
+<meta property="og:description" content="本文迁移自洛谷原文。  来个python题解 由于只是要求A是B的子串，而没有限制长度最短（如果限制的话就比这难得多了），所以我们可以贪心的让B为A+A的反串。 代码如下： 123456s&#x3D;input()print(&quot;zrmtcl&quot;+s+s[::-1]+&quot;lctmrz&quot;)# s[::-1]表示s的反串# 由于限制B长度远大于A的长度的2倍，所以我们可以加一些私货（雾">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-07-29T12:44:00.000Z">
 <meta property="article:modified_time" content="2020-07-29T12:44:00.000Z">
@@ -353,7 +353,7 @@ mjx-container[display="true"] + br {
 <p>来个python题解</p>
 <p>由于只是要求A是B的子串，而没有限制长度最短（如果限制的话就比这难得多了），所以我们可以贪心的让B为A+A的反串。</p>
 <p>代码如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">s=input()</span><br><span class="line">print(&quot;zrmtcl&quot;+s+s[::-1]+&quot;lctmrz&quot;)</span><br><span class="line"></span><br><span class="line"># s[::-1]表示s的反串</span><br><span class="line"></span><br><span class="line"># 由于限制B长度远大于A的长度的2倍，所以我们可以加一些私货（雾</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">s=input()</span><br><span class="line">print("zrmtcl"+s+s[::-1]+"lctmrz")</span><br><span class="line"></span><br><span class="line"># s[::-1]表示s的反串</span><br><span class="line"></span><br><span class="line"># 由于限制B长度远大于A的长度的2倍，所以我们可以加一些私货（雾</span><br></pre></td></tr></table></figure>
 
     </div>
 

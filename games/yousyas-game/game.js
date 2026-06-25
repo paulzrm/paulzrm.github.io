@@ -115,7 +115,7 @@
     locked = true;
     render();
     const l = lines[i];
-    say(l[0], l[1]);
+    say(l[0], typeof l[1] === "function" ? l[1]() : l[1]);
     choices([{
       label: l[2],
       action: () => (i + 1 < lines.length ? script(lines, done, i + 1) : (locked = false, done())),
@@ -537,8 +537,7 @@
     if (!state.ableV) return;
     const { player } = state;
     if (!player.weapon) { player.weapon = true; return; }
-    const tp = { ...player, weapon: true };
-    if (ablePlayer(tp)) player.weapon = false;
+    player.weapon = false;
   }
 
   function processSkills() {
@@ -636,7 +635,7 @@
 
   function handleDeath() {
     if (state.scene.startsWith("tut")) {
-      if (state.scene === "tut-static" || (state.scene === "tut-move" && state.sessionKill < 1)) endGame(0, "找错人了", "那个声音：怎么，你连打木偶都能被木偶反杀？");
+      if (state.scene === "tut-static" || state.scene === "tut-move") endGame(0, "找错人了", "那个声音：怎么，你连打木偶都能被木偶反杀？");
       else endGame(1, "技不如人", "那个声音：就这点水准，怎么能当上勇者？");
     } else if (state.scene === "final-demon") endGame(3, "魔王陨落", "人类联军将你围困，第108代魔王的统治戛然而止。");
     else if (state.scene === "final-human") endGame(5, "背叛者的末路", "追猎型魔物将你击倒，清除程序已经启动。");
@@ -660,12 +659,22 @@
   // ---------- Story scripts ----------
   const SCR = {
     intro: [
-      ["那个声音", "你醒了，勇者。你被召唤到艾瑞斯世界，需要击败魔王卡洛梅。", "……谁？"],
-      ["那个声音", "在那之前，先学会移动、战斗与生存。蓝色 O 是你，身前线条是剑。", "开始训练"],
+      ["你", "……？这是哪儿……？", "继续"],
+      ["旁白", "此时，一个声音在你耳边响起。", "继续"],
+      ["那个声音", "你醒了，勇者。", "勇者？"],
+      ["那个声音", "是的。你被我召唤到了艾瑞斯世界。你需要打败这里的魔王。", "魔王？"],
+      ["那个声音", "是的。在那之前，我先来教你在这个世界最基本的战斗方式。", "听说明"],
+      ["那个声音", "蓝色 O 是你，身前的线条是你的剑。W/A/S/D 移动，上下左右方向键控制剑的方向。", "继续"],
+      ["那个声音", "地图上的 # 是障碍物，你和你的剑都无法穿过。$ 代表金币，一个 $ 价值 10 枚金币。", "开始训练"],
     ],
     prePlot: [
-      ["那个声音", "欢迎来到艾瑞斯。这里是神魔博弈的棋盘，四大古陆等待征服。", "继续"],
-      ["那个声音", "赤烬之地、霜骸冰原、雷鸣裂谷、影渊圣所——四圣器将指引你的命运。", "我准备好了"],
+      ["那个声音", "欢迎来到艾瑞斯世界，勇者。这里是神魔博弈的棋盘，也是你命中注定的战场。", "棋盘？"],
+      ["那个声音", "那些红色身影都是魔王卡洛梅的爪牙。它们蚕食着四大古陆，而你要做的，是终结这一切。", "四大古陆？"],
+      ["那个声音", "赤烬之地，燃烧着永恒业火，封印着「炎核」；霜骸冰原，时间凝结的极寒坟场，冰封着「霜心」。", "继续"],
+      ["那个声音", "雷鸣裂谷，雷暴永不停息，禁锢着「雷纹臂铠」；影渊圣所，光无法抵达，沉睡着「虚空之冠」。", "这些圣器能消灭魔王？"],
+      ["那个声音", "当然。当四圣器齐聚之时——那将是新纪元的开端。", "继续"],
+      ["那个声音", "注意魔物身上的纹章。那是卡洛梅的烙印，它们会像嗅到血腥的鲨鱼般追踪你。", "继续"],
+      ["那个声音", "但记住，真正的威胁往往戴着伪善的面具。", "我准备好了"],
     ],
     reveal: [
       ["X-0 系统", "认知过滤器已解除。你斩杀的“魔物”，都是其他候选者。", "继续"],
@@ -689,7 +698,15 @@
     hud();
   }
 
-  function viewEndings() {
+  async function viewEndings() {
+    try {
+      const raw = localStorage.getItem(SAVE_KEY);
+      if (raw) {
+        const saved = migrate(await decrypt(raw));
+        saved.haveEnd.forEach((v, i) => { if (v) state.haveEnd[i] = true; });
+        if (saved.ableV) state.ableV = true;
+      }
+    } catch {}
     state.mode = "story";
     locked = true;
     const names = ["找错人了", "技不如人", "出师未捷身先死", "魔王陨落", "魔王永恒", "背叛者的末路", "无处可归", "真正的勇者"];
@@ -733,7 +750,13 @@
   function finishTutCoins() {
     state.stage = Math.max(state.stage, 1);
     saveLocal();
-    script([["那个声音", "很好。接下来学习战斗——击杀 10 只不移动的魔物。", "开始"]], () => tutStatic());
+    script([
+      ["那个声音", "好的。现在你已经可以熟练移动了，勇者。", "继续"],
+      ["那个声音", "在魔王的领导下，魔物会攻击你。魔物也有武器。", "继续"],
+      ["那个声音", "如果你的武器碰到了它们的武器或者身体，那么它们就会死亡。", "继续"],
+      ["那个声音", "反之，如果魔物的武器或者身体碰到了你的身体，你会损失生命；虽然它们也会因此死亡，但这对你而言并不值得。", "继续"],
+      ["那个声音", "你的行动永远比魔物提前。试试和魔物战斗吧。任务：击杀 10 只不移动的魔物。", "开始"],
+    ], () => tutStatic());
   }
 
   function tutStatic(skipIntro = false) {
@@ -753,7 +776,12 @@
   function finishTutStatic() {
     state.stage = Math.max(state.stage, 2);
     saveLocal();
-    script([["那个声音", "魔物会移动，并拥有视野。击杀 10 只移动魔物。", "继续"]], () => tutMove());
+    script([
+      ["那个声音", "好的，现在你已经会攻击了。在真正的世界中，魔物是会移动的。", "继续"],
+      ["那个声音", "它们有一个视野范围。面朝方向就是武器方向；若你在它面朝方向左 60 度到右 60 度之间，且距离不超过视野范围，就会被看到。", "继续"],
+      ["那个声音", "被看到后，它会径直向你走来。但它很笨，不会绕开障碍物；如果被卡住就不会动。", "继续"],
+      ["那个声音", "没有看到你的魔物会停下或者随机走动。任务：击杀 10 只移动的魔物。请小心。", "继续"],
+    ], () => tutMove());
   }
 
   function tutMove(skipIntro = false) {
@@ -774,7 +802,11 @@
     state.stage = Math.max(state.stage, 3);
     state.player.money += 100;
     saveLocal();
-    script([["那个声音", "按 C 在身后放置障碍（3 金币）。存活 60 秒。", "开始"]], () => tutBarrier());
+    script([
+      ["那个声音", "好的，现在你已经可以比较熟练地和魔物战斗了。作为勇者，你有一些技能。", "继续"],
+      ["那个声音", "按 C 可以在你的身后放下一个人造障碍物。你能够通过它，并在通过时清除；魔物会被它阻挡。", "继续"],
+      ["那个声音", "放置一个障碍物需要花费 3 枚金币。请试试这个技能吧。任务：存活一分钟。", "开始"],
+    ], () => tutBarrier());
   }
 
   function tutBarrier(skipIntro = false) {
@@ -800,7 +832,11 @@
     state.stage = Math.max(state.stage, 4);
     state.timerGoal = 0;
     saveLocal();
-    script([["那个声音", "按 F 设置/传送信标（5 金币）。此阶段武器对碰也会伤到你。击杀 3 个敌人。", "开始"]], () => tutBeacon());
+    script([
+      ["那个声音", "你还有一个技能。在没有设置信标时，按 F 可以设置一个信标。", "继续"],
+      ["那个声音", "在有信标时按 F 会立刻传送到信标的位置并回收它。设置或传送均需要花费 5 枚金币。", "继续"],
+      ["那个声音", "请试试这个技能吧。任务：击杀 3 个敌人。此时若你和敌人的武器碰到一起，你也会损失生命。", "开始"],
+    ], () => tutBeacon());
   }
 
   function tutBeacon(skipIntro = false) {
@@ -827,9 +863,11 @@
     state.stage = Math.max(state.stage, 5);
     state.specialRule = 0;
     state.maxCoin = 12;
+    state.countKill = 0;
+    state.sessionKill = 0;
     clearEnemies();
     saveLocal();
-    script([["那个声音", "教程完成。去战斗吧，勇者。", "前往大陆"]], prePlot);
+    script([["那个声音", "好的，你现在已经比较熟悉这个世界了。去战斗吧！教程完。", "前往大陆"]], prePlot);
   }
 
   function prePlot() {
@@ -863,14 +901,19 @@
     clearEnemies();
     for (let i = 0; i < 64; i++) newEnemy(5);
     beginPlay("ember");
-    if (!skipIntro) say("那个声音", "赤烬之地：收集 4 把钥匙 K，抵达圣殿 S。");
+    if (!skipIntro) say("那个声音", "赤烬之地：燃烧着永恒业火的战场。这里障碍和金币较少，炎之巨人速度较慢。收集 4 把钥匙 K，抵达圣殿 S。");
     startLoop();
   }
 
   function finishEmberExplore() {
     state.stage = 7;
     saveLocal();
-    script([["那个声音", "青铜巨门开启——进入炎核圣殿，坚持 90 秒。", "进入"]], () => emberShrine());
+    script([
+      ["旁白", "钥匙插入青铜巨门的瞬间，地动山摇。脚下的岩浆突然沸腾，穹顶落下燃烧的巨石。", "继续"],
+      ["那个声音", "快进去！祂要苏醒了——", "进入"],
+      ["旁白", "青铜巨门在身后合上。神殿中央亮起一座火炬，你发现自己已被炎之巨人包围。", "继续"],
+      ["那个声音", "这是你的试炼，勇者！你需要坚持 90 秒，就能获得「炎核」。", "开始"],
+    ], () => emberShrine());
   }
 
   function emberShrine(skipIntro = false) {
@@ -902,15 +945,30 @@
     } else if (state.scene === "ember-shrine") {
       state.stage = 8;
       saveLocal();
-      script([["那个声音", "炎核落入掌心。下一站：霜骸冰原。", "出发"]], () => frostExplore());
+      script([
+        ["旁白", "终于，你坚持下来了。所有炎之巨人突然僵直，化作岩浆流入祭坛。", "继续"],
+        ["旁白", "「炎核」缓缓降落到你掌心，灼痛中传来诡异的温暖。炎核表面映出你的倒影，双眼泛着红光。", "继续"],
+        ["低语声", "做得很好……第213号■■者……", "……？"],
+        ["那个声音", "现在该前往「霜骸冰原」了。那里封印着能够冻结灵魂的「霜心」。", "出发"],
+      ], () => frostExplore());
     } else if (state.scene === "frost-shrine") {
       state.stage = 10;
       saveLocal();
-      script([["那个声音", "霜心共鸣。前往雷鸣裂谷。", "出发"]], () => thunderExplore());
+      script([
+        ["旁白", "终于，刺骨的寒风停息了。所有冰霜女巫碎裂成冰尘，飘向祭坛。", "继续"],
+        ["旁白", "「霜心」缓缓落入掌心，寒意中透出令人不安的脉动。霜心内部浮现你的倒影，发梢结满冰晶。", "继续"],
+        ["耳语声", "合格了……第213号■■者……", "……？"],
+        ["那个声音", "接下来是「雷鸣裂谷」——风暴领主的领域。那里沉睡着能操控雷霆的「雷纹臂铠」。", "出发"],
+      ], () => thunderExplore());
     } else if (state.scene === "thunder-shrine") {
       state.stage = 12;
       saveLocal();
-      script([["那个声音", "雷纹臂铠附着成功。最终站：影渊圣所。", "出发"]], finalReveal);
+      script([
+        ["旁白", "终于，狂暴的雷云消散了。所有闪电之灵崩解成电流，汇入祭坛。", "继续"],
+        ["旁白", "「雷纹臂铠」缓缓附着在你的手臂上，电流中传来令人战栗的力量。臂铠表面映出你的倒影，眼中闪过雷光。", "继续"],
+        ["轰鸣声", "完成了……第213号■■者……", "……？"],
+        ["那个声音", "恭喜你通过了全部试炼。接下来是最后一站——「影渊圣所」。", "出发"],
+      ], finalReveal);
     }
   }
 
@@ -931,14 +989,19 @@
     for (let i = 0; i < 32; i++) newEnemy(12);
     for (let i = 0; i < 4; i++) genCoin();
     beginPlay("frost");
-    if (!skipIntro) say("那个声音", "霜骸冰原：迷宫地形，收集 6 把钥匙。魔物视野广但数量较少。");
+    if (!skipIntro) say("那个声音", "霜骸冰原：时间静止的极寒坟场。这里遍地冰柱，地图近似迷宫；冰霜女巫视野较广但数量较少。收集 6 把钥匙。");
     startLoop();
   }
 
   function finishFrostExplore() {
     state.stage = 9;
     saveLocal();
-    script([["那个声音", "进入霜心圣殿，坚持 90 秒。障碍会随机生灭。", "进入"]], () => frostShrine());
+    script([
+      ["旁白", "钥匙插入冰晶巨门的瞬间，刺骨寒风呼啸而至。冰面崩裂，穹顶坠下锋利冰锥。", "继续"],
+      ["那个声音", "快进去！祂的凝视要冻结一切——", "进入"],
+      ["旁白", "冰门轰然闭合。苍蓝色冰晶在墙壁上蔓延，冰雾中浮现出手持冰杖的苍白身影。", "继续"],
+      ["那个声音", "这是寒冰的试炼，勇者！在极寒中存活 90 秒，就能获得「霜心」。", "开始"],
+    ], () => frostShrine());
   }
 
   function frostShrine(skipIntro = false) {
@@ -969,6 +1032,7 @@
     state.enemyStopTime = 1;
     state.attackWaitTime = 0;
     state.enemyLimit = 54;
+    state.enemySpeed = 0;
     state.nKey = 8;
     generateMaze(8);
     state.gridName = "「雷鸣裂谷」";
@@ -977,14 +1041,19 @@
     for (let i = 0; i < 36; i++) newEnemy(3);
     for (let i = 0; i < 4; i++) genCoin();
     beginPlay("thunder");
-    if (!skipIntro) say("那个声音", "雷鸣裂谷：8 把钥匙。闪电之灵视野窄，但反应极快。");
+    if (!skipIntro) say("那个声音", "雷鸣裂谷：永不停歇的雷暴深渊。闪电之灵视野较窄，但攻击和反应极快。收集 8 把钥匙。");
     startLoop();
   }
 
   function finishThunderExplore() {
     state.stage = 11;
     saveLocal();
-    script([["那个声音", "雷纹圣殿：90 秒。雷电会在远处随机生成。", "进入"]], () => thunderShrine());
+    script([
+      ["旁白", "钥匙插入雷霆巨门的瞬间，刺眼雷光划破天际。地面震颤，穹顶降下狂暴闪电。", "继续"],
+      ["那个声音", "快进去！风暴领主已经察觉到了你的存在！", "进入"],
+      ["旁白", "你冲入圣殿，身后的巨门被雷霆劈碎。空气中弥漫臭氧气味，雷云中浮现手持雷枪的闪电之灵。", "继续"],
+      ["那个声音", "这是雷霆的试炼，勇者！在雷暴中存活 90 秒，就能获得「雷纹臂铠」。", "开始"],
+    ], () => thunderShrine());
   }
 
   function thunderShrine(skipIntro = false) {
@@ -995,6 +1064,7 @@
     state.ableC = false;
     state.cantStop = 1;
     state.enemyLimit = 9;
+    state.enemySpeed = 0;
     Object.assign(state.player, { x: 8, y: 8, dir: 2, hp: 3, money: state.player.money, left: false, weapon: true });
     clearEnemies();
     for (let i = 0; i < 6; i++) newEnemy(3);
@@ -1007,17 +1077,28 @@
   }
 
   function finalReveal() {
-    if (state.stage >= 13) { finalDemon(); return; }
     if (state.stage >= 14) { finalHuman(); return; }
+    if (state.stage >= 13) { finalDemon(); return; }
     stopAll();
     state.mode = "story";
     locked = true;
-    say("X-0 系统", `认知过滤器已解除。你击杀的“魔物”都是人类候选者。累计击杀：${state.countKill}。`);
-    choices([
-      { label: "走向红色大门，尝试回归人类", action: () => { locked = false; startCorridor("human"); } },
-      { label: "走向蓝色王座，成为第108代魔王", action: () => { locked = false; startCorridor("demon"); } },
-    ]);
-    render();
+    script([
+      ["旁白", "踏入影渊圣所的瞬间，所有「圣器」开始共鸣，投射出刺眼的白光。", "继续"],
+      ["那个声音", "终于……等到这一刻了……", "继续"],
+      ["旁白", "白光中浮现出无数战斗回放。那些被你斩杀的「魔物」褪去红色外壳，露出人类的真实样貌。", "继续"],
+      ["X-0 系统", "认知过滤器已解除，候选者 213 号。", "那些都是人类？"],
+      ["X-0 系统", "准确地说，是其他候选者。魔王卡梅洛早已过世，我们设置这个游戏，只是为了选出新的魔王。", "继续"],
+      ["X-0 系统", "魔王必须从人类中诞生，因为只有人类的恶才能驾驭魔物的力量。那些红色外壳只是认知过滤器。", "继续"],
+      ["X-0 系统", () => `看看你的「战绩」：${state.countKill} 次有效击杀。这些恶意正是魔王之力的来源。`, "我必须选择"],
+    ], () => {
+      locked = true;
+      say("X-0 系统", "左侧红色大门通往人类社会，右侧蓝色王座通往魔王加冕。选择你的命运。");
+      choices([
+        { label: "走向红色大门，尝试回归人类", action: () => { locked = false; startCorridor("human"); } },
+        { label: "走向蓝色王座，成为第108代魔王", action: () => { locked = false; startCorridor("demon"); } },
+      ]);
+      render();
+    });
   }
 
   function startCorridor(route) {
@@ -1092,7 +1173,13 @@
   }
 
   function finalDemon() {
-    script([["X-0 系统", "人类联军攻入大殿。击溃所有来犯者，稳固魔王权柄。", "迎战"]], () => {
+    script([
+      ["旁白", "你踏上蓝色王座的瞬间，锁链从地面升起，缠绕你的四肢。", "继续"],
+      ["X-0 系统", () => `开始进行魔王权柄认证。检测到恶意浓度：${state.countKill}，符合魔王标准。`, "继续"],
+      ["旁白", "你的武器彻底变形，化作一柄缠绕黑色火焰的权杖。", "继续"],
+      ["X-0 系统", "欢迎，第108代魔王。警告：检测到人类联军正在集结。", "继续"],
+      ["X-0 系统", "上一任魔王过世已久，魔界百废待兴，联军已攻入大殿。请亲自上阵，击败来自三大古陆的联军。", "迎战"],
+    ], () => {
       setupFinalBattle("final-demon");
       say("X-0 系统", "击溃全部联军增援。停留超过 6 秒仍会受伤。");
     });
@@ -1100,7 +1187,13 @@
 
   function finalHuman() {
     state.originalKills = state.countKill;
-    script([["X-0 系统", "叛逃行为已记录。坚持到援军抵达，或击退所有追猎者。", "逃亡"]], () => {
+    script([
+      ["旁白", "你转身冲向红色大门的瞬间，警报声骤然响起。", "继续"],
+      ["X-0 系统", "检测到叛逃行为！启动清除协议！", "继续"],
+      ["X-0 系统", () => `检测到恶意残留量：${state.originalKills}，清除优先级：最高级。`, "继续"],
+      ["旁白", "你的武器闪烁红光，变回最初的铁剑形态。背后的圣殿开始崩塌，蓝色能量体从地底涌出。", "继续"],
+      ["X-0 系统", "已释放追猎型魔物 12 体。它们对恶意残留有极高敏感度，正在向你逼近。", "逃亡"],
+    ], () => {
       setupFinalBattle("final-human");
       say("那个声音", "快跑！追猎型魔物正在逼近。");
     });
