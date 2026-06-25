@@ -55,7 +55,7 @@ $$
 这当然会多算。删去点 $v$ 后，树会分成若干连通块。若根落在某个连通块 $C$ 内，那么 $C$ 内那些更早出现的点，从根到它们的路径不会经过 $v$，因此它们不该贡献。于是需要在这个连通块上减去
 
 $$
-|\{u\in C\mid \operatorname{pos}(u)<\operatorname{pos}(v)\}|.
+|\{u\in C\mid \operatorname{pos}(u)\lt\operatorname{pos}(v)\}|.
 $$
 
 这些连通块仍然可以表示成子树或子树补集，所以最终也还是线段树上的区间加。
