@@ -1,81 +1,1340 @@
-(()=>{"use strict";
-const SAVE_KEY="yousyas-game-web-save-v1",VERSION=1,SECRET="YG-WEB::the-voice-beyond-the-board::2026",D=[[-1,0],[0,1],[1,0],[0,-1]],SWORD=["|","—","|","—"];
-const $=s=>document.querySelector(s),ui={stage:$("#ascii-stage"),scene:$("#scene-name"),turn:$("#turn-counter"),speaker:$("#speaker"),text:$("#dialogue"),choices:$("#choice-list"),hp:$("#stat-hp"),money:$("#stat-money"),kills:$("#stat-kills"),chapter:$("#stat-stage"),objective:$("#objective-title"),detail:$("#objective-detail"),bar:$("#objective-bar"),save:$("#save-modal"),help:$("#help-modal"),code:$("#save-code"),saveStatus:$("#save-status")};
-const fresh=()=>({version:VERSION,mode:"menu",scene:"menu",stage:0,turn:0,paused:false,player:{x:0,y:0,dir:1,hp:3,maxHp:3,money:0,beacon:null,weapon:true},map:[],enemies:[],kills:0,stageKills:0,collected:0,relics:0,keys:0,requiredKeys:0,trial:0,trialGoal:0,route:null,routeKills:0,flags:{barrier:false,beacon:false,sheathe:false},endings:[],speaker:"SYSTEM",message:"等待勇者回应。"});
-let state=fresh(),locked=false;
-const scripts={
-prologue:[["SYSTEM","连接已建立。请保持清醒。","继续"],["你","……这是哪儿？","环顾四周"],["那个声音","你醒了，勇者。","“勇者？”"],["那个声音","你被召唤到了艾瑞斯世界。红色魔王卡洛梅正在吞噬四大古陆，而你将终结这一切。","听下去"],["那个声音","先学会活下来。蓝色 O 是你，身前的线条是剑。WASD 移动，方向键转动武器。","开始训练"]],
-afterCoins:[["那个声音","很好。金币既是资源，也是你施展能力的代价。","继续"],["那个声音","接下来是战斗。你的行动先于魔物；让剑碰到它们的身体或武器。","面对木偶"]],
-afterTraining:[["那个声音","比我预想得更快。现在，木偶会开始移动和寻找你。","继续"],["那个声音","按 C 在身后放置障碍，花费 3 金币；按 F 设置或返回信标，每次花费 5 金币。","接受试炼"]],
-beforeEmber:[["那个声音","教程结束。现在你已具备踏入真正战场的资格。","继续"],["那个声音","第一站是赤烬之地。找到三枚炎核碎片，并抵达东北方祭坛。","前往赤烬之地"]],
-emberFinish:[["那个声音","炎核在你手中搏动，如同一颗仍有温度的心脏。","继续"],["你","这里的魔物……为什么会留下人类的徽记？","追问"],["那个声音","不要让无关的问题动摇你。下一站，霜骸冰原。","前往霜骸冰原"]],
-frostFinish:[["那个声音","霜心在冰尘中落入掌心。第213号候选者的低语再次出现。","继续"],["那个声音","最终试炼之地——雷鸣裂谷。","前往雷鸣裂谷"]],
-thunderFinish:[["那个声音","雷纹臂铠与炎核、霜心同时共鸣。全部试炼已经完成。","继续"],["那个声音","影渊圣所正在等待你。","进入影渊圣所"]]};
-function choices(items){ui.choices.replaceChildren();items.forEach(x=>{const b=document.createElement("button");b.className="story-choice";b.textContent=x.label;b.onclick=x.action;ui.choices.append(b)})}
-function say(w,t){state.speaker=w;state.message=t;ui.speaker.textContent=w;ui.text.textContent=t}
-function script(name,done,i=0){stopAll();state.mode="story";locked=true;render();const l=scripts[name][i];say(l[0],l[1]);choices([{label:l[2],action:()=>i+1<scripts[name].length?script(name,done,i+1):(locked=false,done())}])}
-function menu(){state.mode="menu";state.scene="menu";state.paused=false;$("#pause-button").textContent="暂停";ui.stage.innerHTML='<div class="title-art"><strong>ＹＯＵＳＹＡ’Ｓ</strong><span>Ｇ　Ａ　Ｍ　Ｅ</span></div>';ui.scene.textContent="YOUSYA // AWAITING SIGNAL";say("SYSTEM","选择一个存档入口。关键进度会自动保存在这个浏览器中。");const a=[{label:"新游戏",action:newGame}];if(localStorage.getItem(SAVE_KEY))a.push({label:"继续游戏",action:loadLocal});a.push({label:"存档导入 / 导出",action:()=>ui.save.showModal()});choices(a);hud()}
-function newGame(){state=fresh();script("prologue",coinStage)}
-function map(w,h){return Array.from({length:h},(_,x)=>Array.from({length:w},(_,y)=>x===0||y===0||x===h-1||y===w-1?"#":" "))}
-function walls(a,rs){rs.forEach(([x1,y1,x2,y2])=>{for(let x=x1;x<=x2;x++)for(let y=y1;y<=y2;y++)a[x][y]="#"})}
-function reset(x,y,m=state.player.money){state.player={x,y,dir:1,hp:3,maxHp:3,money:m,beacon:null,weapon:true}}
-function foe(x,y,dir,moving=true){return{x,y,dir,moving,alive:true,sight:moving?8:0,alert:0,lastSeen:null}}
-function begin(scene,stage,w,h,x,y,m){state.scene=scene;state.stage=stage;state.mode="play";state.paused=false;$("#pause-button").textContent="暂停";state.map=map(w,h);reset(x,y,m);state.stageKills=0;state.enemies=[];choices([])}
-function coinStage(){begin("coins",1,25,17,8,3,0);walls(state.map,[[4,5,4,9],[10,14,13,14],[7,18,11,18]]);[[3,19],[8,11],[13,5]].forEach(p=>state.map[p[0]][p[1]]="$");state.collected=0;say("那个声音","收集地图上的 3 枚金币。WASD 移动；方向键改变剑的方向。");saveLocal();render()}
-function training(){begin("training",2,27,17,8,4,Math.max(30,state.player.money));walls(state.map,[[4,6,4,10],[11,16,11,20],[7,13,9,13]]);state.enemies=[foe(3,19,3,false),foe(7,20,3,false),foe(13,7,1,false),foe(13,22,3,false)];say("那个声音","击破 4 个训练木偶。转动武器本身也可以攻击。");saveLocal();render()}
-function skill(){begin("skill",3,31,19,9,3,Math.max(50,state.player.money));walls(state.map,[[4,8,4,15],[9,20,14,20],[13,5,13,11],[7,25,10,25]]);[[3,26],[15,25],[15,3],[6,17]].forEach(p=>state.map[p[0]][p[1]]="$");state.enemies=[foe(3,24,2),foe(7,17,3),foe(14,26,0),foe(15,8,1),foe(4,18,2)];state.flags.barrier=state.flags.beacon=true;say("那个声音","击破 5 个会移动的木偶。敌人的正前方 120° 为视野。");saveLocal();render()}
-function ember(){begin("ember",4,43,25,22,3,Math.max(45,state.player.money));walls(state.map,[[3,8,3,17],[3,26,3,34],[7,4,13,4],[7,14,7,24],[6,34,13,34],[12,9,12,18],[16,5,16,14],[16,24,16,37],[20,11,20,27],[8,28,12,28]]);[[5,11],[14,31],[21,7]].forEach(p=>state.map[p[0]][p[1]]="◆");[[5,37],[10,20],[14,7],[18,39],[21,31],[9,6]].forEach(p=>state.map[p[0]][p[1]]="$");state.map[2][39]="X";state.enemies=[foe(5,20,2),foe(5,38,3),foe(9,31,2),foe(10,8,1),foe(14,20,3),foe(18,17,0),foe(19,35,3),foe(22,28,0)];state.relics=0;say("那个声音","寻找 3 枚炎核碎片 ◆，然后前往东北方祭坛 X。");saveLocal();render()}
-function scatter(items,char){items.forEach(([x,y])=>state.map[x][y]=char)}
-function frost(){begin("frost",6,43,25,22,3,Math.max(50,state.player.money));walls(state.map,[[2,9,18,9],[6,17,23,17],[2,25,18,25],[6,33,23,33],[5,9,5,14],[13,18,13,24],[19,26,19,32]]);scatter([[3,5],[10,13],[20,13],[4,21],[15,29],[21,38]],"K");scatter([[8,5],[18,21],[10,37],[22,29]],"$");state.map[2][39]="X";state.keys=0;state.requiredKeys=6;state.enemies=[foe(4,14,2),foe(8,22,3),foe(12,37,2),foe(18,6,1),foe(21,23,0)];state.enemies.forEach(e=>e.sight=12);say("那个声音","霜骸冰原：收集 6 把钥匙 K，进入东北方霜心圣殿 X。");saveLocal();render()}
-function thunder(){begin("thunder",8,43,25,22,3,Math.max(55,state.player.money));walls(state.map,[[4,6,4,18],[4,27,4,37],[10,12,10,31],[16,5,16,22],[20,24,20,38]]);scatter([[2,20],[6,5],[7,34],[13,6],[14,36],[18,12],[22,20],[22,38]],"K");scatter([[7,22],[14,20],[19,5],[19,34]],"$");state.map[2][39]="X";state.keys=0;state.requiredKeys=8;state.enemies=[foe(3,30,2),foe(7,10,1),foe(12,35,3),foe(15,8,1),foe(19,20,0),foe(22,31,3)];state.enemies.forEach(e=>e.sight=5);say("那个声音","雷鸣裂谷：收集 8 把钥匙 K。闪电之灵视野较窄，但行动更快。");saveLocal();render()}
-function shrine(kind){begin(`${kind}-shrine`,kind==="ember"?5:kind==="frost"?7:9,25,19,9,12,Math.max(35,state.player.money));state.trial=0;state.trialGoal=45;state.route=kind;state.enemies=[foe(3,4,1),foe(3,20,3),foe(15,4,1),foe(15,20,3)];if(kind==="frost")walls(state.map,[[5,7,5,10],[12,14,12,17]]);say("那个声音",`${kind==="ember"?"炎核":kind==="frost"?"霜心":"雷纹"}圣殿：坚持 36 秒。停在原地也会受到追击。`);saveLocal();render()}
-function finalReveal(){stopAll();state.mode="story";locked=true;render();say("X-0 系统",`认知过滤器已解除。你击杀的“魔物”都是人类候选者。累计有效击杀：${state.kills}。`);choices([{label:"走向红色大门，尝试回归人类",action:()=>finalBattle("human")},{label:"走向蓝色王座，成为第108代魔王",action:()=>finalBattle("demon")}])}
-function finalBattle(route){locked=false;begin("final",10,31,23,11,15,Math.max(60,state.player.money));state.route=route;state.routeKills=0;state.requiredKeys=20;state.enemies=[];for(let i=0;i<7;i++)spawnDummy(true);say(route==="demon"?"X-0 系统":"那个声音",route==="demon"?"击溃 20 名人类联军，稳固魔王权柄。":"坚持逃亡并击破 20 个追猎型魔物。");saveLocal();render()}
-function finishEnding(id,title,text){state.mode="end";if(!state.endings.includes(id))state.endings.push(id);if(id===6)state.flags.sheathe=true;say("SYSTEM",`达成结局 ${id}：${title}。${text}`);choices([{label:"返回标题",action:menu},{label:"重新开始完整战役",action:newGame}]);saveLocal();render()}
-const sword=u=>u.weapon===false?{x:u.x,y:u.y}:{x:u.x+D[u.dir][0],y:u.y+D[u.dir][1]},wall=(x,y)=>!state.map[x]||["#","*"].includes(state.map[x][y]);
-function collect(x,y){const t=state.map[x]?.[y];if(t==="$"){state.player.money+=10;state.collected++;state.map[x][y]=" ";say("SYSTEM","获得 10 枚金币。")}else if(t==="◆"){state.relics++;state.map[x][y]=" ";say("SYSTEM",`炎核碎片产生了回应（${state.relics}/3）。`);saveLocal()}else if(t==="K"){state.keys++;state.map[x][y]=" ";say("SYSTEM",`获得圣殿钥匙（${state.keys}/${state.requiredKeys}）。`);saveLocal()}else if(t==="X"&&state.scene.includes("shrine")){state.player.hp--;state.map[x][y]=" ";say("SYSTEM","遭到雷暴击中，损失 1 点生命。");if(state.player.hp<=0)gameOver()}}
-function input(key){if(state.mode!=="play"||locked||state.paused)return;key=key.length===1?key.toLowerCase():key;let acted=false,mi={w:0,d:1,s:2,a:3}[key],ti={ArrowUp:0,ArrowRight:1,ArrowDown:2,ArrowLeft:3}[key];if(mi!==undefined){let x=state.player.x+D[mi][0],y=state.player.y+D[mi][1],sp=state.player.weapon===false?{x,y}:{x:x+D[state.player.dir][0],y:y+D[state.player.dir][1]};if(!wall(x,y)&&!wall(sp.x,sp.y)){state.player.x=x;state.player.y=y;collect(x,y);acted=true}else say("SYSTEM","前方无法通过。")}else if(ti!==undefined&&state.player.weapon!==false){state.player.dir=ti;acted=true}else if(key==="c"&&state.flags.barrier)acted=barrier();else if(key==="f"&&state.flags.beacon)acted=beacon();else if(key==="v"&&state.flags.sheathe){state.player.weapon=!state.player.weapon;say("SYSTEM",state.player.weapon?"重新拿出了武器。":"收起了武器。");acted=true}else if(key==="e")acted=interact();if(!acted)return render();playerAttack();objectives();render()}
-function barrier(){if(state.player.money<3)return say("SYSTEM","金币不足，需要 3 枚。"),false;let d=(state.player.dir+2)%4,x=state.player.x+D[d][0],y=state.player.y+D[d][1];if(state.map[x]?.[y]!==" ")return say("SYSTEM","这里无法放置障碍。"),false;state.player.money-=3;state.map[x][y]="*";say("SYSTEM","人造障碍已部署。");return true}
-function beacon(){if(state.player.money<5)return say("SYSTEM","金币不足，需要 5 枚。"),false;state.player.money-=5;if(state.player.beacon){Object.assign(state.player,state.player.beacon);state.player.beacon=null;say("SYSTEM","已返回信标并回收。")}else{state.player.beacon={x:state.player.x,y:state.player.y};say("SYSTEM","信标已设置。")}return true}
-function nearAltar(){if(!["ember","frost","thunder"].includes(state.scene))return false;let points=[[state.player.x,state.player.y],[sword(state.player).x,sword(state.player).y],...D.map(d=>[state.player.x+d[0],state.player.y+d[1]])];return points.some(([x,y])=>state.map[x]?.[y]==="X")}
-function interact(){if(nearAltar()){if(state.scene==="ember"){if(state.relics<3)return say("那个声音",`还缺少 ${3-state.relics} 枚炎核碎片。`),false;shrine("ember");return true}if(state.keys<state.requiredKeys)return say("那个声音",`圣殿仍被封锁。还缺少 ${state.requiredKeys-state.keys} 把钥匙。`),false;shrine(state.scene);return true}say("SYSTEM","这里没有可调查的事物。");return false}
-function playerAttack(){if(state.player.weapon===false)return;let ps=sword(state.player);state.enemies.forEach(e=>{let es=sword(e);if((ps.x===e.x&&ps.y===e.y)||(ps.x===es.x&&ps.y===es.y)){e.alive=false;state.kills++;state.stageKills++;if(state.scene==="final")state.routeKills++;say("SYSTEM","目标已击破。")}});state.enemies=state.enemies.filter(e=>e.alive)}
-function sees(e){let vx=state.player.x-e.x,vy=state.player.y-e.y,dist=Math.hypot(vx,vy);if(dist>e.sight)return false;let dot=vx*D[e.dir][0]+vy*D[e.dir][1];return dot>0&&dot*dot*4>=vx*vx+vy*vy}
-function free(e,x,y,d){let sp={x:x+D[d][0],y:y+D[d][1]};return!wall(x,y)&&!wall(sp.x,sp.y)&&!state.enemies.some(o=>o!==e&&o.alive&&((o.x===x&&o.y===y)||(sword(o).x===x&&sword(o).y===y)||(o.x===sp.x&&o.y===sp.y)))}
-function pathStep(e,target){let start=`${e.x},${e.y}`,queue=[[e.x,e.y]],head=0,seen=new Set([start]),first=new Map(),best=start,bestDist=Math.abs(e.x-target.x)+Math.abs(e.y-target.y);while(head<queue.length&&head<180){let[x,y]=queue[head++];for(let d=0;d<4;d++){let nx=x+D[d][0],ny=y+D[d][1],key=`${nx},${ny}`;if(seen.has(key)||!free(e,nx,ny,d))continue;seen.add(key);first.set(key,`${x},${y}`===start?d:first.get(`${x},${y}`));queue.push([nx,ny]);let dist=Math.abs(nx-target.x)+Math.abs(ny-target.y);if(dist<bestDist){bestDist=dist;best=key}}}return best===start?null:first.get(best)}
-function patrolDirs(e){let q=(state.turn+e.x*3+e.y)%4;return[q,(q+1)%4,(q+3)%4,(q+2)%4]}
-function enemiesMove(){state.enemies.forEach(e=>{if(!e.moving)return;let dir=null;if(sees(e)){e.alert=7;e.lastSeen={x:state.player.x,y:state.player.y};dir=pathStep(e,e.lastSeen)}else if(e.alert>0&&e.lastSeen){e.alert--;dir=pathStep(e,e.lastSeen);if(e.x===e.lastSeen.x&&e.y===e.lastSeen.y){e.alert=0;e.lastSeen=null}}if(dir===null||dir===undefined){for(let d of patrolDirs(e)){let x=e.x+D[d][0],y=e.y+D[d][1];if(free(e,x,y,d)){dir=d;break}}}if(dir!==null&&dir!==undefined){let x=e.x+D[dir][0],y=e.y+D[dir][1];if(free(e,x,y,dir)){e.x=x;e.y=y;e.dir=dir}}})}
-function enemyAttack(){let p=state.player,ps=sword(p);for(let e of state.enemies){let es=sword(e),hit=(e.x===p.x&&e.y===p.y)||(es.x===p.x&&es.y===p.y)||(state.scene==="skill"&&es.x===ps.x&&es.y===ps.y);if(hit){e.alive=false;p.hp--;say("SYSTEM",`受到攻击。剩余生命 ${p.hp}/${p.maxHp}。`);break}}state.enemies=state.enemies.filter(e=>e.alive);if(p.hp<=0)gameOver()}
-function spawnDummy(moving){let spots=[[2,2],[2,state.map[0].length-3],[state.map.length-3,2],[state.map.length-3,state.map[0].length-3],[3,Math.floor(state.map[0].length/2)],[state.map.length-4,Math.floor(state.map[0].length/2)]];for(let i=0;i<spots.length;i++){let[x,y]=spots[(i+state.turn)%spots.length],dir=(state.turn+i)%4;if(Math.abs(x-state.player.x)+Math.abs(y-state.player.y)<7||wall(x,y)||state.enemies.some(e=>Math.abs(e.x-x)+Math.abs(e.y-y)<3))continue;let e=foe(x,y,dir,moving);if(free(e,x,y,dir)){state.enemies.push(e);return true}}return false}
-function replenishDummies(){if(state.scene==="training"){let wanted=Math.min(2,4-state.stageKills);while(state.enemies.length<wanted&&spawnDummy(false));}else if(state.scene==="skill"){let wanted=Math.min(3,5-state.stageKills);while(state.enemies.length<wanted&&spawnDummy(true));}else if(state.scene.includes("shrine")){while(state.enemies.length<5)spawnDummy(true)}else if(state.scene==="final"){while(state.enemies.length<6&&state.routeKills<20)spawnDummy(true)}}
-function worldTick(){if(state.mode!=="play"||locked||state.paused||document.hidden||ui.save.open||ui.help.open)return;state.turn++;replenishDummies();if(state.turn%2===0){enemiesMove();enemyAttack();replenishDummies();if(state.scene.includes("shrine")){state.trial++;if(state.route==="frost"&&state.turn%8===0)toggleRandomWall();if(state.route==="thunder"&&state.turn%6===0)lightning()}objectives();render()}}
-function toggleRandomWall(){let x=2+(state.turn*7)%(state.map.length-4),y=2+(state.turn*11)%(state.map[0].length-4);if(Math.abs(x-state.player.x)+Math.abs(y-state.player.y)>4)state.map[x][y]=state.map[x][y]==="#"?" ":"#"}
-function lightning(){let x=2+(state.turn*5)%(state.map.length-4),y=2+(state.turn*13)%(state.map[0].length-4);if(Math.abs(x-state.player.x)+Math.abs(y-state.player.y)>2)state.map[x][y]="X"}
-function togglePause(force){if(state.mode!=="play")return;state.paused=typeof force==="boolean"?force:!state.paused;stopAll();$("#pause-button").textContent=state.paused?"继续":"暂停";$("#pause-button").classList.toggle("primary",!state.paused);if(state.paused)say("SYSTEM","游戏已暂停。按 Space / P 或点击“继续”恢复。");else say("SYSTEM","游戏继续。");render()}
-function objectives(){if(state.scene==="coins"&&state.collected>=3)script("afterCoins",training);else if(state.scene==="training"&&state.stageKills>=4)script("afterTraining",skill);else if(state.scene==="skill"&&state.stageKills>=5)script("beforeEmber",ember);else if(["ember","frost","thunder"].includes(state.scene)&&nearAltar())say("SYSTEM","圣殿入口就在附近。按 E 调查。");else if(state.scene.includes("shrine")&&state.trial>=state.trialGoal){let kind=state.route;if(kind==="ember")script("emberFinish",frost);else if(kind==="frost")script("frostFinish",thunder);else script("thunderFinish",finalReveal)}else if(state.scene==="final"&&state.routeKills>=20){if(state.route==="demon")finishEnding(4,"魔王永恒","你击溃了人类联军，成为第108代魔王。");else if(state.kills-state.routeKills<=20)finishEnding(7,"真正的勇者","人类接受了你的回归与赎罪。");else finishEnding(6,"无处可归","人类无法原谅你留下的杀戮。已解锁收起武器能力。")}}
-function gameOver(){if(state.scene==="final"){finishEnding(state.route==="demon"?3:5,state.route==="demon"?"魔王陨落":"背叛者的末路","你在终局战斗中倒下。");return}state.mode="end";let id=state.scene==="training"?0:state.scene==="skill"?1:2,title=id===0?"找错人了":id===1?"技不如人":"出师未捷身先死";if(!state.endings.includes(id))state.endings.push(id);say("那个声音",`你倒在棋盘上。达成结局 ${id}：${title}。`);choices([{label:"返回标题",action:menu},{label:"重新开始完整战役",action:newGame}]);saveLocal();render()}
-function objective(){if(state.scene==="coins")return["基础移动",`收集金币 ${state.collected}/3`,state.collected/3];if(state.scene==="training")return["战斗训练",`击破木偶 ${state.stageKills}/4`,state.stageKills/4];if(state.scene==="skill")return["技能试炼",`击破移动木偶 ${state.stageKills}/5`,state.stageKills/5];if(state.scene==="ember")return["赤烬之地",`炎核碎片 ${state.relics}/3；集齐后进入圣殿`,state.relics/3];if(["frost","thunder"].includes(state.scene))return[state.scene==="frost"?"霜骸冰原":"雷鸣裂谷",`钥匙 ${state.keys}/${state.requiredKeys}；集齐后进入圣殿`,state.keys/state.requiredKeys];if(state.scene.includes("shrine"))return["圣殿生存试炼",`进度 ${state.trial}/${state.trialGoal}`,state.trial/state.trialGoal];if(state.scene==="final")return[state.route==="demon"?"魔王加冕战":"逃亡之路",`击破追击者 ${state.routeKills}/20`,state.routeKills/20];return["开始游戏","选择新游戏，或读取本地存档。",0]}
-function hud(){ui.hp.textContent=state.stage?`${Math.max(0,state.player.hp)} / ${state.player.maxHp}`:"—";ui.money.textContent=state.stage?state.player.money:"—";ui.kills.textContent=state.stage?state.kills:"—";ui.chapter.textContent={0:"序章",1:"教程 I",2:"教程 II",3:"教程 III",4:"赤烬之地",5:"炎核圣殿",6:"霜骸冰原",7:"霜心圣殿",8:"雷鸣裂谷",9:"雷纹圣殿",10:"终局"}[state.stage]||"序章";let[o,d,p]=objective();ui.objective.textContent=o;ui.detail.textContent=d;ui.bar.style.width=`${Math.min(100,p*100)}%`;ui.turn.textContent=`TURN ${String(state.turn).padStart(4,"0")}`}
-function sightCells(e){let out=[];if(!e.moving)return out;for(let x=e.x-e.sight;x<=e.x+e.sight;x++)for(let y=e.y-e.sight;y<=e.y+e.sight;y++){let vx=x-e.x,vy=y-e.y,dot=vx*D[e.dir][0]+vy*D[e.dir][1];if(dot>0&&vx*vx+vy*vy<=e.sight*e.sight&&dot*dot*4>=vx*vx+vy*vy)out.push([x,y])}return out}
-function renderMap(){let vh=Math.min(19,state.map.length),vw=Math.min(31,state.map[0].length),sx=Math.max(0,Math.min(state.player.x-Math.floor(vh/2),state.map.length-vh)),sy=Math.max(0,Math.min(state.player.y-Math.floor(vw/2),state.map[0].length-vw)),c=Array.from({length:vh},(_,x)=>Array.from({length:vw},(_,y)=>({ch:state.map[x+sx][y+sy],cl:tile(state.map[x+sx][y+sy])})));const put=(x,y,ch,cl)=>{if(c[x]?.[y])c[x][y]={ch,cl}};state.enemies.forEach(e=>sightCells(e).forEach(([x,y])=>{if(state.map[x]?.[y]===" ")put(x-sx,y-sy,"·","tile-sight")}));if(state.player.beacon)put(state.player.beacon.x-sx,state.player.beacon.y-sy,"P","tile-beacon");state.enemies.forEach(e=>{let s=sword(e);put(s.x-sx,s.y-sy,SWORD[e.dir],"tile-enemy");put(e.x-sx,e.y-sy,e.alert>0?"!":"O",e.alert>0?"tile-alert":"tile-enemy")});if(state.player.weapon!==false){let ps=sword(state.player);put(ps.x-sx,ps.y-sy,SWORD[state.player.dir],"tile-player")}put(state.player.x-sx,state.player.y-sy,"O","tile-player");let pre=document.createElement("pre");pre.className="ascii-map";c.forEach((r,i)=>{r.forEach(q=>{let s=document.createElement("span");s.className=q.cl;s.textContent=q.ch;pre.append(s)});if(i+1<c.length)pre.append("\n")});ui.stage.replaceChildren(pre)}
-function tile(t){return t==="#"?"tile-wall":t==="$"?"tile-coin":t==="◆"||t==="K"?"tile-relic":t==="X"?"tile-altar":""}
-function render(){if(state.mode!=="menu"&&state.map.length){renderMap();ui.scene.textContent={coins:"TRAINING // MOVEMENT",training:"TRAINING // COMBAT",skill:"TRAINING // FIELD SKILLS",ember:"CONTINENT I // EMBERLAND",frost:"CONTINENT II // FROSTBONE",thunder:"CONTINENT III // THUNDER RIFT","ember-shrine":"SHRINE // FLAME CORE","frost-shrine":"SHRINE // FROST HEART","thunder-shrine":"SHRINE // THUNDER ARM",final:"FINAL // TERMINAL WAR"}[state.scene]||"YOUSYA // STORY"}ui.speaker.textContent=state.speaker;ui.text.textContent=state.message;hud()}
-const b64=b=>{let s="";b.forEach(x=>s+=String.fromCharCode(x));return btoa(s).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")},unb=s=>Uint8Array.from(atob(s.replace(/-/g,"+").replace(/_/g,"/")+"===".slice((s.length+3)%4)),c=>c.charCodeAt(0));
-async function key(salt){let m=await crypto.subtle.importKey("raw",new TextEncoder().encode(SECRET),"PBKDF2",false,["deriveKey"]);return crypto.subtle.deriveKey({name:"PBKDF2",salt,iterations:120000,hash:"SHA-256"},m,{name:"AES-GCM",length:256},false,["encrypt","decrypt"])}
-async function encrypt(data){let salt=crypto.getRandomValues(new Uint8Array(16)),iv=crypto.getRandomValues(new Uint8Array(12)),k=await key(salt),cipher=new Uint8Array(await crypto.subtle.encrypt({name:"AES-GCM",iv},k,new TextEncoder().encode(JSON.stringify(data)))),p=new Uint8Array(29+cipher.length);p[0]=VERSION;p.set(salt,1);p.set(iv,17);p.set(cipher,29);return"YG1."+b64(p)}
-async function decrypt(code){if(!code.startsWith("YG1."))throw Error("存档版本或格式不正确");let p=unb(code.slice(4).trim());if(p.length<46||p[0]!==VERSION)throw Error("存档数据不完整");try{let plain=await crypto.subtle.decrypt({name:"AES-GCM",iv:p.slice(17,29)},await key(p.slice(1,17)),p.slice(29)),data=JSON.parse(new TextDecoder().decode(plain));if(!data.player||!Array.isArray(data.endings))throw 0;return data}catch{throw Error("存档校验失败：内容可能已损坏或被修改")}}
-async function saveLocal(){try{localStorage.setItem(SAVE_KEY,await encrypt(state))}catch{}}
-function migrate(data){let d={...fresh(),...data};d.flags={...fresh().flags,...(data.flags||{})};d.player={...fresh().player,...(data.player||{})};d.keys??=0;d.requiredKeys??=0;d.trial??=0;d.trialGoal??=0;d.routeKills??=0;return d}
-async function loadLocal(){try{state=migrate(await decrypt(localStorage.getItem(SAVE_KEY)));state.paused=false;$("#pause-button").textContent="暂停";state.mode=state.map?.length?"play":"menu";locked=false;choices([]);say("SYSTEM","本地存档已读取。");render()}catch(e){say("SYSTEM",e.message);render()}}
-$("#pause-button").onclick=()=>togglePause();$("#save-button").onclick=()=>{stopAll();ui.saveStatus.textContent="";ui.save.showModal()};$("#help-button").onclick=()=>{stopAll();ui.help.showModal()};$("#export-save").onclick=async()=>{let c=await encrypt(state);ui.code.value=c;try{await navigator.clipboard.writeText(c);ui.saveStatus.textContent="存档码已生成并复制。"}catch{ui.saveStatus.textContent="存档码已生成，请手动复制。"}};$("#import-save").onclick=async()=>{try{state=migrate(await decrypt(ui.code.value.trim()));state.paused=false;await saveLocal();state.mode=state.map?.length?"play":"menu";choices([]);say("SYSTEM","存档导入成功。");ui.save.close();render()}catch(e){ui.saveStatus.textContent=e.message}};$("#clear-save").onclick=()=>{localStorage.removeItem(SAVE_KEY);ui.code.value="";ui.saveStatus.textContent="本地存档已清除。"};
-const repeatable=new Set(["w","a","s","d","ArrowUp","ArrowRight","ArrowDown","ArrowLeft"]),held=new Map();
-function normalizeKey(k){return k.length===1?k.toLowerCase():k}
-function startHold(k){k=normalizeKey(k);if(held.has(k))return;input(k);if(repeatable.has(k)){let timer=setInterval(()=>input(k),95);held.set(k,timer)}else held.set(k,0)}
-function stopHold(k){k=normalizeKey(k);let timer=held.get(k);if(timer)clearInterval(timer);held.delete(k)}
-function stopAll(){held.forEach(timer=>{if(timer)clearInterval(timer)});held.clear()}
-document.addEventListener("keydown",e=>{let k=normalizeKey(e.key);if((k===" "||k==="p")&&!ui.save.open&&!ui.help.open){e.preventDefault();if(!e.repeat)togglePause();return}let a=["w","a","s","d","c","f","v","e","ArrowUp","ArrowRight","ArrowDown","ArrowLeft"];if(!a.includes(k)||ui.save.open||ui.help.open)return;e.preventDefault();if(!e.repeat)startHold(k)});
-document.addEventListener("keyup",e=>stopHold(e.key));window.addEventListener("blur",stopAll);document.addEventListener("visibilitychange",()=>{if(document.hidden)stopAll()});
-document.querySelectorAll("[data-key]").forEach(b=>{const down=e=>{e.preventDefault();startHold(b.dataset.key)},up=e=>{e.preventDefault();stopHold(b.dataset.key)};b.addEventListener("pointerdown",down);b.addEventListener("pointerup",up);b.addEventListener("pointercancel",up);b.addEventListener("pointerleave",up)});
-setInterval(worldTick,400);
-menu();
+(() => {
+  "use strict";
+
+  const SAVE_KEY = "yousyas-game-web-save-v2";
+  const VERSION = 2;
+  const SECRET = "YG-WEB::the-voice-beyond-the-board::2026";
+  const TICK_MS = 100;
+  const D = [[-1, 0], [0, 1], [1, 0], [0, -1], [0, 0]];
+  const SWORD = ["|", "—", "|", "—"];
+  const CELL = { BLUE: -3, RED: -2, WALL: -1, EMPTY: 0, COIN: 6, BEACON: 4, OBST: 5, KEY: 11, PALACE: 10, LIGHT: 12 };
+
+  const $ = (s) => document.querySelector(s);
+  const ui = {
+    stage: $("#ascii-stage"),
+    scene: $("#scene-name"),
+    turn: $("#turn-counter"),
+    speaker: $("#speaker"),
+    text: $("#dialogue"),
+    choices: $("#choice-list"),
+    hp: $("#stat-hp"),
+    money: $("#stat-money"),
+    kills: $("#stat-kills"),
+    chapter: $("#stat-stage"),
+    objective: $("#objective-title"),
+    detail: $("#objective-detail"),
+    bar: $("#objective-bar"),
+    save: $("#save-modal"),
+    help: $("#help-modal"),
+    code: $("#save-code"),
+    saveStatus: $("#save-status"),
+  };
+
+  const fresh = () => ({
+    version: VERSION,
+    mode: "menu",
+    scene: "menu",
+    stage: 0,
+    turn: 0,
+    paused: false,
+    die: false,
+    grid: null,
+    gridName: "",
+    n: 0,
+    m: 0,
+    player: { x: 1, y: 1, dir: 2, hp: 3, money: 0, left: false, leftx: 0, lefty: 0, weapon: true },
+    enemies: [],
+    countKill: 0,
+    sessionKill: 0,
+    countKey: 0,
+    nKey: 0,
+    touchPalace: 0,
+    haveEnd: Array(8).fill(false),
+    skipPlot: 0,
+    ableV: false,
+    ableC: false,
+    ableF: false,
+    mov: 0,
+    inTut: 1,
+    specialRule: 0,
+    cantStop: 0,
+    enemyLimit: 6,
+    enemySpeed: 0,
+    enemyEyesight: 5,
+    enemyStopTime: 5,
+    attackWaitTime: 2,
+    generateLimit: -1,
+    maxCoin: 10,
+    haveCoin: 0,
+    lastGenerate: 0,
+    lastUpdate: 0,
+    newEnemyTime: 10,
+    updateTime: 50,
+    standardClock: 0,
+    lastMove: 0,
+    timerStart: 0,
+    timerGoal: 0,
+    timerKind: "",
+    route: null,
+    originalKills: 0,
+    confirmRoute: null,
+    speaker: "SYSTEM",
+    message: "等待勇者回应。",
+    hudExtra: "",
+  });
+
+  let state = fresh();
+  let locked = false;
+  let loopId = null;
+
+  const rand = (n) => Math.floor(Math.random() * n);
+  const shuffle = (a) => { for (let i = a.length - 1; i > 0; i--) { const j = rand(i + 1); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+  function choices(items) {
+    ui.choices.replaceChildren();
+    items.forEach((x) => {
+      const b = document.createElement("button");
+      b.className = "story-choice";
+      b.textContent = x.label;
+      b.onclick = x.action;
+      ui.choices.append(b);
+    });
+  }
+
+  function say(w, t) {
+    state.speaker = w;
+    state.message = t;
+    ui.speaker.textContent = w;
+    ui.text.textContent = t;
+  }
+
+  function script(lines, done, i = 0) {
+    stopAll();
+    state.mode = "story";
+    locked = true;
+    render();
+    const l = lines[i];
+    say(l[0], l[1]);
+    choices([{
+      label: l[2],
+      action: () => (i + 1 < lines.length ? script(lines, done, i + 1) : (locked = false, done())),
+    }]);
+  }
+
+  function makeGrid(n, m) {
+    const cells = Array.from({ length: n + 1 }, () => Array(m + 1).fill(CELL.EMPTY));
+    state.grid = cells;
+    state.n = n;
+    state.m = m;
+    return cells;
+  }
+
+  function generateEmpty() {
+    const { grid, n, m } = state;
+    for (let i = 1; i <= n; i++) grid[i][1] = grid[i][m] = CELL.WALL;
+    for (let j = 1; j <= m; j++) grid[1][j] = grid[n][j] = CELL.WALL;
+  }
+
+  function scatterObstacles() {
+    const { grid, n, m, player } = state;
+    for (let t = 0; t < 128; t++) {
+      const x = rand(n) + 1, y = rand(m) + 1;
+      if (Math.abs(x - player.x) + Math.abs(y - player.y) > 5) grid[x][y] = CELL.WALL;
+    }
+    for (let t = 0; t < 64; t++) {
+      const x = rand(n) + 1, y = rand(m) + 1;
+      if (Math.abs(x - player.x) + Math.abs(y - player.y) > 5 && grid[x][y] === CELL.EMPTY) grid[x][y] = CELL.COIN;
+    }
+  }
+
+  function generateMap() {
+    makeGrid(80, 80);
+    generateEmpty();
+    scatterObstacles();
+  }
+
+  class DSU {
+    constructor(size) { this.fa = Array.from({ length: size }, (_, i) => i); }
+    find(x) { return this.fa[x] === x ? x : (this.fa[x] = this.find(this.fa[x])); }
+    union(x, y) { this.fa[this.find(x)] = this.find(y); }
+  }
+
+  function getId(x, y) { return (x - 1) * state.m + y; }
+
+  function generateMaze(keyNumber) {
+    const n = 80, m = 80;
+    makeGrid(n, m);
+    state.nKey = keyNumber;
+    for (let i = 1; i <= n; i++) for (let j = 1; j <= m; j++) state.grid[i][j] = CELL.WALL;
+    const edges = [];
+    for (let i = 2; i <= n; i += 4) {
+      for (let j = 2; j <= m; j += 4) {
+        if (i + 4 <= n) edges.push([getId(i, j), getId(i + 4, j)]);
+        if (j + 4 <= m) edges.push([getId(i, j), getId(i, j + 4)]);
+      }
+    }
+    shuffle(edges);
+    const dsu = new DSU(n * m + 1);
+    for (const [a, b] of edges) {
+      const sx = Math.floor((a - 1) / m) + 1, sy = (a - 1) % m + 1;
+      const ex = Math.floor((b - 1) / m) + 1, ey = (b - 1) % m + 1;
+      const fa = dsu.find(a), fb = dsu.find(b);
+      if (fa === fb && rand(8) !== 0) continue;
+      dsu.union(fa, fb);
+      for (let i = sx; i <= ex + 1; i++) for (let j = sy; j <= ey + 1; j++) state.grid[i][j] = CELL.EMPTY;
+    }
+    for (let e = 0; e < 8; e++) {
+      const x = rand(n) + 1, y = rand(m) + 1;
+      if (x + 8 <= n && y + 8 <= m && x > 1 && y > 1) {
+        for (let i = x; i < x + 8; i++) for (let j = y; j < y + 8; j++) state.grid[i][j] = CELL.EMPTY;
+      }
+    }
+    for (let i = n / 2 - 3; i <= n / 2 + 4; i++) for (let j = m / 2 - 3; j <= m / 2 + 4; j++) state.grid[i][j] = CELL.EMPTY;
+    for (let i = 0; i < keyNumber; i++) genKey();
+    genPalace();
+  }
+
+  function genKey() {
+    const { grid, n, m } = state;
+    while (true) {
+      const x = rand(n) + 1, y = rand(m) + 1;
+      if (grid[x][y] !== CELL.EMPTY) continue;
+      if (Math.abs(x - 40) + Math.abs(y - 40) < 40) continue;
+      let near = false;
+      for (let tx = Math.max(1, x - 12); tx <= Math.min(n, x + 12); tx++) {
+        for (let ty = Math.max(1, y - 12); ty <= Math.min(m, y + 12); ty++) {
+          if (grid[tx][ty] === CELL.KEY) { near = true; break; }
+        }
+        if (near) break;
+      }
+      if (near) continue;
+      grid[x][y] = CELL.KEY;
+      return;
+    }
+  }
+
+  function genPalace() {
+    const { grid, n, m } = state;
+    while (true) {
+      const x = rand(n) + 1, y = rand(m) + 1;
+      if (grid[x][y] !== CELL.EMPTY) continue;
+      if (Math.abs(x - 40) + Math.abs(y - 40) < 40) continue;
+      let near = false;
+      for (let tx = Math.max(1, x - 12); tx <= Math.min(n, x + 12); tx++) {
+        for (let ty = Math.max(1, y - 12); ty <= Math.min(m, y + 12); ty++) {
+          if (grid[tx][ty] === CELL.KEY) { near = true; break; }
+        }
+        if (near) break;
+      }
+      if (near) continue;
+      grid[x][y] = CELL.PALACE;
+      return;
+    }
+  }
+
+  function genCoin() {
+    const { grid, n, m, player, inTut } = state;
+    const cnt = inTut ? 3 : 16;
+    for (let t = 0; t < cnt; t++) {
+      const x = rand(n) + 1, y = rand(m) + 1;
+      if (Math.abs(x - player.x) + Math.abs(y - player.y) > 5 && grid[x][y] === CELL.EMPTY) grid[x][y] = CELL.COIN;
+    }
+  }
+
+  function enoughCoin() {
+    const { grid, n, m, maxCoin } = state;
+    let cnt = 0;
+    for (let i = 0; i < 512; i++) {
+      const x = rand(n) + 1, y = rand(m) + 1;
+      if (grid[x][y] === CELL.COIN) cnt++;
+    }
+    return cnt >= maxCoin;
+  }
+
+  function swordOf(unit) {
+    if (!unit.weapon) return { x: unit.x, y: unit.y };
+    return { x: unit.x + D[unit.dir][0], y: unit.y + D[unit.dir][1] };
+  }
+
+  function ablePoint(x, y) {
+    const { grid, n, m, countKey, nKey } = state;
+    if (x < 1 || y < 1 || x > n || y > m) return false;
+    if (grid[x][y] === CELL.WALL) return false;
+    if (countKey < nKey && grid[x][y] === CELL.PALACE) return false;
+    return true;
+  }
+
+  function ablePlayer(p) {
+    if (!ablePoint(p.x, p.y)) return false;
+    if (p.weapon && !ablePoint(p.x + D[p.dir][0], p.y + D[p.dir][1])) return false;
+    return true;
+  }
+
+  function ablePointEnemy(x, y) {
+    const { grid, n, m } = state;
+    if (x < 1 || y < 1 || x > n || y > m) return false;
+    const c = grid[x][y];
+    return c === CELL.EMPTY || c === CELL.BEACON || c === 1 || c === 2 || c === 3;
+  }
+
+  function ableEnemy(e) {
+    return ablePointEnemy(e.x, e.y) && ablePointEnemy(e.x + D[e.dir][0], e.y + D[e.dir][1]);
+  }
+
+  function pickupAt(x, y) {
+    const { grid, player } = state;
+    const c = grid[x][y];
+    if (c === CELL.COIN) { player.money += 10; grid[x][y] = CELL.EMPTY; }
+    if (c === CELL.KEY) { state.countKey++; grid[x][y] = CELL.EMPTY; }
+    if (c === CELL.PALACE) state.touchPalace = 1;
+    if (c === CELL.LIGHT) { player.hp = Math.max(0, player.hp - 1); grid[x][y] = CELL.EMPTY; if (player.hp <= 0) handleDeath(); }
+  }
+
+  function pickupPlayer() {
+    const { player } = state;
+    pickupAt(player.x, player.y);
+    if (player.weapon) pickupAt(player.x + D[player.dir][0], player.y + D[player.dir][1]);
+  }
+
+  function distEnemy(a, b) {
+    return Math.floor(Math.hypot(a.x - b.x, a.y - b.y));
+  }
+
+  function tooNear(e) {
+    const d = distEnemy(e, state.player);
+    return state.inTut ? d < 5 : d < 10;
+  }
+
+  function newEnemy(eyesight = 15) {
+    if (state.specialRule) return;
+    if (state.generateLimit === 0) return;
+    if (state.generateLimit > 0) state.generateLimit--;
+    let e;
+    for (let t = 0; t < 200; t++) {
+      e = {
+        x: rand(state.n) + 1,
+        y: rand(state.m) + 1,
+        dir: rand(4),
+        sight: rand(eyesight) + eyesight,
+        moveable: state.mov,
+        step: 0,
+        lastmove: 0,
+        alive: true,
+        ready: 0,
+        lastready: 0,
+      };
+      if (ableEnemy(e) && !tooNear(e)) break;
+    }
+    if (e && ableEnemy(e)) state.enemies.push(e);
+  }
+
+  function newSpecialEnemy(x, y, dir) {
+    state.enemies.push({ x, y, dir, sight: 30, moveable: state.mov, step: 0, lastmove: 0, alive: true, ready: 0, lastready: 0 });
+  }
+
+  function clearEnemies() { state.enemies = []; }
+
+  function canSee(e) {
+    if (state.specialRule) return false;
+    const { player } = state;
+    if (distEnemy(e, player) > e.sight) return false;
+    const vx = player.x - e.x, vy = player.y - e.y;
+    const ex = D[e.dir][0], ey = D[e.dir][1];
+    const dot = vx * ex + vy * ey;
+    return dot > 0 && dot * dot * 4 >= vx * vx + vy * vy;
+  }
+
+  function getDir(e) {
+    const { player } = state;
+    if (!canSee(e)) return [-1, -1];
+    let bestDir = -1, bestD2 = -1, minDist = distEnemy(e, player);
+    for (let d = 0; d < 4; d++) {
+      const nx = e.x + D[d][0], ny = e.y + D[d][1];
+      for (let d2 = 0; d2 < 4; d2++) {
+        const next = { ...e, x: nx, y: ny, dir: d2 };
+        if (!ableEnemy(next)) continue;
+        const nd = distEnemy(next, player);
+        if (nd < minDist || (nd === minDist && d2 === d)) { minDist = nd; bestDir = d; bestD2 = d2; }
+      }
+    }
+    return [bestDir, bestD2];
+  }
+
+  function moveEnemy(enemy) {
+    const { player, standardClock, attackWaitTime } = state;
+    const [t, t2] = getDir(enemy);
+    enemy.lastmove = standardClock;
+    let facing = false;
+    for (let d = 0; d < 4; d++) {
+      if (enemy.x + D[d][0] === player.x && enemy.y + D[d][1] === player.y) {
+        if (enemy.ready && standardClock - enemy.lastready > attackWaitTime) { enemy.dir = d; return; }
+        facing = true;
+        if (!enemy.ready) { enemy.ready = 1; enemy.lastready = standardClock; }
+      }
+    }
+    if (facing) return;
+    enemy.ready = 0;
+    if (t !== -1) {
+      const nx = enemy.x + D[t][0], ny = enemy.y + D[t][1];
+      if ((nx === player.x && ny === player.y) || (enemy.x + D[t][0] + D[t2][0] === player.x && enemy.y + D[t][1] + D[t2][1] === player.y)) {
+        if (enemy.ready && standardClock - enemy.lastready > attackWaitTime) {
+          enemy.x = nx; enemy.y = ny; enemy.dir = t2; return;
+        }
+        if (!enemy.ready) { enemy.ready = 1; enemy.lastready = standardClock; }
+        return;
+      }
+      enemy.x = nx; enemy.y = ny; enemy.dir = t2;
+      return;
+    }
+    if (enemy.step === 0) {
+      if (rand(state.enemyStopTime) !== 0) return;
+      const dirs = [];
+      for (let d = 0; d < 4; d++) {
+        const next = { ...enemy, dir: d };
+        if (ableEnemy(next)) dirs.push(d);
+      }
+      if (!dirs.length) return;
+      enemy.dir = dirs[rand(dirs.length)];
+      enemy.step = rand(4) + 4;
+    } else {
+      const next = { ...enemy, x: enemy.x + D[enemy.dir][0], y: enemy.y + D[enemy.dir][1] };
+      if (ableEnemy(next)) { enemy.x = next.x; enemy.y = next.y; }
+      enemy.step--;
+    }
+  }
+
+  function updateEnemy() {
+    const { enemies, enemySpeed, standardClock } = state;
+    enemies.forEach((e) => {
+      if (!e.alive || !e.moveable) return;
+      if (standardClock - e.lastmove < enemySpeed) return;
+      moveEnemy(e);
+    });
+  }
+
+  function check(enemy, player) {
+    const e1 = { x: enemy.x, y: enemy.y };
+    const e2 = { x: enemy.x + D[enemy.dir][0], y: enemy.y + D[enemy.dir][1] };
+    const p1 = { x: player.x, y: player.y };
+    const p2 = { x: player.x + D[player.dir][0], y: player.y + D[player.dir][1] };
+    if (state.specialRule) {
+      if (p2.x === e1.x && p2.y === e1.y) return 1;
+      if ((p2.x === e2.x && p2.y === e2.y) || (p1.x === e1.x && p1.y === e1.y) || (p1.x === e2.x && p1.y === e2.y)) return 2;
+      return 0;
+    }
+    if (!player.weapon) {
+      if ((p1.x === e1.x && p1.y === e1.y) || (p1.x === e2.x && p1.y === e2.y)) return 2;
+      return 0;
+    }
+    if ((p2.x === e1.x && p2.y === e1.y) || (p2.x === e2.x && p2.y === e2.y)) return 1;
+    if ((p1.x === e1.x && p1.y === e1.y) || (p1.x === e2.x && p1.y === e2.y)) return 2;
+    return 0;
+  }
+
+  function checkCrash() {
+    const { enemies, player, standardClock, lastUpdate, newEnemyTime, enemyLimit, enemyEyesight, lastGenerate } = state;
+    if (standardClock - lastUpdate > state.updateTime) {
+      state.enemies = enemies.filter((e) => e.alive);
+      state.lastUpdate = standardClock;
+    }
+    if (standardClock - lastGenerate > newEnemyTime && state.enemies.length < enemyLimit) {
+      newEnemy(enemyEyesight);
+      state.lastGenerate = standardClock;
+    }
+    for (const e of state.enemies) {
+      if (!e.alive) continue;
+      const t = check(e, player);
+      if (!t) continue;
+      if (t === 1) { e.alive = false; state.countKill++; state.sessionKill++; }
+      else { player.hp--; e.alive = false; if (player.hp <= 0) return 1; }
+    }
+    state.enemies = state.enemies.filter((e) => e.alive);
+    return 0;
+  }
+
+  function updateObstacle() {
+    const { grid, n } = state;
+    for (let i = 2; i <= n - 1; i++) {
+      for (let j = 2; j <= n - 1; j++) {
+        if (grid[i][j] === CELL.EMPTY && rand(1280) === 0) grid[i][j] = CELL.WALL;
+        else if (grid[i][j] === CELL.WALL && rand(256) === 0) grid[i][j] = CELL.EMPTY;
+      }
+    }
+  }
+
+  function updateLightening() {
+    const { grid, n, player } = state;
+    for (let i = 2; i <= n - 1; i++) {
+      for (let j = 2; j <= n - 1; j++) {
+        if (Math.abs(i - player.x) + Math.abs(j - player.y) < 2) continue;
+        if (grid[i][j] === CELL.EMPTY && rand(4096) === 0) grid[i][j] = CELL.LIGHT;
+        else if (grid[i][j] === CELL.LIGHT && rand(256) === 0) grid[i][j] = CELL.EMPTY;
+      }
+    }
+  }
+
+  const heldKeys = new Set();
+  const repeatable = new Set(["w", "a", "s", "d", "ArrowUp", "ArrowRight", "ArrowDown", "ArrowLeft"]);
+
+  function normalizeKey(k) { return k.length === 1 ? k.toLowerCase() : k; }
+
+  function tryMovePlayer() {
+    const { player, grid } = state;
+    let moved = false;
+    const tryDir = (dir) => {
+      const tp = { ...player, x: player.x + D[dir][0], y: player.y + D[dir][1] };
+      if (!ablePlayer(tp)) return;
+      if (grid[tp.x][tp.y] === CELL.OBST) grid[tp.x][tp.y] = CELL.EMPTY;
+      Object.assign(player, tp);
+      state.lastMove = Date.now();
+      moved = true;
+    };
+    if (heldKeys.has("w")) tryDir(0);
+    else if (heldKeys.has("s")) tryDir(2);
+    else if (heldKeys.has("a")) tryDir(3);
+    else if (heldKeys.has("d")) tryDir(1);
+    if (player.weapon) {
+      if (heldKeys.has("ArrowUp")) { if (ablePlayer({ ...player, dir: 0 })) player.dir = 0; moved = true; }
+      else if (heldKeys.has("ArrowRight")) { if (ablePlayer({ ...player, dir: 1 })) player.dir = 1; moved = true; }
+      else if (heldKeys.has("ArrowDown")) { if (ablePlayer({ ...player, dir: 2 })) player.dir = 2; moved = true; }
+      else if (heldKeys.has("ArrowLeft")) { if (ablePlayer({ ...player, dir: 3 })) player.dir = 3; moved = true; }
+    }
+    if (moved) pickupPlayer();
+    return moved;
+  }
+
+  function tryBarrier() {
+    if (!state.ableC) return;
+    const { player, grid } = state;
+    const d = (player.dir + 2) % 4;
+    const tx = player.x + D[d][0], ty = player.y + D[d][1];
+    if (ablePoint(tx, ty) && grid[tx][ty] === CELL.EMPTY && player.money >= 3) {
+      grid[tx][ty] = CELL.OBST;
+      player.money -= 3;
+      say("那个声音", "人造障碍已部署。");
+    }
+  }
+
+  function tryBeacon() {
+    if (!state.ableF) return;
+    const { player } = state;
+    if (player.money < 5) return;
+    player.money -= 5;
+    if (player.left) {
+      const tp = { ...player, x: player.leftx, y: player.lefty, left: false };
+      if (ablePlayer(tp)) Object.assign(player, tp);
+      else player.money += 5;
+    } else {
+      player.left = true;
+      player.leftx = player.x;
+      player.lefty = player.y;
+      state.grid[player.leftx][player.lefty] = CELL.BEACON;
+    }
+  }
+
+  function trySheathe() {
+    if (!state.ableV) return;
+    const { player } = state;
+    if (!player.weapon) { player.weapon = true; return; }
+    const tp = { ...player, weapon: true };
+    if (ablePlayer(tp)) player.weapon = false;
+  }
+
+  function processSkills() {
+    if (heldKeys.has("c")) tryBarrier();
+    if (heldKeys.has("f")) tryBeacon();
+    if (heldKeys.has("v")) trySheathe();
+  }
+
+  function beginPlay(scene) {
+    state.mode = "play";
+    state.scene = scene;
+    state.paused = false;
+    state.die = false;
+    state.sessionKill = 0;
+    state.standardClock = 0;
+    state.lastGenerate = 0;
+    state.lastUpdate = 0;
+    state.lastMove = Date.now();
+    state.hudExtra = "";
+    $("#pause-button").textContent = "暂停";
+    choices([]);
+    saveLocal();
+    render();
+  }
+
+  function startLoop() {
+    if (loopId) clearInterval(loopId);
+    loopId = setInterval(tick, TICK_MS);
+  }
+
+  function replenishEnemies() {
+    if (state.scene === "tut-barrier") {
+      while (state.enemies.length < 12) newEnemy(15);
+    } else if (state.scene.includes("shrine")) {
+      while (state.enemies.length < 6) newEnemy(state.enemyEyesight);
+    } else if (state.scene === "final-demon" || state.scene === "final-human") {
+      while (state.enemies.length < 6 && state.generateLimit > 0) newEnemy(state.enemyEyesight);
+    }
+  }
+
+  function tick() {
+    if (state.mode !== "play" || locked || state.paused || state.die) return;
+    if (document.hidden || ui.save.open || ui.help.open) return;
+    state.standardClock++;
+    state.turn = state.standardClock;
+    if (state.haveCoin && rand(32) === 0 && !enoughCoin()) genCoin();
+    if (state.player.left) {
+      const { leftx, lefty, grid } = state.player;
+      const t = grid[leftx][lefty];
+      if (t === CELL.EMPTY || t === CELL.OBST || t === CELL.COIN) grid[leftx][lefty] = CELL.BEACON;
+    }
+    tryMovePlayer();
+    processSkills();
+    if (state.scene === "corridor") { handleCorridor(); render(); return; }
+    replenishEnemies();
+    if (state.mov) {
+      if (checkCrash()) { handleDeath(); return; }
+      updateEnemy();
+      if (checkCrash()) { handleDeath(); return; }
+    } else if (checkCrash()) { handleDeath(); return; }
+    if (state.cantStop) {
+      const stay = 6 - Math.floor((Date.now() - state.lastMove) / 1000);
+      state.hudExtra = `再停留 ${Math.max(0, stay)} 秒就会受到伤害`;
+      if (stay <= 0) {
+        state.player.hp--;
+        state.lastMove = Date.now();
+        if (state.player.hp <= 0) { handleDeath(); return; }
+      }
+    }
+    if (state.timerGoal) {
+      const rem = state.timerGoal - Math.floor((Date.now() - state.timerStart) / 1000);
+      state.hudExtra = `还剩 ${Math.max(0, rem)} 秒` + (state.hudExtra ? `　${state.hudExtra}` : "");
+      if (rem <= 0) finishTimedStage();
+    }
+    if (state.scene.includes("shrine") && state.timerKind === "frost") updateObstacle();
+    if (state.scene.includes("shrine") && state.timerKind === "thunder") updateLightening();
+    if (state.scene === "final-demon" || state.scene === "final-human") {
+      state.hudExtra = `还剩 ${Math.max(0, state.generateLimit)} 名敌人即将加入战场` + (state.hudExtra ? `　${state.hudExtra}` : "");
+      if (state.generateLimit + state.enemies.length <= 0) finishFinalBattle();
+    }
+    checkObjectives();
+    render();
+  }
+
+  function checkObjectives() {
+    const { player, sessionKill, countKey, nKey, touchPalace } = state;
+    if (state.scene === "tut-coins" && player.money >= 160) finishTutCoins();
+    else if (state.scene === "tut-static" && sessionKill >= 10) finishTutStatic();
+    else if (state.scene === "tut-move" && sessionKill >= 10) finishTutMove();
+    else if (state.scene === "tut-beacon" && sessionKill >= 3) finishTutBeacon();
+    else if (state.scene === "ember" && countKey >= nKey && touchPalace) finishEmberExplore();
+    else if (state.scene === "frost" && countKey >= nKey && touchPalace) finishFrostExplore();
+    else if (state.scene === "thunder" && countKey >= nKey && touchPalace) finishThunderExplore();
+  }
+
+  function handleDeath() {
+    if (state.scene.startsWith("tut")) {
+      if (state.scene === "tut-static" || (state.scene === "tut-move" && state.sessionKill < 1)) endGame(0, "找错人了", "那个声音：怎么，你连打木偶都能被木偶反杀？");
+      else endGame(1, "技不如人", "那个声音：就这点水准，怎么能当上勇者？");
+    } else if (state.scene === "final-demon") endGame(3, "魔王陨落", "人类联军将你围困，第108代魔王的统治戛然而止。");
+    else if (state.scene === "final-human") endGame(5, "背叛者的末路", "追猎型魔物将你击倒，清除程序已经启动。");
+    else endGame(2, "出师未捷身先死", "你被魔物击杀了，任务中道崩殂。");
+  }
+
+  function endGame(id, title, text) {
+    state.die = true;
+    state.mode = "end";
+    if (!state.haveEnd[id]) state.haveEnd[id] = true;
+    if (id === 6) state.ableV = true;
+    if (id === 4 || id === 6 || id === 7) { state.stage = 5; state.skipPlot = 0; state.countKill = 0; state.player.money = 0; }
+    say("SYSTEM", `达成结局 ${id}：${title}。${text}`);
+    choices([{ label: "返回标题", action: menu }, { label: "重新开始", action: newGame }]);
+    saveLocal();
+    render();
+  }
+
+  function finishEnding(id, title, text) { endGame(id, title, text); }
+
+  // ---------- Story scripts ----------
+  const SCR = {
+    intro: [
+      ["那个声音", "你醒了，勇者。你被召唤到艾瑞斯世界，需要击败魔王卡洛梅。", "……谁？"],
+      ["那个声音", "在那之前，先学会移动、战斗与生存。蓝色 O 是你，身前线条是剑。", "开始训练"],
+    ],
+    prePlot: [
+      ["那个声音", "欢迎来到艾瑞斯。这里是神魔博弈的棋盘，四大古陆等待征服。", "继续"],
+      ["那个声音", "赤烬之地、霜骸冰原、雷鸣裂谷、影渊圣所——四圣器将指引你的命运。", "我准备好了"],
+    ],
+    reveal: [
+      ["X-0 系统", "认知过滤器已解除。你斩杀的“魔物”，都是其他候选者。", "继续"],
+      ["X-0 系统", `累计有效击杀：${() => state.countKill}。魔王早已过世，这场游戏只为选出新的魔王。`, "我必须选择"],
+    ],
+  };
+
+  function menu() {
+    state.mode = "menu";
+    state.scene = "menu";
+    state.paused = false;
+  $("#pause-button").textContent = "暂停";
+    ui.stage.innerHTML = '<div class="title-art"><strong>ＹＯＵＳＹＡ’Ｓ</strong><span>Ｇ　Ａ　Ｍ　Ｅ</span></div>';
+    ui.scene.textContent = "YOUSYA // AWAITING SIGNAL";
+    say("SYSTEM", "选择存档入口。进度会自动保存在本浏览器中。");
+    const a = [{ label: "新游戏", action: newGame }];
+    if (localStorage.getItem(SAVE_KEY)) a.push({ label: "继续游戏", action: loadLocal });
+    a.push({ label: "查看结局", action: viewEndings });
+    a.push({ label: "存档导入 / 导出", action: () => ui.save.showModal() });
+    choices(a);
+    hud();
+  }
+
+  function viewEndings() {
+    state.mode = "story";
+    locked = true;
+    const names = ["找错人了", "技不如人", "出师未捷身先死", "魔王陨落", "魔王永恒", "背叛者的末路", "无处可归", "真正的勇者"];
+    const lines = names.map((n, i) => state.haveEnd[i] ? `结局 ${i}：${n}` : "███████████████").join("\n");
+    say("SYSTEM", lines);
+    choices([{ label: "返回", action: () => { locked = false; menu(); } }]);
+    render();
+  }
+
+  function newGame() {
+    const prevAbleV = state.ableV;
+    state = fresh();
+    state.ableV = prevAbleV;
+    try {
+      const raw = localStorage.getItem(SAVE_KEY);
+      if (raw) decrypt(raw).then((d) => { if (d.ableV) state.ableV = true; }).catch(() => {});
+    } catch {}
+    script(SCR.intro, startTutorial);
+  }
+
+  function startTutorial() {
+    if (state.stage >= 5) { prePlot(); return; }
+    if (state.stage >= 1) { tutStatic(true); return; }
+    tutCoins();
+  }
+
+  function tutCoins(skipIntro = false) {
+    state.inTut = 1;
+    state.maxCoin = 64;
+    state.haveCoin = 1;
+    makeGrid(15, 15);
+    generateEmpty();
+    Object.assign(state.player, { x: 2, y: 8, dir: 2, hp: 3, money: 0, left: false, weapon: true });
+    genCoin();
+    beginPlay("tut-coins");
+    if (!skipIntro) say("那个声音", "先用 WASD 移动，方向键控制剑。收集 160 枚金币。");
+    else say("那个声音", "继续收集金币。");
+    startLoop();
+  }
+
+  function finishTutCoins() {
+    state.stage = Math.max(state.stage, 1);
+    saveLocal();
+    script([["那个声音", "很好。接下来学习战斗——击杀 10 只不移动的魔物。", "开始"]], () => tutStatic());
+  }
+
+  function tutStatic(skipIntro = false) {
+    if (state.stage >= 2) { tutMove(true); return; }
+    clearEnemies();
+    state.mov = 0;
+    state.enemyLimit = 6;
+    state.enemyEyesight = 15;
+    state.sessionKill = 0;
+    for (let i = 0; i < 6; i++) newEnemy(15);
+    genCoin();
+    beginPlay("tut-static");
+    if (!skipIntro) say("那个声音", "你的行动永远先于魔物。让剑碰到它们。");
+    startLoop();
+  }
+
+  function finishTutStatic() {
+    state.stage = Math.max(state.stage, 2);
+    saveLocal();
+    script([["那个声音", "魔物会移动，并拥有视野。击杀 10 只移动魔物。", "继续"]], () => tutMove());
+  }
+
+  function tutMove(skipIntro = false) {
+    if (state.stage >= 3) { tutBarrier(true); return; }
+    clearEnemies();
+    state.mov = 1;
+    state.enemySpeed = 2;
+    state.enemyLimit = 6;
+    state.sessionKill = 0;
+    for (let i = 0; i < 6; i++) newEnemy(15);
+    genCoin();
+    beginPlay("tut-move");
+    if (!skipIntro) say("那个声音", "视野为面朝方向 ±60° 扇形。被看到时它们会径直走来。");
+    startLoop();
+  }
+
+  function finishTutMove() {
+    state.stage = Math.max(state.stage, 3);
+    state.player.money += 100;
+    saveLocal();
+    script([["那个声音", "按 C 在身后放置障碍（3 金币）。存活 60 秒。", "开始"]], () => tutBarrier());
+  }
+
+  function tutBarrier(skipIntro = false) {
+    if (state.stage >= 4) { tutBeacon(true); return; }
+    clearEnemies();
+    state.mov = 1;
+    state.ableC = true;
+    state.enemyLimit = 12;
+    state.enemySpeed = 3;
+    state.player.hp = 3;
+    state.sessionKill = 0;
+    for (let i = 0; i < 12; i++) newEnemy(15);
+    genCoin();
+    state.timerStart = Date.now();
+    state.timerGoal = 60;
+    state.timerKind = "survive";
+    beginPlay("tut-barrier");
+    if (!skipIntro) say("那个声音", "障碍可以阻挡魔物，但你能穿过并清除它。");
+    startLoop();
+  }
+
+  function finishTutBarrier() {
+    state.stage = Math.max(state.stage, 4);
+    state.timerGoal = 0;
+    saveLocal();
+    script([["那个声音", "按 F 设置/传送信标（5 金币）。此阶段武器对碰也会伤到你。击杀 3 个敌人。", "开始"]], () => tutBeacon());
+  }
+
+  function tutBeacon(skipIntro = false) {
+    if (state.stage >= 5) { prePlot(); return; }
+    makeGrid(3, 30);
+    generateEmpty();
+    Object.assign(state.player, { x: 2, y: 12, dir: 1, hp: 3, money: state.player.money, left: false, weapon: true });
+    state.ableF = true;
+    state.mov = 1;
+    state.specialRule = 1;
+    state.enemyLimit = 3;
+    state.enemySpeed = 3;
+    state.sessionKill = 0;
+    clearEnemies();
+    newSpecialEnemy(2, 18, 3);
+    newSpecialEnemy(2, 20, 3);
+    newSpecialEnemy(2, 22, 3);
+    beginPlay("tut-beacon");
+    if (!skipIntro) say("那个声音", "击杀 3 个敌人。若剑与敌人武器相碰，你也会受伤。");
+    startLoop();
+  }
+
+  function finishTutBeacon() {
+    state.stage = Math.max(state.stage, 5);
+    state.specialRule = 0;
+    state.maxCoin = 12;
+    clearEnemies();
+    saveLocal();
+    script([["那个声音", "教程完成。去战斗吧，勇者。", "前往大陆"]], prePlot);
+  }
+
+  function prePlot() {
+    if (state.stage >= 6) { emberExplore(true); return; }
+    script(SCR.prePlot, () => {
+      state.stage = 6;
+      saveLocal();
+      emberExplore();
+    });
+  }
+
+  function emberExplore(skipIntro = false) {
+    if (state.stage >= 7) { emberShrine(true); return; }
+    state.maxCoin = 6;
+    state.countKey = 0;
+    state.touchPalace = 0;
+    state.inTut = 0;
+    state.ableC = true;
+    state.ableF = true;
+    state.enemyEyesight = 5;
+    state.attackWaitTime = 2;
+    state.enemyLimit = 72;
+    state.mov = 1;
+    state.enemySpeed = 0;
+    state.nKey = 4;
+    generateMap();
+    state.gridName = "「赤烬之地」";
+    Object.assign(state.player, { x: 40, y: 40, dir: 2, hp: 3, money: 0, left: false, weapon: true });
+    for (let i = 0; i < 4; i++) genKey();
+    genPalace();
+    clearEnemies();
+    for (let i = 0; i < 64; i++) newEnemy(5);
+    beginPlay("ember");
+    if (!skipIntro) say("那个声音", "赤烬之地：收集 4 把钥匙 K，抵达圣殿 S。");
+    startLoop();
+  }
+
+  function finishEmberExplore() {
+    state.stage = 7;
+    saveLocal();
+    script([["那个声音", "青铜巨门开启——进入炎核圣殿，坚持 90 秒。", "进入"]], () => emberShrine());
+  }
+
+  function emberShrine(skipIntro = false) {
+    if (state.stage >= 8) { frostExplore(true); return; }
+    makeGrid(16, 16);
+    generateEmpty();
+    state.gridName = "「赤烬之地」——圣殿";
+    state.ableC = false;
+    state.cantStop = 1;
+    state.enemyLimit = 12;
+    state.sessionKill = 0;
+    Object.assign(state.player, { x: 8, y: 8, dir: 2, hp: 3, money: state.player.money, left: false, weapon: true });
+    clearEnemies();
+    for (let i = 0; i < 12; i++) newEnemy(5);
+    state.timerStart = Date.now();
+    state.timerGoal = 90;
+    state.timerKind = "ember";
+    beginPlay("ember-shrine");
+    if (!skipIntro) say("那个声音", "坚持 90 秒。不可放置障碍；停留超过 6 秒会受伤。");
+    startLoop();
+  }
+
+  function finishTimedStage() {
+    state.timerGoal = 0;
+    state.cantStop = 0;
+    state.ableC = true;
+    if (state.scene === "tut-barrier") {
+      finishTutBarrier();
+    } else if (state.scene === "ember-shrine") {
+      state.stage = 8;
+      saveLocal();
+      script([["那个声音", "炎核落入掌心。下一站：霜骸冰原。", "出发"]], () => frostExplore());
+    } else if (state.scene === "frost-shrine") {
+      state.stage = 10;
+      saveLocal();
+      script([["那个声音", "霜心共鸣。前往雷鸣裂谷。", "出发"]], () => thunderExplore());
+    } else if (state.scene === "thunder-shrine") {
+      state.stage = 12;
+      saveLocal();
+      script([["那个声音", "雷纹臂铠附着成功。最终站：影渊圣所。", "出发"]], finalReveal);
+    }
+  }
+
+  function frostExplore(skipIntro = false) {
+    if (state.stage >= 9) { frostShrine(true); return; }
+    state.maxCoin = 6;
+    state.countKey = 0;
+    state.touchPalace = 0;
+    state.enemyEyesight = 12;
+    state.attackWaitTime = 2;
+    state.enemyLimit = 48;
+    state.enemySpeed = 0;
+    state.nKey = 6;
+    generateMaze(6);
+    state.gridName = "「霜骸冰原」";
+    Object.assign(state.player, { x: 40, y: 40, dir: 2, hp: 3, money: 0, left: false, weapon: true });
+    clearEnemies();
+    for (let i = 0; i < 32; i++) newEnemy(12);
+    for (let i = 0; i < 4; i++) genCoin();
+    beginPlay("frost");
+    if (!skipIntro) say("那个声音", "霜骸冰原：迷宫地形，收集 6 把钥匙。魔物视野广但数量较少。");
+    startLoop();
+  }
+
+  function finishFrostExplore() {
+    state.stage = 9;
+    saveLocal();
+    script([["那个声音", "进入霜心圣殿，坚持 90 秒。障碍会随机生灭。", "进入"]], () => frostShrine());
+  }
+
+  function frostShrine(skipIntro = false) {
+    if (state.stage >= 10) { thunderExplore(true); return; }
+    makeGrid(16, 16);
+    generateEmpty();
+    state.gridName = "「霜骸冰原」——圣殿";
+    state.ableC = false;
+    state.cantStop = 1;
+    state.enemyLimit = 12;
+    Object.assign(state.player, { x: 8, y: 8, dir: 2, hp: 3, money: state.player.money, left: false, weapon: true });
+    clearEnemies();
+    for (let i = 0; i < 12; i++) newEnemy(12);
+    state.timerStart = Date.now();
+    state.timerGoal = 90;
+    state.timerKind = "frost";
+    beginPlay("frost-shrine");
+    if (!skipIntro) say("那个声音", "极寒试炼：90 秒。地形会不断变化。");
+    startLoop();
+  }
+
+  function thunderExplore(skipIntro = false) {
+    if (state.stage >= 11) { thunderShrine(true); return; }
+    state.maxCoin = 10;
+    state.countKey = 0;
+    state.touchPalace = 0;
+    state.enemyEyesight = 3;
+    state.enemyStopTime = 1;
+    state.attackWaitTime = 0;
+    state.enemyLimit = 54;
+    state.nKey = 8;
+    generateMaze(8);
+    state.gridName = "「雷鸣裂谷」";
+    Object.assign(state.player, { x: 40, y: 40, dir: 2, hp: 3, money: 0, left: false, weapon: true });
+    clearEnemies();
+    for (let i = 0; i < 36; i++) newEnemy(3);
+    for (let i = 0; i < 4; i++) genCoin();
+    beginPlay("thunder");
+    if (!skipIntro) say("那个声音", "雷鸣裂谷：8 把钥匙。闪电之灵视野窄，但反应极快。");
+    startLoop();
+  }
+
+  function finishThunderExplore() {
+    state.stage = 11;
+    saveLocal();
+    script([["那个声音", "雷纹圣殿：90 秒。雷电会在远处随机生成。", "进入"]], () => thunderShrine());
+  }
+
+  function thunderShrine(skipIntro = false) {
+    if (state.stage >= 12) { finalReveal(); return; }
+    makeGrid(16, 16);
+    generateEmpty();
+    state.gridName = "「雷鸣裂谷」——圣殿";
+    state.ableC = false;
+    state.cantStop = 1;
+    state.enemyLimit = 9;
+    Object.assign(state.player, { x: 8, y: 8, dir: 2, hp: 3, money: state.player.money, left: false, weapon: true });
+    clearEnemies();
+    for (let i = 0; i < 6; i++) newEnemy(3);
+    state.timerStart = Date.now();
+    state.timerGoal = 90;
+    state.timerKind = "thunder";
+    beginPlay("thunder-shrine");
+    if (!skipIntro) say("那个声音", "直面雷暴 90 秒。X 格会造成伤害，但不会在你 2 格内生成。");
+    startLoop();
+  }
+
+  function finalReveal() {
+    if (state.stage >= 13) { finalDemon(); return; }
+    if (state.stage >= 14) { finalHuman(); return; }
+    stopAll();
+    state.mode = "story";
+    locked = true;
+    say("X-0 系统", `认知过滤器已解除。你击杀的“魔物”都是人类候选者。累计击杀：${state.countKill}。`);
+    choices([
+      { label: "走向红色大门，尝试回归人类", action: () => { locked = false; startCorridor("human"); } },
+      { label: "走向蓝色王座，成为第108代魔王", action: () => { locked = false; startCorridor("demon"); } },
+    ]);
+    render();
+  }
+
+  function startCorridor(route) {
+    state.route = route;
+    state.corridorConfirm = 0;
+    makeGrid(5, 15);
+    generateEmpty();
+    state.gridName = "「终焉回廊」";
+    for (let y = 1; y <= 5; y++) {
+      state.grid[y][1] = state.grid[y][2] = CELL.RED;
+      state.grid[y][14] = state.grid[y][15] = CELL.BLUE;
+    }
+    Object.assign(state.player, { x: 3, y: 8, dir: 1, hp: 3, money: state.player.money, left: false, weapon: true });
+    state.confirmRoute = null;
+    state.corridorConfirm = 0;
+    state.mov = 0;
+    beginPlay("corridor");
+    say("X-0 系统", "A/← 走向红色大门，D/→ 走向蓝色王座。人类路线需按 Y 两次确认。");
+    startLoop();
+  }
+
+  function handleCorridor() {
+    const { player } = state;
+    if (player.y <= 2) {
+      say("X-0 系统", "寒风从门缝渗入。按 Y 两次确认赌上人性最后的善。");
+    } else if (player.y >= 14) {
+      say("X-0 系统", "王座伸出锁链。按 Y 确认成为第108代魔王。");
+    } else {
+      state.corridorConfirm = 0;
+    }
+  }
+
+  function confirmCorridor() {
+    if (state.scene !== "corridor") return;
+    const { player } = state;
+    if (player.y <= 2) {
+      state.corridorConfirm = (state.corridorConfirm || 0) + 1;
+      if (state.corridorConfirm >= 2) {
+        state.stage = 14;
+        saveLocal();
+        finalHuman();
+      } else {
+        say("X-0 系统", "警告：若人类拒绝接受，你将当场被处决。再次按 Y 确认。");
+      }
+    } else if (player.y >= 14) {
+      state.stage = 13;
+      saveLocal();
+      finalDemon();
+    }
+  }
+
+  function setupFinalBattle(scene) {
+    makeGrid(31, 31);
+    generateEmpty();
+    state.gridName = scene === "final-demon" ? "影渊圣所" : "荒原逃亡";
+    state.ableC = true;
+    state.ableF = true;
+    state.cantStop = 1;
+    state.enemyLimit = 18;
+    state.enemyEyesight = 8;
+    state.enemyStopTime = 2;
+    state.attackWaitTime = 2;
+    state.generateLimit = 100;
+    state.mov = 1;
+    state.enemySpeed = 0;
+    Object.assign(state.player, { x: 16, y: 16, dir: 2, hp: 3, money: state.player.money, left: false, weapon: true });
+    clearEnemies();
+    for (let i = 0; i < 9; i++) newEnemy(8);
+    state.lastMove = Date.now();
+    beginPlay(scene);
+    startLoop();
+  }
+
+  function finalDemon() {
+    script([["X-0 系统", "人类联军攻入大殿。击溃所有来犯者，稳固魔王权柄。", "迎战"]], () => {
+      setupFinalBattle("final-demon");
+      say("X-0 系统", "击溃全部联军增援。停留超过 6 秒仍会受伤。");
+    });
+  }
+
+  function finalHuman() {
+    state.originalKills = state.countKill;
+    script([["X-0 系统", "叛逃行为已记录。坚持到援军抵达，或击退所有追猎者。", "逃亡"]], () => {
+      setupFinalBattle("final-human");
+      say("那个声音", "快跑！追猎型魔物正在逼近。");
+    });
+  }
+
+  function finishFinalBattle() {
+    if (state.scene === "final-demon") finishEnding(4, "魔王永恒", "你击溃了人类联军，成为第108代魔王。");
+    else finishEnding(state.originalKills <= 200 ? 7 : 6, state.originalKills <= 200 ? "真正的勇者" : "无处可归",
+      state.originalKills <= 200 ? "人类接受了你的回归与赎罪。" : "人类无法原谅你的杀戮。已解锁按 V 收起武器。");
+  }
+
+  function playCampaign() {
+    state.die = false;
+    if (state.stage <= 5) startTutorial();
+    else if (state.stage === 6) emberExplore(true);
+    else if (state.stage === 7) emberShrine(true);
+    else if (state.stage === 8) frostExplore(true);
+    else if (state.stage === 9) frostShrine(true);
+    else if (state.stage === 10) thunderExplore(true);
+    else if (state.stage === 11) thunderShrine(true);
+    else if (state.stage === 12) finalReveal();
+    else if (state.stage === 13) finalDemon();
+    else if (state.stage === 14) finalHuman();
+    else startTutorial();
+  }
+
+  // ---------- Render ----------
+  function trans(c) {
+    if (c === CELL.RED) return "&";
+    if (c === CELL.BLUE) return "@";
+    if (c === CELL.WALL) return "#";
+    if (c === CELL.EMPTY) return " ";
+    if (c === CELL.BEACON) return "P";
+    if (c === CELL.OBST) return "*";
+    if (c === CELL.COIN) return "$";
+    if (c === CELL.PALACE) return "S";
+    if (c === CELL.KEY) return "K";
+    if (c === CELL.LIGHT) return "X";
+    return " ";
+  }
+
+  function tileClass(c) {
+    if (c === CELL.WALL) return "tile-wall";
+    if (c === CELL.COIN) return "tile-coin";
+    if (c === CELL.KEY || c === CELL.LIGHT) return "tile-relic";
+    if (c === CELL.PALACE) return "tile-altar";
+    if (c === CELL.BEACON) return "tile-beacon";
+    return "";
+  }
+
+  function renderMap() {
+    const { grid, n, m, player, enemies } = state;
+    if (!grid) return;
+    let sx = Math.max(1, player.x - 8), sy = Math.max(1, player.y - 10);
+    let ex = Math.min(n, Math.max(sx + 16, player.x + 8)), ey = Math.min(m, Math.max(sy + 20, player.y + 10));
+    sx = Math.max(1, Math.min(sx, ex - 16));
+    sy = Math.max(1, Math.min(sy, ey - 20));
+    const vh = ex - sx + 1, vw = ey - sy + 1;
+    const cells = Array.from({ length: vh }, () => Array.from({ length: vw }, () => ({ ch: " ", cl: "" })));
+    const put = (x, y, ch, cl) => { if (cells[x]?.[y]) cells[x][y] = { ch, cl }; };
+    for (let i = sx; i <= ex; i++) for (let j = sy; j <= ey; j++) {
+      put(i - sx, j - sy, trans(grid[i][j]), tileClass(grid[i][j]));
+    }
+    enemies.forEach((e) => {
+      if (!e.alive) return;
+      const s = swordOf(e);
+      put(s.x - sx, s.y - sy, SWORD[e.dir], "tile-enemy");
+      put(e.x - sx, e.y - sy, e.ready ? "!" : "O", e.ready ? "tile-alert" : "tile-enemy");
+    });
+    if (player.weapon) {
+      const ps = swordOf(player);
+      put(ps.x - sx, ps.y - sy, SWORD[player.dir], "tile-player");
+    }
+    put(player.x - sx, player.y - sy, "O", "tile-player");
+    const pre = document.createElement("pre");
+    pre.className = "ascii-map";
+    cells.forEach((row, ri) => {
+      row.forEach((q) => { const s = document.createElement("span"); s.className = q.cl; s.textContent = q.ch; pre.append(s); });
+      if (ri + 1 < cells.length) pre.append("\n");
+    });
+    ui.stage.replaceChildren(pre);
+  }
+
+  function objective() {
+    const s = state.scene, p = state.player;
+    if (s === "tut-coins") return ["基础移动", `金币 ${p.money}/160`, p.money / 160];
+    if (s === "tut-static") return ["战斗训练", `击破 ${state.sessionKill}/10`, state.sessionKill / 10];
+    if (s === "tut-move") return ["移动战斗", `击破 ${state.sessionKill}/10`, state.sessionKill / 10];
+    if (s === "tut-barrier") return ["障碍试炼", `存活 60 秒`, (Date.now() - state.timerStart) / 60000];
+    if (s === "tut-beacon") return ["信标试炼", `击破 ${state.sessionKill}/3`, state.sessionKill / 3];
+    if (s === "ember" || s === "frost" || s === "thunder") return [state.gridName, `钥匙 ${state.countKey}/${state.nKey}`, state.countKey / state.nKey];
+    if (s.includes("shrine")) return ["圣殿试炼", `剩余 ${Math.max(0, state.timerGoal - Math.floor((Date.now() - state.timerStart) / 1000))} 秒`, 1 - (Date.now() - state.timerStart) / (state.timerGoal * 1000)];
+    if (s === "corridor") return ["终焉回廊", "A/← 救赎　D/→ 权力", 0];
+    if (s.startsWith("final")) return ["终局战斗", `敌军增援 ${state.generateLimit} · 场上 ${state.enemies.length}`, 1 - (state.generateLimit + state.enemies.length) / 100];
+    return ["开始游戏", "选择新游戏或读取存档", 0];
+  }
+
+  const CHAPTER = { menu: "序章", "tut-coins": "教程 I", "tut-static": "教程 II", "tut-move": "教程 III", "tut-barrier": "教程 IV", "tut-beacon": "教程 V", ember: "赤烬之地", "ember-shrine": "炎核圣殿", frost: "霜骸冰原", "frost-shrine": "霜心圣殿", thunder: "雷鸣裂谷", "thunder-shrine": "雷纹圣殿", corridor: "影渊圣所", "final-demon": "魔王加冕战", "final-human": "逃亡之路" };
+
+  function hud() {
+    const p = state.player;
+    ui.hp.textContent = state.mode === "play" ? `${Math.max(0, p.hp)} / 3` : "—";
+    ui.money.textContent = state.mode === "play" ? p.money : "—";
+    ui.kills.textContent = state.mode === "play" ? state.countKill : "—";
+    ui.chapter.textContent = CHAPTER[state.scene] || "序章";
+    const [o, d, prog] = objective();
+    ui.objective.textContent = o;
+    ui.detail.textContent = state.hudExtra || d;
+    ui.bar.style.width = `${Math.min(100, Math.max(0, prog * 100))}%`;
+    ui.turn.textContent = `TURN ${String(state.turn).padStart(4, "0")}`;
+  }
+
+  function render() {
+    if (state.mode === "play" && state.grid) {
+      renderMap();
+      ui.scene.textContent = (state.gridName || state.scene).toUpperCase();
+    }
+    ui.speaker.textContent = state.speaker;
+    ui.text.textContent = state.message;
+    hud();
+  }
+
+  function togglePause(force) {
+    if (state.mode !== "play") return;
+    state.paused = typeof force === "boolean" ? force : !state.paused;
+    stopAll();
+    $("#pause-button").textContent = state.paused ? "继续" : "暂停";
+    $("#pause-button").classList.toggle("primary", !state.paused);
+    say("SYSTEM", state.paused ? "游戏已暂停。按 Space / P 或点击“继续”恢复。" : "游戏继续。");
+    render();
+  }
+
+  // ---------- Save ----------
+  const b64 = (b) => { let s = ""; b.forEach((x) => (s += String.fromCharCode(x))); return btoa(s).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); };
+  const unb = (s) => Uint8Array.from(atob(s.replace(/-/g, "+").replace(/_/g, "/") + "===".slice((s.length + 3) % 4)), (c) => c.charCodeAt(0));
+
+  async function keyMaterial(salt) {
+    const m = await crypto.subtle.importKey("raw", new TextEncoder().encode(SECRET), "PBKDF2", false, ["deriveKey"]);
+    return crypto.subtle.deriveKey({ name: "PBKDF2", salt, iterations: 120000, hash: "SHA-256" }, m, { name: "AES-GCM", length: 256 }, false, ["encrypt", "decrypt"]);
+  }
+  async function encrypt(data) {
+    const salt = crypto.getRandomValues(new Uint8Array(16)), iv = crypto.getRandomValues(new Uint8Array(12));
+    const k = await keyMaterial(salt);
+    const cipher = new Uint8Array(await crypto.subtle.encrypt({ name: "AES-GCM", iv }, k, new TextEncoder().encode(JSON.stringify(data))));
+    const p = new Uint8Array(29 + cipher.length);
+    p[0] = VERSION; p.set(salt, 1); p.set(iv, 17); p.set(cipher, 29);
+    return "YG1." + b64(p);
+  }
+  async function decrypt(code) {
+    if (!code.startsWith("YG1.")) throw Error("存档版本或格式不正确");
+    const p = unb(code.slice(4).trim());
+    if (p.length < 46 || p[0] !== VERSION) throw Error("存档数据不完整");
+    const plain = await crypto.subtle.decrypt({ name: "AES-GCM", iv: p.slice(17, 29) }, await keyMaterial(p.slice(1, 17)), p.slice(29));
+    const data = JSON.parse(new TextDecoder().decode(plain));
+    if (!data.player || !Array.isArray(data.haveEnd)) throw Error("存档校验失败");
+    return data;
+  }
+
+  function serialize() {
+    const { player, stage, countKill, haveEnd, skipPlot, ableV, scene } = state;
+    return { version: VERSION, stage, player: { x: player.x, y: player.y, dir: player.dir, hp: player.hp, money: player.money, left: player.left, leftx: player.leftx, lefty: player.lefty, weapon: player.weapon }, haveEnd, skipPlot, countKill, ableV: state.ableV, scene };
+  }
+
+  async function saveLocal() { try { localStorage.setItem(SAVE_KEY, await encrypt(serialize())); } catch {} }
+
+  function migrate(data) {
+    const d = { ...fresh(), ...data };
+    d.haveEnd = Array.from({ length: 8 }, (_, i) => !!data.haveEnd?.[i]);
+    d.player = { ...fresh().player, ...(data.player || {}) };
+    d.player.hp = 3;
+    d.ableV = !!data.ableV || d.haveEnd[6];
+    return d;
+  }
+
+  async function loadLocal() {
+    try {
+      Object.assign(state, migrate(await decrypt(localStorage.getItem(SAVE_KEY))));
+      state.paused = false;
+      state.die = false;
+      $("#pause-button").textContent = "暂停";
+      say("SYSTEM", "本地存档已读取。将从当前章节继续。");
+      playCampaign();
+    } catch (e) { say("SYSTEM", e.message); menu(); }
+  }
+
+  function stopAll() { heldKeys.clear(); }
+  function startHold(k) {
+    k = normalizeKey(k);
+    if (k === "y") { confirmCorridor(); return; }
+    heldKeys.add(k);
+  }
+  function stopHold(k) { heldKeys.delete(normalizeKey(k)); }
+
+  $("#pause-button").onclick = () => togglePause();
+  $("#save-button").onclick = () => { stopAll(); ui.saveStatus.textContent = ""; ui.save.showModal(); };
+  $("#help-button").onclick = () => { stopAll(); ui.help.showModal(); };
+  $("#export-save").onclick = async () => {
+    const c = await encrypt(serialize());
+    ui.code.value = c;
+    try { await navigator.clipboard.writeText(c); ui.saveStatus.textContent = "存档码已生成并复制。"; }
+    catch { ui.saveStatus.textContent = "存档码已生成，请手动复制。"; }
+  };
+  $("#import-save").onclick = async () => {
+    try {
+      Object.assign(state, migrate(await decrypt(ui.code.value.trim())));
+      await saveLocal();
+      state.paused = false;
+      say("SYSTEM", "存档导入成功。");
+      ui.save.close();
+      playCampaign();
+    } catch (e) { ui.saveStatus.textContent = e.message; }
+  };
+  $("#clear-save").onclick = () => { localStorage.removeItem(SAVE_KEY); ui.code.value = ""; ui.saveStatus.textContent = "本地存档已清除。"; };
+
+  document.addEventListener("keydown", (e) => {
+    const k = normalizeKey(e.key);
+    if ((k === " " || k === "p") && !ui.save.open && !ui.help.open) { e.preventDefault(); if (!e.repeat) togglePause(); return; }
+    const a = ["w", "a", "s", "d", "c", "f", "v", "y", "ArrowUp", "ArrowRight", "ArrowDown", "ArrowLeft"];
+    if (!a.includes(k) || ui.save.open || ui.help.open) return;
+    e.preventDefault();
+    if (!e.repeat) startHold(k);
+  });
+  document.addEventListener("keyup", (e) => stopHold(e.key));
+  window.addEventListener("blur", stopAll);
+  document.addEventListener("visibilitychange", () => { if (document.hidden) stopAll(); });
+  document.querySelectorAll("[data-key]").forEach((b) => {
+    const down = (e) => { e.preventDefault(); startHold(b.dataset.key); };
+    const up = (e) => { e.preventDefault(); stopHold(b.dataset.key); };
+    b.addEventListener("pointerdown", down);
+    b.addEventListener("pointerup", up);
+    b.addEventListener("pointercancel", up);
+    b.addEventListener("pointerleave", up);
+  });
+
+  startLoop();
+  menu();
 })();
