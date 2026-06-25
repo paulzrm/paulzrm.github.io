@@ -86,6 +86,8 @@
   let state = fresh();
   let locked = false;
   let loopId = null;
+  let typeTimer = null;
+  let typing = { active: false, shown: "", full: "", token: 0 };
 
   const rand = (n) => Math.floor(Math.random() * n);
   const shuffle = (a) => { for (let i = a.length - 1; i > 0; i--) { const j = rand(i + 1); [a[i], a[j]] = [a[j], a[i]]; } return a; };
@@ -130,6 +132,45 @@
     el.innerHTML = richText(text);
   }
 
+  function typeSpeed(w, t) {
+    if (/X-0|系统/.test(w) && /魔王|候选者|人类|选择|真相|结局|勇者/.test(t)) return 72;
+    if (/魔王早已过世|真正的勇者|无处可归|背叛者|候选者|找错人了|技不如人/.test(t)) return 72;
+    return 22;
+  }
+
+  function finishTyping() {
+    if (typeTimer) clearTimeout(typeTimer);
+    typeTimer = null;
+    typing.active = false;
+    typing.shown = typing.full;
+    renderRichText(ui.text, typing.shown);
+  }
+
+  function startTyping(w, t) {
+    if (typeTimer) clearTimeout(typeTimer);
+    const chars = Array.from(String(t));
+    const token = ++typing.token;
+    const speed = typeSpeed(w, String(t));
+    typing = { active: true, shown: "", full: String(t), token };
+    const step = (i) => {
+      if (typing.token !== token) return;
+      typing.shown = chars.slice(0, i).join("");
+      renderRichText(ui.text, typing.shown);
+      if (i >= chars.length) {
+        typing.active = false;
+        typeTimer = null;
+        return;
+      }
+      typeTimer = setTimeout(() => step(i + 1), speed);
+    };
+    step(0);
+  }
+
+  function renderDialogue() {
+    ui.speaker.textContent = state.speaker;
+    renderRichText(ui.text, typing.active ? typing.shown : state.message);
+  }
+
   function showTitleArt() {
     const pre = document.createElement("pre");
     pre.className = "title-art title-art-original";
@@ -170,7 +211,7 @@
     state.speaker = w;
     state.message = t;
     ui.speaker.textContent = w;
-    renderRichText(ui.text, t);
+    startTyping(w, t);
   }
 
   function script(lines, done, i = 0) {
@@ -182,7 +223,10 @@
     say(l[0], typeof l[1] === "function" ? l[1]() : l[1]);
     choices([{
       label: l[2],
-      action: () => (i + 1 < lines.length ? script(lines, done, i + 1) : (locked = false, done())),
+      action: () => {
+        if (typing.active) { finishTyping(); return; }
+        return i + 1 < lines.length ? script(lines, done, i + 1) : (locked = false, done());
+      },
     }]);
   }
 
@@ -435,7 +479,7 @@
     return dot > 0 && dot * dot * 4 >= vx * vx + vy * vy;
   }
 
-  function getDir(e) {
+  function getDir(e, self = e) {
     const { player } = state;
     if (!canSee(e)) return [-1, -1];
     let bestDir = -1, bestD2 = -1, minDist = distEnemy(e, player);
@@ -443,7 +487,7 @@
       const nx = e.x + D[d][0], ny = e.y + D[d][1];
       for (let d2 = 0; d2 < 4; d2++) {
         const next = { ...e, x: nx, y: ny, dir: d2 };
-        if (!ableEnemy(next, e)) continue;
+        if (!ableEnemy(next, self)) continue;
         const nd = distEnemy(next, player);
         if (nd < minDist || (nd === minDist && d2 === d)) { minDist = nd; bestDir = d; bestD2 = d2; }
       }
@@ -451,9 +495,27 @@
     return [bestDir, bestD2];
   }
 
+  function enemyChasePreview(e) {
+    if (!canSee(e)) return [];
+    const path = [];
+    let cur = { ...e };
+    const used = new Set([`${cur.x},${cur.y}`]);
+    for (let k = 0; k < 10; k++) {
+      const [t, t2] = getDir(cur, e);
+      if (t === -1) break;
+      cur = { ...cur, x: cur.x + D[t][0], y: cur.y + D[t][1], dir: t2 };
+      const key = `${cur.x},${cur.y}`;
+      if (used.has(key)) break;
+      used.add(key);
+      path.push({ x: cur.x, y: cur.y });
+      if (Math.abs(cur.x - state.player.x) + Math.abs(cur.y - state.player.y) <= 1) break;
+    }
+    return path;
+  }
+
   function moveEnemy(enemy) {
     const { player, standardClock, attackWaitTime } = state;
-    const [t, t2] = getDir(enemy);
+    const [t, t2] = getDir(enemy, enemy);
     enemy.lastmove = standardClock;
     let facing = false;
     for (let d = 0; d < 4; d++) {
@@ -1382,13 +1444,21 @@
     const vh = ex - sx + 1, vw = ey - sy + 1;
     const cells = Array.from({ length: vh }, () => Array.from({ length: vw }, () => ({ ch: " ", cl: "" })));
     const put = (x, y, ch, cl) => { if (cells[x]?.[y]) cells[x][y] = { ch, cl }; };
+    const inView = (p) => p.x >= sx && p.x <= ex && p.y >= sy && p.y <= ey;
+    const enemyInView = (e) => inView(e) || inView(swordOf(e));
     for (let i = sx; i <= ex; i++) for (let j = sy; j <= ey; j++) {
       put(i - sx, j - sy, trans(grid[i][j]), tileClass(grid[i][j]));
     }
+    enemies.filter((e) => e.alive && enemyInView(e) && canSee(e)).sort((a, b) => distEnemy(a, player) - distEnemy(b, player)).slice(0, 12).forEach((e) => {
+      enemyChasePreview(e).forEach((p) => {
+        const rx = p.x - sx, ry = p.y - sy;
+        if (cells[rx]?.[ry] && cells[rx][ry].ch === " ") put(rx, ry, "·", "tile-path");
+      });
+    });
     enemies.forEach((e) => {
-      if (!e.alive) return;
+      if (!e.alive || !enemyInView(e)) return;
       const s = swordOf(e);
-      put(s.x - sx, s.y - sy, SWORD[e.dir], "tile-enemy");
+      put(s.x - sx, s.y - sy, SWORD[e.dir], e.ready ? "tile-threat" : "tile-enemy-weapon");
       put(e.x - sx, e.y - sy, e.ready ? "!" : "O", e.ready ? "tile-alert" : "tile-enemy");
     });
     if (player.weapon) {
@@ -1439,8 +1509,7 @@
       renderMap();
       ui.scene.textContent = (state.gridName || state.scene).toUpperCase();
     }
-    ui.speaker.textContent = state.speaker;
-    renderRichText(ui.text, state.message);
+    renderDialogue();
     hud();
   }
 

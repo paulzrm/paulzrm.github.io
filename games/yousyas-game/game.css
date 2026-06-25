@@ -18,3 +18,6 @@
 .endings-board span{color:#63e6be;font:900 11px Consolas,monospace;letter-spacing:.12em}
 .endings-board b{color:#dbe7e5}
 .dialogue-box p{white-space:pre-wrap}
+.tile-enemy-weapon{color:#ff922b;text-shadow:0 0 11px rgba(255,146,43,.7);font-weight:900}
+.tile-threat{color:#fff3bf;background:rgba(255,107,107,.42);text-shadow:0 0 13px #ff6b6b;font-weight:900}
+.tile-path{color:#ff8787;text-shadow:0 0 8px rgba(255,135,135,.45)}
