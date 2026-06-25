@@ -166,7 +166,7 @@ $$
 $$
 \mathrm{best}_p=
 \min\left(
-\sum_{i=p+1}^{n-1}U_i,\
+\sum_{i=p+1}^{n-1}U_i,
 C+\min_{q\ge p+2}\sum_{i=q}^{n-1}U_i
 \right).
 $$
