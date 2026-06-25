@@ -21,3 +21,13 @@
 .tile-enemy-weapon{color:#ff922b;text-shadow:0 0 11px rgba(255,146,43,.7);font-weight:900}
 .tile-threat{color:#fff3bf;background:rgba(255,107,107,.42);text-shadow:0 0 13px #ff6b6b;font-weight:900}
 .tile-path{color:#ff8787;text-shadow:0 0 8px rgba(255,135,135,.45)}
+.tile-sight{color:#6c3e46;background:rgba(255,107,107,.08);text-shadow:0 0 6px rgba(255,107,107,.24)}
+.tile-weapon-h{display:inline-block;transform:scaleX(1.8);transform-origin:center}
+.tile-weapon-v{font-weight:900}
+.control-line kbd,.touch-controls button{color:var(--ink);text-shadow:none}
+.options-card p{margin:9px 0 0;color:var(--muted);font-size:11px;line-height:1.55}
+.switch-line{display:flex;align-items:center;justify-content:space-between;gap:12px;color:var(--ink);font-size:12px;font-weight:760}
+.switch-line input{width:42px;height:23px;appearance:none;border:1px solid #cbd8dc;border-radius:99px;background:#e7efed;position:relative;cursor:pointer;transition:.18s}
+.switch-line input:before{content:"";position:absolute;width:17px;height:17px;left:2px;top:2px;border-radius:50%;background:white;box-shadow:0 1px 3px rgba(20,33,61,.25);transition:.18s}
+.switch-line input:checked{background:linear-gradient(90deg,var(--green),var(--blue));border-color:transparent}
+.switch-line input:checked:before{transform:translateX(18px)}

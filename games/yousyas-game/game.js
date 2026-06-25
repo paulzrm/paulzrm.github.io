@@ -6,7 +6,7 @@
   const SECRET = "YG-WEB::the-voice-beyond-the-board::2026";
   const TICK_MS = 100;
   const D = [[-1, 0], [0, 1], [1, 0], [0, -1], [0, 0]];
-  const SWORD = ["|", "—", "|", "—"];
+  const SWORD = ["|", "-", "|", "-"];
   const CELL = { BLUE: -3, RED: -2, WALL: -1, EMPTY: 0, COIN: 6, BEACON: 4, OBST: 5, KEY: 11, PALACE: 10, LIGHT: 12 };
 
   const $ = (s) => document.querySelector(s);
@@ -28,6 +28,7 @@
     help: $("#help-modal"),
     code: $("#save-code"),
     saveStatus: $("#save-status"),
+    rangeToggle: $("#range-toggle"),
   };
 
   const fresh = () => ({
@@ -66,6 +67,7 @@
     generateLimit: -1,
     maxCoin: 10,
     haveCoin: 0,
+    lastCoinGenerate: 0,
     lastGenerate: 0,
     lastUpdate: 0,
     newEnemyTime: 10,
@@ -88,6 +90,7 @@
   let loopId = null;
   let typeTimer = null;
   let typing = { active: false, shown: "", full: "", token: 0 };
+  let showEnemyRange = localStorage.getItem("yousyas-game-show-range") === "1";
 
   const rand = (n) => Math.floor(Math.random() * n);
   const shuffle = (a) => { for (let i = a.length - 1; i > 0; i--) { const j = rand(i + 1); [a[i], a[j]] = [a[j], a[i]]; } return a; };
@@ -116,10 +119,10 @@
     const tokens = [
       [/勇者/g, "blue-text"],
       [/魔王|魔物|敌人|击杀|死亡|炎之巨人|人类联军|追猎型魔物/g, "red-text"],
-      [/霜心|冰霜女巫|钥匙|K/g, "cyan-text"],
+      [/霜心|冰霜女巫|钥匙|(?<![A-Za-z0-9_/])K(?![A-Za-z0-9_/])/g, "cyan-text"],
       [/炎核|雷纹臂铠|金币|\$/g, "gold-text"],
-      [/信标|圣殿|S/g, "green-text"],
-      [/雷电|X|终焉|影渊/g, "purple-text"],
+      [/信标|圣殿|(?<![A-Za-z0-9_/])S(?![A-Za-z0-9_/])/g, "green-text"],
+      [/雷电|(?<![A-Za-z0-9_/])X(?![A-Za-z0-9_/])|终焉|影渊/g, "purple-text"],
     ];
     let html = escapeHtml(text);
     tokens.forEach(([re, cls]) => {
@@ -194,6 +197,10 @@
     }).join("");
     board.innerHTML = `<small>ENDING ARCHIVE</small><h2>已解锁结局</h2>${rows}`;
     ui.stage.replaceChildren(board);
+  }
+
+  function weaponClass(base, dir) {
+    return `${base} ${dir % 2 === 0 ? "tile-weapon-v" : "tile-weapon-h"}`;
   }
 
   function choices(items) {
@@ -341,23 +348,48 @@
     }
   }
 
-  function genCoin() {
+  function genCoin(targetLimit = coinLimit()) {
     const { grid, n, m, player, inTut } = state;
-    const cnt = inTut ? 3 : 16;
-    for (let t = 0; t < cnt; t++) {
+    const limit = targetLimit;
+    let current = countCoins();
+    if (current >= limit) return;
+    const batch = Math.min(inTut ? 3 : 16, limit - current);
+    for (let t = 0, placed = 0; t < batch * 40 && placed < batch; t++) {
       const x = rand(n) + 1, y = rand(m) + 1;
-      if (Math.abs(x - player.x) + Math.abs(y - player.y) > 5 && grid[x][y] === CELL.EMPTY) grid[x][y] = CELL.COIN;
+      if (Math.abs(x - player.x) + Math.abs(y - player.y) > 5 && grid[x][y] === CELL.EMPTY) {
+        grid[x][y] = CELL.COIN;
+        placed++;
+        current++;
+        if (current >= limit) return;
+      }
     }
   }
 
-  function enoughCoin() {
-    const { grid, n, m, maxCoin } = state;
+  function countCoins() {
+    const { grid, n, m } = state;
     let cnt = 0;
-    for (let i = 0; i < 512; i++) {
-      const x = rand(n) + 1, y = rand(m) + 1;
-      if (grid[x][y] === CELL.COIN) cnt++;
-    }
-    return cnt >= maxCoin;
+    if (!grid) return 0;
+    for (let i = 1; i <= n; i++) for (let j = 1; j <= m; j++) if (grid[i][j] === CELL.COIN) cnt++;
+    return cnt;
+  }
+
+  function coinLimit() {
+    if (state.scene === "tut-coins") return 12;
+    if (state.scene === "tut-static" || state.scene === "tut-move" || state.scene === "tut-barrier") return 8;
+    if (state.scene === "tut-beacon" || state.scene === "corridor" || state.scene.startsWith("final")) return 0;
+    return Math.max(0, state.maxCoin || 10);
+  }
+
+  function enoughCoin() {
+    const maxCoin = coinLimit();
+    if (maxCoin <= 0) return true;
+    return countCoins() >= maxCoin;
+  }
+
+  function coinInterval() {
+    if (state.scene === "tut-coins") return 8;
+    if (state.scene.startsWith("tut-")) return 28;
+    return 32;
   }
 
   function swordOf(unit) {
@@ -472,8 +504,13 @@
   function canSee(e) {
     if (state.specialRule) return false;
     const { player } = state;
-    if (distEnemy(e, player) > e.sight) return false;
-    const vx = player.x - e.x, vy = player.y - e.y;
+    return inSightCone(e, player.x, player.y);
+  }
+
+  function inSightCone(e, x, y) {
+    if (state.specialRule) return false;
+    const vx = x - e.x, vy = y - e.y;
+    if (Math.floor(Math.hypot(vx, vy)) > e.sight) return false;
     const ex = D[e.dir][0], ey = D[e.dir][1];
     const dot = vx * ex + vy * ey;
     return dot > 0 && dot * dot * 4 >= vx * vx + vy * vy;
@@ -511,6 +548,17 @@
       if (Math.abs(cur.x - state.player.x) + Math.abs(cur.y - state.player.y) <= 1) break;
     }
     return path;
+  }
+
+  function enemyConeCells(e, sx, sy, ex, ey) {
+    const out = [];
+    for (let x = Math.max(sx, e.x - e.sight); x <= Math.min(ex, e.x + e.sight); x++) {
+      for (let y = Math.max(sy, e.y - e.sight); y <= Math.min(ey, e.y + e.sight); y++) {
+        if (x === e.x && y === e.y) continue;
+        if (inSightCone(e, x, y)) out.push({ x, y });
+      }
+    }
+    return out;
   }
 
   function moveEnemy(enemy) {
@@ -707,6 +755,7 @@
     state.standardClock = 0;
     state.lastGenerate = 0;
     state.lastUpdate = 0;
+    state.lastCoinGenerate = 0;
     state.lastMove = Date.now();
     state.hudExtra = "";
     $("#pause-button").textContent = "暂停";
@@ -735,7 +784,11 @@
     if (document.hidden || ui.save.open || ui.help.open) return;
     state.standardClock++;
     state.turn = state.standardClock;
-    if (state.haveCoin && rand(32) === 0 && !enoughCoin()) genCoin();
+    state.hudExtra = "";
+    if (state.haveCoin && state.standardClock - state.lastCoinGenerate >= coinInterval() && !enoughCoin()) {
+      genCoin();
+      state.lastCoinGenerate = state.standardClock;
+    }
     if (state.player.left) {
       const { leftx, lefty, grid } = state.player;
       const t = grid[leftx][lefty];
@@ -918,7 +971,7 @@
 
   function tutCoins(skipIntro = false) {
     state.inTut = 1;
-    state.maxCoin = 64;
+    state.maxCoin = 12;
     state.haveCoin = 1;
     state.enemyLimit = 0;
     state.mov = 0;
@@ -926,7 +979,7 @@
     makeGrid(15, 15);
     generateEmpty();
     Object.assign(state.player, { x: 2, y: 8, dir: 2, hp: 3, money: 0, left: false, weapon: true });
-    genCoin();
+    genCoin(12);
     beginPlay("tut-coins");
     if (!skipIntro) say("那个声音", "先用 WASD 移动，方向键控制剑。收集 160 枚金币。");
     else say("那个声音", "继续收集金币。");
@@ -948,12 +1001,15 @@
   function tutStatic(skipIntro = false) {
     if (state.stage >= 2) { tutMove(true); return; }
     clearEnemies();
+    state.inTut = 1;
+    state.maxCoin = 8;
+    state.haveCoin = 1;
     state.mov = 0;
     state.enemyLimit = 6;
     state.enemyEyesight = 15;
     state.sessionKill = 0;
     for (let i = 0; i < 6; i++) newEnemy(15);
-    genCoin();
+    genCoin(8);
     beginPlay("tut-static");
     if (!skipIntro) say("那个声音", "你的行动永远先于魔物。让剑碰到它们。");
     startLoop();
@@ -973,12 +1029,15 @@
   function tutMove(skipIntro = false) {
     if (state.stage >= 3) { tutBarrier(true); return; }
     clearEnemies();
+    state.inTut = 1;
+    state.maxCoin = 8;
+    state.haveCoin = 1;
     state.mov = 1;
     state.enemySpeed = 2;
     state.enemyLimit = 6;
     state.sessionKill = 0;
     for (let i = 0; i < 6; i++) newEnemy(15);
-    genCoin();
+    genCoin(8);
     beginPlay("tut-move");
     if (!skipIntro) say("那个声音", "视野为面朝方向 ±60° 扇形。被看到时它们会径直走来。");
     startLoop();
@@ -998,6 +1057,9 @@
   function tutBarrier(skipIntro = false) {
     if (state.stage >= 4) { tutBeacon(true); return; }
     clearEnemies();
+    state.inTut = 1;
+    state.maxCoin = 8;
+    state.haveCoin = 1;
     state.mov = 1;
     state.ableC = true;
     state.enemyLimit = 12;
@@ -1005,7 +1067,7 @@
     state.player.hp = 3;
     state.sessionKill = 0;
     for (let i = 0; i < 12; i++) newEnemy(15);
-    genCoin();
+    genCoin(8);
     state.timerStart = Date.now();
     state.timerGoal = 60;
     state.timerKind = "survive";
@@ -1027,6 +1089,8 @@
 
   function tutBeacon(skipIntro = false) {
     if (state.stage >= 5) { prePlot(); return; }
+    state.inTut = 1;
+    state.haveCoin = 0;
     makeGrid(3, 30);
     generateEmpty();
     Object.assign(state.player, { x: 2, y: 12, dir: 1, hp: 3, money: state.player.money, left: false, weapon: true });
@@ -1449,21 +1513,30 @@
     for (let i = sx; i <= ex; i++) for (let j = sy; j <= ey; j++) {
       put(i - sx, j - sy, trans(grid[i][j]), tileClass(grid[i][j]));
     }
-    enemies.filter((e) => e.alive && enemyInView(e) && canSee(e)).sort((a, b) => distEnemy(a, player) - distEnemy(b, player)).slice(0, 12).forEach((e) => {
-      enemyChasePreview(e).forEach((p) => {
-        const rx = p.x - sx, ry = p.y - sy;
-        if (cells[rx]?.[ry] && cells[rx][ry].ch === " ") put(rx, ry, "·", "tile-path");
+    const visibleHunters = enemies.filter((e) => e.alive && enemyInView(e)).sort((a, b) => distEnemy(a, player) - distEnemy(b, player)).slice(0, 12);
+    if (showEnemyRange) {
+      visibleHunters.forEach((e) => {
+        enemyConeCells(e, sx, sy, ex, ey).forEach((p) => {
+          const rx = p.x - sx, ry = p.y - sy;
+          if (cells[rx]?.[ry] && cells[rx][ry].ch === " ") put(rx, ry, "░", "tile-sight");
+        });
       });
-    });
+      visibleHunters.filter((e) => canSee(e)).forEach((e) => {
+        enemyChasePreview(e).forEach((p) => {
+          const rx = p.x - sx, ry = p.y - sy;
+          if (cells[rx]?.[ry] && (cells[rx][ry].ch === " " || cells[rx][ry].ch === "░")) put(rx, ry, "·", "tile-path");
+        });
+      });
+    }
     enemies.forEach((e) => {
       if (!e.alive || !enemyInView(e)) return;
       const s = swordOf(e);
-      put(s.x - sx, s.y - sy, SWORD[e.dir], e.ready ? "tile-threat" : "tile-enemy-weapon");
+      put(s.x - sx, s.y - sy, SWORD[e.dir], e.ready ? weaponClass("tile-threat", e.dir) : weaponClass("tile-enemy-weapon", e.dir));
       put(e.x - sx, e.y - sy, e.ready ? "!" : "O", e.ready ? "tile-alert" : "tile-enemy");
     });
     if (player.weapon) {
       const ps = swordOf(player);
-      put(ps.x - sx, ps.y - sy, SWORD[player.dir], "tile-player");
+      put(ps.x - sx, ps.y - sy, SWORD[player.dir], weaponClass("tile-player", player.dir));
     }
     put(player.x - sx, player.y - sy, "O", "tile-player");
     const pre = document.createElement("pre");
@@ -1502,6 +1575,7 @@
     ui.detail.textContent = state.hudExtra || d;
     ui.bar.style.width = `${Math.min(100, Math.max(0, prog * 100))}%`;
     ui.turn.textContent = `TURN ${String(state.turn).padStart(4, "0")}`;
+    if (ui.rangeToggle) ui.rangeToggle.checked = showEnemyRange;
   }
 
   function render() {
@@ -1587,6 +1661,14 @@
   $("#pause-button").onclick = () => togglePause();
   $("#save-button").onclick = () => { stopAll(); ui.saveStatus.textContent = ""; ui.save.showModal(); };
   $("#help-button").onclick = () => { stopAll(); ui.help.showModal(); };
+  if (ui.rangeToggle) {
+    ui.rangeToggle.checked = showEnemyRange;
+    ui.rangeToggle.onchange = () => {
+      showEnemyRange = ui.rangeToggle.checked;
+      localStorage.setItem("yousyas-game-show-range", showEnemyRange ? "1" : "0");
+      render();
+    };
+  }
   $("#export-save").onclick = async () => {
     const c = await encrypt(serialize());
     ui.code.value = c;
