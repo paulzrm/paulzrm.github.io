@@ -90,6 +90,70 @@
   const rand = (n) => Math.floor(Math.random() * n);
   const shuffle = (a) => { for (let i = a.length - 1; i > 0; i--) { const j = rand(i + 1); [a[i], a[j]] = [a[j], a[i]]; } return a; };
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+  const TITLE_ART = [
+    "██╗   ██╗ ██████╗ ██╗   ██╗███████╗██╗   ██╗ █████╗ ███████╗",
+    "╚██╗ ██╔╝██╔═══██╗██║   ██║██╔════╝╚██╗ ██╔╝██╔══██╗██╔════╝",
+    " ╚████╔╝ ██║   ██║██║   ██║███████╗ ╚████╔╝ ███████║███████╗",
+    "  ╚██╔╝  ██║   ██║██║   ██║╚════██║  ╚██╔╝  ██╔══██║╚════██║",
+    "   ██║   ╚██████╔╝╚██████╔╝███████║   ██║   ██║  ██║███████║",
+    "   ╚═╝    ╚═════╝  ╚═════╝ ╚══════╝   ╚═╝   ╚═╝  ╚═╝╚══════╝",
+    "",
+    "             ██████╗  █████╗ ███╗   ███╗███████╗",
+    "             ██╔════╝ ██╔══██╗████╗ ████║██╔════╝",
+    "             ██║  ███╗███████║██╔████╔██║█████╗",
+    "             ██║   ██║██╔══██║██║╚██╔╝██║██╔══╝",
+    "             ╚██████╔╝██║  ██║██║ ╚═╝ ██║███████╗",
+    "              ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝",
+  ].join("\n");
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  }
+
+  function richText(text) {
+    const tokens = [
+      [/勇者/g, "blue-text"],
+      [/魔王|魔物|敌人|击杀|死亡|炎之巨人|人类联军|追猎型魔物/g, "red-text"],
+      [/霜心|冰霜女巫|钥匙|K/g, "cyan-text"],
+      [/炎核|雷纹臂铠|金币|\$/g, "gold-text"],
+      [/信标|圣殿|S/g, "green-text"],
+      [/雷电|X|终焉|影渊/g, "purple-text"],
+    ];
+    let html = escapeHtml(text);
+    tokens.forEach(([re, cls]) => {
+      html = html.replace(re, (m) => `<span class="${cls}">${m}</span>`);
+    });
+    return html;
+  }
+
+  function renderRichText(el, text) {
+    el.innerHTML = richText(text);
+  }
+
+  function showTitleArt() {
+    const pre = document.createElement("pre");
+    pre.className = "title-art title-art-original";
+    pre.textContent = TITLE_ART;
+    ui.stage.replaceChildren(pre);
+  }
+
+  function renderEndingCard(id, title, text) {
+    const card = document.createElement("div");
+    card.className = "ending-card";
+    card.innerHTML = `<small>ENDING ${id}</small><h2>${escapeHtml(title)}</h2><p>${richText(text)}</p>`;
+    ui.stage.replaceChildren(card);
+  }
+
+  function renderEndingsBoard(names) {
+    const board = document.createElement("div");
+    board.className = "endings-board";
+    const rows = names.map((n, i) => {
+      const unlocked = state.haveEnd[i];
+      return `<div class="${unlocked ? "unlocked" : "locked"}"><span>${unlocked ? `结局 ${i}` : "LOCKED"}</span><b>${unlocked ? escapeHtml(n) : "███████████████"}</b></div>`;
+    }).join("");
+    board.innerHTML = `<small>ENDING ARCHIVE</small><h2>已解锁结局</h2>${rows}`;
+    ui.stage.replaceChildren(board);
+  }
 
   function choices(items) {
     ui.choices.replaceChildren();
@@ -106,7 +170,7 @@
     state.speaker = w;
     state.message = t;
     ui.speaker.textContent = w;
-    ui.text.textContent = t;
+    renderRichText(ui.text, t);
   }
 
   function script(lines, done, i = 0) {
@@ -257,6 +321,21 @@
     return { x: unit.x + D[unit.dir][0], y: unit.y + D[unit.dir][1] };
   }
 
+  function unitCells(unit) {
+    const s = swordOf(unit);
+    const cells = [{ x: unit.x, y: unit.y }];
+    if (s.x !== unit.x || s.y !== unit.y) cells.push(s);
+    return cells;
+  }
+
+  function sameCell(a, b) {
+    return a.x === b.x && a.y === b.y;
+  }
+
+  function cellsOverlap(a, b) {
+    return unitCells(a).some((ca) => unitCells(b).some((cb) => sameCell(ca, cb)));
+  }
+
   function ablePoint(x, y) {
     const { grid, n, m, countKey, nKey } = state;
     if (x < 1 || y < 1 || x > n || y > m) return false;
@@ -278,8 +357,19 @@
     return c === CELL.EMPTY || c === CELL.BEACON || c === 1 || c === 2 || c === 3;
   }
 
-  function ableEnemy(e) {
-    return ablePointEnemy(e.x, e.y) && ablePointEnemy(e.x + D[e.dir][0], e.y + D[e.dir][1]);
+  function overlapsPlayer(e) {
+    return cellsOverlap(e, state.player);
+  }
+
+  function overlapsEnemy(e, self = null) {
+    return state.enemies.some((o) => o !== self && o.alive && cellsOverlap(e, o));
+  }
+
+  function ableEnemy(e, self = null) {
+    return ablePointEnemy(e.x, e.y)
+      && ablePointEnemy(e.x + D[e.dir][0], e.y + D[e.dir][1])
+      && !overlapsPlayer(e)
+      && !overlapsEnemy(e, self);
   }
 
   function pickupAt(x, y) {
@@ -326,7 +416,7 @@
       };
       if (ableEnemy(e) && !tooNear(e)) break;
     }
-    if (e && ableEnemy(e)) state.enemies.push(e);
+    if (e && ableEnemy(e) && !tooNear(e)) state.enemies.push(e);
   }
 
   function newSpecialEnemy(x, y, dir) {
@@ -353,7 +443,7 @@
       const nx = e.x + D[d][0], ny = e.y + D[d][1];
       for (let d2 = 0; d2 < 4; d2++) {
         const next = { ...e, x: nx, y: ny, dir: d2 };
-        if (!ableEnemy(next)) continue;
+        if (!ableEnemy(next, e)) continue;
         const nd = distEnemy(next, player);
         if (nd < minDist || (nd === minDist && d2 === d)) { minDist = nd; bestDir = d; bestD2 = d2; }
       }
@@ -392,14 +482,14 @@
       const dirs = [];
       for (let d = 0; d < 4; d++) {
         const next = { ...enemy, dir: d };
-        if (ableEnemy(next)) dirs.push(d);
+        if (ableEnemy(next, enemy)) dirs.push(d);
       }
       if (!dirs.length) return;
       enemy.dir = dirs[rand(dirs.length)];
       enemy.step = rand(4) + 4;
     } else {
       const next = { ...enemy, x: enemy.x + D[enemy.dir][0], y: enemy.y + D[enemy.dir][1] };
-      if (ableEnemy(next)) { enemy.x = next.x; enemy.y = next.y; }
+      if (ableEnemy(next, enemy)) { enemy.x = next.x; enemy.y = next.y; }
       enemy.step--;
     }
   }
@@ -591,6 +681,7 @@
     }
     tryMovePlayer();
     processSkills();
+    if (state.scene === "tut-coins") { checkObjectives(); render(); return; }
     if (state.scene === "corridor") { handleCorridor(); render(); return; }
     replenishEnemies();
     if (state.mov) {
@@ -648,6 +739,7 @@
     if (!state.haveEnd[id]) state.haveEnd[id] = true;
     if (id === 6) state.ableV = true;
     if (id === 4 || id === 6 || id === 7) { state.stage = 5; state.skipPlot = 0; state.countKill = 0; state.player.money = 0; }
+    renderEndingCard(id, title, text);
     say("SYSTEM", `达成结局 ${id}：${title}。${text}`);
     choices([{ label: "返回标题", action: menu }, { label: "重新开始", action: newGame }]);
     saveLocal();
@@ -678,7 +770,7 @@
     ],
     reveal: [
       ["X-0 系统", "认知过滤器已解除。你斩杀的“魔物”，都是其他候选者。", "继续"],
-      ["X-0 系统", `累计有效击杀：${() => state.countKill}。魔王早已过世，这场游戏只为选出新的魔王。`, "我必须选择"],
+      ["X-0 系统", () => `累计有效击杀：${state.countKill}。魔王早已过世，这场游戏只为选出新的魔王。`, "我必须选择"],
     ],
   };
 
@@ -687,7 +779,7 @@
     state.scene = "menu";
     state.paused = false;
   $("#pause-button").textContent = "暂停";
-    ui.stage.innerHTML = '<div class="title-art"><strong>ＹＯＵＳＹＡ’Ｓ</strong><span>Ｇ　Ａ　Ｍ　Ｅ</span></div>';
+    showTitleArt();
     ui.scene.textContent = "YOUSYA // AWAITING SIGNAL";
     say("SYSTEM", "选择存档入口。进度会自动保存在本浏览器中。");
     const a = [{ label: "新游戏", action: newGame }];
@@ -711,9 +803,38 @@
     locked = true;
     const names = ["找错人了", "技不如人", "出师未捷身先死", "魔王陨落", "魔王永恒", "背叛者的末路", "无处可归", "真正的勇者"];
     const lines = names.map((n, i) => state.haveEnd[i] ? `结局 ${i}：${n}` : "███████████████").join("\n");
+    renderEndingsBoard(names);
     say("SYSTEM", lines);
     choices([{ label: "返回", action: () => { locked = false; menu(); } }]);
     render();
+  }
+
+  async function openingAnimation(done) {
+    locked = true;
+    state.mode = "story";
+    state.scene = "opening";
+    state.paused = false;
+    choices([]);
+    showTitleArt();
+    ui.scene.textContent = "YOUSYA // BOOT";
+    say("SYSTEM", "Author: paulzrm");
+    hud();
+    await sleep(650);
+    makeGrid(15, 15);
+    generateEmpty();
+    Object.assign(state.player, { x: 2, y: 8, dir: 2, hp: 3, money: 0, left: false, weapon: true });
+    state.gridName = "开场";
+    ui.scene.textContent = "STARTING GAME";
+    say("SYSTEM", "正在开始游戏。");
+    renderMap();
+    for (let i = 0; i < 5; i++) {
+      await sleep(170);
+      state.player.x++;
+      renderMap();
+    }
+    await sleep(220);
+    locked = false;
+    done();
   }
 
   function newGame() {
@@ -724,7 +845,7 @@
       const raw = localStorage.getItem(SAVE_KEY);
       if (raw) decrypt(raw).then((d) => { if (d.ableV) state.ableV = true; }).catch(() => {});
     } catch {}
-    script(SCR.intro, startTutorial);
+    openingAnimation(() => script(SCR.intro, startTutorial));
   }
 
   function startTutorial() {
@@ -737,6 +858,9 @@
     state.inTut = 1;
     state.maxCoin = 64;
     state.haveCoin = 1;
+    state.enemyLimit = 0;
+    state.mov = 0;
+    clearEnemies();
     makeGrid(15, 15);
     generateEmpty();
     Object.assign(state.player, { x: 2, y: 8, dir: 2, hp: 3, money: 0, left: false, weapon: true });
@@ -1237,8 +1361,12 @@
 
   function tileClass(c) {
     if (c === CELL.WALL) return "tile-wall";
+    if (c === CELL.RED) return "tile-red-zone";
+    if (c === CELL.BLUE) return "tile-blue-zone";
+    if (c === CELL.OBST) return "tile-obst";
     if (c === CELL.COIN) return "tile-coin";
-    if (c === CELL.KEY || c === CELL.LIGHT) return "tile-relic";
+    if (c === CELL.KEY) return "tile-key";
+    if (c === CELL.LIGHT) return "tile-light";
     if (c === CELL.PALACE) return "tile-altar";
     if (c === CELL.BEACON) return "tile-beacon";
     return "";
@@ -1312,7 +1440,7 @@
       ui.scene.textContent = (state.gridName || state.scene).toUpperCase();
     }
     ui.speaker.textContent = state.speaker;
-    ui.text.textContent = state.message;
+    renderRichText(ui.text, state.message);
     hud();
   }
 
