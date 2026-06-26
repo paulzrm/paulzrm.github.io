@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Yousya's Game · Web Edition</title>
   <link rel="stylesheet" href="../../assets/styles.css">
-  <link rel="stylesheet" href="./game.css?v=shrine-fix-3">
+  <link rel="stylesheet" href="./game.css?v=beacon-fix-2">
 </head>
 <body>
   <header class="shell nav">
@@ -29,7 +29,7 @@
           <section class="side-card"><div class="side-label">STATUS</div><div class="stat-grid"><div><span>生命</span><b id="stat-hp">—</b></div><div><span>金币</span><b id="stat-money">—</b></div><div><span>击破</span><b id="stat-kills">—</b></div><div><span>章节</span><b id="stat-stage">序章</b></div></div></section>
           <section class="side-card objective-card"><div class="side-label">CURRENT OBJECTIVE</div><h2 id="objective-title">开始游戏</h2><p id="objective-detail">选择新游戏，或读取浏览器中的本地存档。</p><div class="objective-progress"><i id="objective-bar"></i></div></section>
           <section class="side-card options-card"><div class="side-label">DISPLAY</div><label class="switch-line"><span>显示魔物警戒范围</span><input id="range-toggle" type="checkbox"></label><p>默认关闭；开启后显示魔物视野锥形与索敌路径。</p></section>
-          <section class="side-card controls-card"><div class="side-label">CONTROLS</div><div class="control-line"><kbd>W A S D</kbd><span>移动</span></div><div class="control-line"><kbd>方向键</kbd><span>转剑 / 攻击</span></div><div class="control-line"><kbd>B</kbd><span>商店</span></div><div class="control-line"><kbd>C</kbd><span>障碍 · 3 金币</span></div><div class="control-line"><kbd>F</kbd><span>信标 · 5 金币</span></div></section>
+          <section class="side-card controls-card"><div class="side-label">CONTROLS</div><div class="control-line"><kbd>W A S D</kbd><span>移动</span></div><div class="control-line"><kbd>方向键</kbd><span>转剑 / 攻击</span></div><div class="control-line"><kbd>Space</kbd><span>暂停 / 继续</span></div><div class="control-line"><kbd>B</kbd><span>商店</span></div><div class="control-line"><kbd>C</kbd><span>障碍 · 3 金币</span></div><div class="control-line"><kbd>F</kbd><span>信标 · 5 金币</span></div></section>
           <section class="side-card legend-card"><div class="side-label">LEGEND</div><p><b class="blue-text">O</b> 勇者　<b class="red-text">O</b> 魔物　<b class="tile-enemy-weapon">-</b>/<b class="tile-enemy-weapon">|</b> 魔物武器　<b class="gold-text">$</b> 金币</p><p><b class="green-text">P</b> 信标　<b class="purple-text">K</b> 钥匙　<b class="green-text">S</b> 圣殿　<b class="tile-path">·</b> 索敌路径　<b class="red-text">!</b> 已锁定</p></section>
           <div class="touch-controls">
             <div class="touch-move"><button data-key="w">W</button><button data-key="a">A</button><button data-key="s">S</button><button data-key="d">D</button></div>
@@ -40,7 +40,7 @@
     </section>
   </main>
   <dialog class="game-modal" id="save-modal"><form method="dialog"><div class="modal-heading"><div><div class="eyebrow">SAVE TERMINAL</div><h2>存档管理</h2></div><button class="modal-close" value="cancel">×</button></div><p>关键进度会自动保存到浏览器。导出码使用 AES-GCM 加密并带完整性校验，可复制到其他设备导入。</p><textarea id="save-code" rows="6" spellcheck="false" placeholder="点击导出，或粘贴存档码"></textarea><div class="modal-actions"><button class="button" id="export-save" type="button">导出存档</button><button class="button primary" id="import-save" type="button">导入并读取</button><button class="button danger-button" id="clear-save" type="button">清除本地存档</button></div><p class="modal-status" id="save-status"></p></form></dialog>
-  <dialog class="game-modal" id="help-modal"><form method="dialog"><div class="modal-heading"><div><div class="eyebrow">FIELD MANUAL</div><h2>操作说明</h2></div><button class="modal-close" value="cancel">×</button></div><ul><li>战役会随着教学逐步展开，界面只会提示当前已公开的操作。</li><li>游戏 tick 为 100ms，与原版控制台版节奏一致；按 Space / P 暂停。</li><li>按 B 打开商店；罗盘提示 30 金币，补满生命 50 金币。</li><li>敌人视野为面朝方向 ±60° 扇形；玩家行动永远先于魔物。</li><li>大陆探索需收集钥匙 K 并踩到圣殿 S；圣殿内坚持 90 秒。</li><li><b class="tile-enemy-weapon">- / |</b> 表示魔物武器，<b class="tile-path">·</b> 表示开启显示后的索敌路径，<b class="red-text">!</b> 表示魔物正在准备攻击。</li></ul><button class="button primary modal-full-button" value="ok">明白了</button></form></dialog>
-  <script src="./game.js?v=shrine-fix-3"></script>
+  <dialog class="game-modal" id="help-modal"><form method="dialog"><div class="modal-heading"><div><div class="eyebrow">FIELD MANUAL</div><h2>操作说明</h2></div><button class="modal-close" value="cancel">×</button></div><ul><li>战役会随着教学逐步展开，界面只会提示当前已公开的操作。</li><li>游戏 tick 为 100ms，与原版控制台版节奏一致；按 Space 暂停。</li><li>按 B 打开商店；罗盘提示 30 金币，补满生命 50 金币。</li><li>敌人视野为面朝方向 ±60° 扇形；玩家行动永远先于魔物。</li><li>大陆探索需收集钥匙 K 并踩到圣殿 S；圣殿内坚持 90 秒。</li><li><b class="tile-enemy-weapon">- / |</b> 表示魔物武器，<b class="tile-path">·</b> 表示开启显示后的索敌路径，<b class="red-text">!</b> 表示魔物正在准备攻击。</li></ul><button class="button primary modal-full-button" value="ok">明白了</button></form></dialog>
+  <script src="./game.js?v=beacon-fix-2"></script>
 </body>
 </html>

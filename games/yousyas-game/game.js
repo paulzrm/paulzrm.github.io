@@ -12,6 +12,8 @@
   const SWORD = ["|", "-", "|", "-"];
   const CELL = { BLUE: -3, RED: -2, WALL: -1, EMPTY: 0, COIN: 6, BEACON: 4, OBST: 5, KEY: 11, PALACE: 10, LIGHT: 12 };
   const SHRINE_SPAWNS = [[2, 2, 1], [2, 14, 2], [14, 2, 0], [14, 14, 3], [2, 8, 2], [14, 8, 0], [8, 2, 1], [8, 14, 3], [4, 4, 1], [4, 12, 2], [12, 4, 0], [12, 12, 3]];
+  const ONE_SHOT_KEYS = new Set(["b", "c", "f", "v", "y"]);
+  const ACTION_COOLDOWN_MS = 300;
 
   const $ = (s) => document.querySelector(s);
   const ui = {
@@ -807,6 +809,7 @@
   }
 
   const heldKeys = new Set();
+  const lastActionAt = new Map();
   const repeatable = new Set(["w", "a", "s", "d", "ArrowUp", "ArrowRight", "ArrowDown", "ArrowLeft"]);
 
   function normalizeKey(k) { return k.length === 1 ? k.toLowerCase() : k; }
@@ -852,16 +855,16 @@
     if (!state.ableF || state.mode !== "play" || state.paused) return;
     const { player, grid } = state;
     if (player.money < 5) return;
-    player.money -= 5;
     if (player.left) {
       const bx = player.leftx, by = player.lefty;
       const tp = { ...player, x: bx, y: by, left: false };
       if (ablePlayer(tp)) {
+        player.money -= 5;
         if (grid[bx]?.[by] === CELL.BEACON) grid[bx][by] = CELL.EMPTY;
         Object.assign(player, tp);
       }
-      else player.money += 5;
     } else {
+      player.money -= 5;
       player.left = true;
       player.leftx = player.x;
       player.lefty = player.y;
@@ -1755,7 +1758,7 @@
     stopAll();
     $("#pause-button").textContent = state.paused ? "继续" : "暂停";
     $("#pause-button").classList.toggle("primary", !state.paused);
-    say("SYSTEM", state.paused ? "游戏已暂停。按 Space / P 或点击“继续”恢复。" : "游戏继续。");
+    say("SYSTEM", state.paused ? "游戏已暂停。按 Space 或点击“继续”恢复。" : "游戏继续。");
     render();
   }
 
@@ -1944,12 +1947,17 @@
 
   function startHold(k) {
     k = normalizeKey(k);
+    if (ONE_SHOT_KEYS.has(k)) {
+      const now = Date.now();
+      if (now - (lastActionAt.get(k) || 0) < ACTION_COOLDOWN_MS) return;
+      lastActionAt.set(k, now);
+    }
     if (k === "b") { if (state.shopOpen) closeShop(); else openShop(); return; }
     if (k === "y") { confirmCorridor(); return; }
     if (k === "c") { tryBarrier(); render(); return; }
     if (k === "f") { tryBeacon(); render(); return; }
     if (k === "v") { trySheathe(); render(); return; }
-    heldKeys.add(k);
+    if (!ONE_SHOT_KEYS.has(k)) heldKeys.add(k);
   }
   function stopHold(k) { heldKeys.delete(normalizeKey(k)); }
 
@@ -1992,7 +2000,7 @@
     if (k === "b" && !ui.save.open && !ui.help.open && openShop()) { e.preventDefault(); return; }
     if (k === "Enter" && !ui.save.open && !ui.help.open && devSkipTutorial()) { e.preventDefault(); return; }
     if (!ui.save.open && !ui.help.open && trackDeveloperMode(k)) { e.preventDefault(); return; }
-    if ((k === " " || k === "p") && !ui.save.open && !ui.help.open) { e.preventDefault(); if (!e.repeat) togglePause(); return; }
+    if (k === " " && !ui.save.open && !ui.help.open) { e.preventDefault(); if (!e.repeat) togglePause(); return; }
     const a = ["w", "a", "s", "d", "b", "c", "f", "v", "y", "ArrowUp", "ArrowRight", "ArrowDown", "ArrowLeft"];
     if (!a.includes(k) || ui.save.open || ui.help.open) return;
     e.preventDefault();
