@@ -11,6 +11,7 @@
   const D = [[-1, 0], [0, 1], [1, 0], [0, -1], [0, 0]];
   const SWORD = ["|", "-", "|", "-"];
   const CELL = { BLUE: -3, RED: -2, WALL: -1, EMPTY: 0, COIN: 6, BEACON: 4, OBST: 5, KEY: 11, PALACE: 10, LIGHT: 12 };
+  const SHRINE_SPAWNS = [[2, 2, 1], [2, 14, 2], [14, 2, 0], [14, 14, 3], [2, 8, 2], [14, 8, 0], [8, 2, 1], [8, 14, 3], [4, 4, 1], [4, 12, 2], [12, 4, 0], [12, 12, 3]];
 
   const $ = (s) => document.querySelector(s);
   const ui = {
@@ -541,13 +542,13 @@
 
   function tooNear(e) {
     const d = distEnemy(e, state.player);
+    if (state.scene?.includes("shrine")) return d < 5;
     return state.inTut ? d < 5 : d < 10;
   }
 
   function newEnemy(eyesight = 15) {
     if (state.specialRule) return;
     if (state.generateLimit === 0) return;
-    if (state.generateLimit > 0) state.generateLimit--;
     let e;
     for (let t = 0; t < 200; t++) {
       e = {
@@ -564,7 +565,28 @@
       };
       if (ableEnemy(e) && !tooNear(e)) break;
     }
-    if (e && ableEnemy(e) && !tooNear(e)) state.enemies.push(e);
+    if (e && ableEnemy(e) && !tooNear(e)) {
+      if (state.generateLimit > 0) state.generateLimit--;
+      state.enemies.push(e);
+      return true;
+    }
+    return false;
+  }
+
+  function fixedEnemy(x, y, dir, eyesight = state.enemyEyesight) {
+    if (state.generateLimit === 0) return false;
+    const e = { x, y, dir, sight: eyesight, moveable: state.mov, step: 0, lastmove: 0, alive: true, ready: 0, lastready: 0 };
+    if (!ableEnemy(e) || tooNear(e)) return false;
+    if (state.generateLimit > 0) state.generateLimit--;
+    state.enemies.push(e);
+    return true;
+  }
+
+  function seedShrineEnemies(limit, eyesight) {
+    for (const [x, y, dir] of SHRINE_SPAWNS) {
+      if (state.enemies.filter((e) => e.alive).length >= limit) return;
+      fixedEnemy(x, y, dir, eyesight);
+    }
   }
 
   function newSpecialEnemy(x, y, dir) {
@@ -882,18 +904,22 @@
   }
 
   function replenishEnemies() {
+    const spawnUntil = (limit, eyesight) => {
+      for (let tries = 0; state.enemies.length < limit && tries < 30; tries++) newEnemy(eyesight);
+    };
     if (state.scene === "tut-barrier") {
-      while (state.enemies.length < 12) newEnemy(15);
+      spawnUntil(12, 15);
     } else if (state.scene.includes("shrine")) {
-      while (state.enemies.length < 6) newEnemy(state.enemyEyesight);
+      state.enemies = state.enemies.filter((e) => e.alive);
+      seedShrineEnemies(6, state.enemyEyesight);
     } else if (state.scene === "final-demon" || state.scene === "final-human") {
-      while (state.enemies.length < 6 && state.generateLimit > 0) newEnemy(state.enemyEyesight);
+      spawnUntil(6, state.enemyEyesight);
     }
   }
 
   function tick() {
     if (state.mode !== "play" || locked || state.paused || state.shopOpen || state.die) return;
-    if (document.hidden || ui.save.open || ui.help.open) return;
+    if (ui.save.open || ui.help.open) return;
     state.standardClock++;
     state.turn = state.standardClock;
     state.hudExtra = "";
@@ -1310,7 +1336,7 @@
     state.sessionKill = 0;
     Object.assign(state.player, { x: 8, y: 8, dir: 2, hp: 3, money: state.player.money, left: false, weapon: true });
     clearEnemies();
-    for (let i = 0; i < 12; i++) newEnemy(5);
+    seedShrineEnemies(12, 5);
     state.timerStart = Date.now();
     state.timerGoal = 90;
     state.timerKind = "ember";
@@ -1398,7 +1424,7 @@
     state.enemyLimit = 12;
     Object.assign(state.player, { x: 8, y: 8, dir: 2, hp: 3, money: state.player.money, left: false, weapon: true });
     clearEnemies();
-    for (let i = 0; i < 12; i++) newEnemy(12);
+    seedShrineEnemies(12, 12);
     state.timerStart = Date.now();
     state.timerGoal = 90;
     state.timerKind = "frost";
@@ -1451,7 +1477,7 @@
     state.enemySpeed = 0;
     Object.assign(state.player, { x: 8, y: 8, dir: 2, hp: 3, money: state.player.money, left: false, weapon: true });
     clearEnemies();
-    for (let i = 0; i < 6; i++) newEnemy(3);
+    seedShrineEnemies(6, 3);
     state.timerStart = Date.now();
     state.timerGoal = 90;
     state.timerKind = "thunder";
