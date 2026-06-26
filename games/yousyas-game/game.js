@@ -711,7 +711,7 @@
   }
 
   function tryBarrier() {
-    if (!state.ableC) return;
+    if (!state.ableC || state.mode !== "play" || state.paused) return;
     const { player, grid } = state;
     const d = (player.dir + 2) % 4;
     const tx = player.x + D[d][0], ty = player.y + D[d][1];
@@ -723,34 +723,34 @@
   }
 
   function tryBeacon() {
-    if (!state.ableF) return;
-    const { player } = state;
+    if (!state.ableF || state.mode !== "play" || state.paused) return;
+    const { player, grid } = state;
     if (player.money < 5) return;
     player.money -= 5;
     if (player.left) {
-      const tp = { ...player, x: player.leftx, y: player.lefty, left: false };
-      if (ablePlayer(tp)) Object.assign(player, tp);
+      const bx = player.leftx, by = player.lefty;
+      const tp = { ...player, x: bx, y: by, left: false };
+      if (ablePlayer(tp)) {
+        if (grid[bx]?.[by] === CELL.BEACON) grid[bx][by] = CELL.EMPTY;
+        Object.assign(player, tp);
+      }
       else player.money += 5;
     } else {
       player.left = true;
       player.leftx = player.x;
       player.lefty = player.y;
-      state.grid[player.leftx][player.lefty] = CELL.BEACON;
+      grid[player.leftx][player.lefty] = CELL.BEACON;
     }
   }
 
   function trySheathe() {
-    if (!state.ableV) return;
+    if (!state.ableV || state.mode !== "play" || state.paused) return;
     const { player } = state;
     if (!player.weapon) { player.weapon = true; return; }
     player.weapon = false;
   }
 
-  function processSkills() {
-    if (heldKeys.has("c")) tryBarrier();
-    if (heldKeys.has("f")) tryBeacon();
-    if (heldKeys.has("v")) trySheathe();
-  }
+  function processSkills() {}
 
   function beginPlay(scene) {
     state.mode = "play";
@@ -796,9 +796,9 @@
       state.lastCoinGenerate = state.standardClock;
     }
     if (state.player.left) {
-      const { leftx, lefty, grid } = state.player;
-      const t = grid[leftx][lefty];
-      if (t === CELL.EMPTY || t === CELL.OBST || t === CELL.COIN) grid[leftx][lefty] = CELL.BEACON;
+      const { leftx, lefty } = state.player;
+      const t = state.grid?.[leftx]?.[lefty];
+      if (t === CELL.EMPTY || t === CELL.OBST || t === CELL.COIN) state.grid[leftx][lefty] = CELL.BEACON;
     }
     tryMovePlayer();
     processSkills();
@@ -1675,6 +1675,9 @@
   function startHold(k) {
     k = normalizeKey(k);
     if (k === "y") { confirmCorridor(); return; }
+    if (k === "c") { tryBarrier(); render(); return; }
+    if (k === "f") { tryBeacon(); render(); return; }
+    if (k === "v") { trySheathe(); render(); return; }
     heldKeys.add(k);
   }
   function stopHold(k) { heldKeys.delete(normalizeKey(k)); }
