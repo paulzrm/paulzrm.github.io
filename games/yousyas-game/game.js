@@ -567,7 +567,32 @@
     return out;
   }
 
+  function dirTowardPlayer(enemy) {
+    const { player } = state;
+    const dx = player.x - enemy.x;
+    const dy = player.y - enemy.y;
+    if (Math.abs(dy) >= Math.abs(dx) && dy !== 0) return dy > 0 ? 1 : 3;
+    if (dx !== 0) return dx > 0 ? 2 : 0;
+    return enemy.dir;
+  }
+
+  function moveSpecialEnemy(enemy) {
+    const d = dirTowardPlayer(enemy);
+    enemy.lastmove = state.standardClock;
+    enemy.ready = 0;
+    enemy.dir = d;
+    const next = { ...enemy, x: enemy.x + D[d][0], y: enemy.y + D[d][1], dir: d };
+    if (ableEnemy(next, enemy)) {
+      enemy.x = next.x;
+      enemy.y = next.y;
+    }
+  }
+
   function moveEnemy(enemy) {
+    if (state.specialRule) {
+      moveSpecialEnemy(enemy);
+      return;
+    }
     const { player, standardClock, attackWaitTime } = state;
     const [t, t2] = getDir(enemy, enemy);
     enemy.lastmove = standardClock;
