@@ -859,6 +859,7 @@
   function beginPlay(scene) {
     state.mode = "play";
     state.scene = scene;
+    locked = false;
     state.paused = false;
     state.shopOpen = false;
     state.die = false;
@@ -926,7 +927,7 @@
     if (state.timerGoal) {
       const rem = state.timerGoal - Math.floor((Date.now() - state.timerStart) / 1000);
       state.hudExtra = `还剩 ${Math.max(0, rem)} 秒` + (state.hudExtra ? `　${state.hudExtra}` : "");
-      if (rem <= 0) finishTimedStage();
+      if (rem <= 0) { finishTimedStage(); return; }
     }
     if (state.scene.includes("shrine") && state.timerKind === "frost") updateObstacle();
     if (state.scene.includes("shrine") && state.timerKind === "thunder") updateLightening();
@@ -1320,6 +1321,7 @@
 
   function finishTimedStage() {
     state.timerGoal = 0;
+    state.timerKind = "";
     state.cantStop = 0;
     state.ableC = true;
     if (state.scene === "tut-barrier") {
