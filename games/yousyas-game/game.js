@@ -348,12 +348,12 @@
     }
   }
 
-  function genCoin(targetLimit = coinLimit()) {
+  function genCoin(targetLimit = coinLimit(), batchSize = coinBatch()) {
     const { grid, n, m, player, inTut } = state;
     const limit = targetLimit;
     let current = countCoins();
     if (current >= limit) return;
-    const batch = Math.min(inTut ? 3 : 16, limit - current);
+    const batch = Math.min(batchSize, limit - current);
     for (let t = 0, placed = 0; t < batch * 40 && placed < batch; t++) {
       const x = rand(n) + 1, y = rand(m) + 1;
       if (Math.abs(x - player.x) + Math.abs(y - player.y) > 5 && grid[x][y] === CELL.EMPTY) {
@@ -374,8 +374,8 @@
   }
 
   function coinLimit() {
-    if (state.scene === "tut-coins") return 12;
-    if (state.scene === "tut-static" || state.scene === "tut-move" || state.scene === "tut-barrier") return 8;
+    if (state.scene === "tut-coins") return 10;
+    if (state.scene === "tut-static" || state.scene === "tut-move" || state.scene === "tut-barrier") return 6;
     if (state.scene === "tut-beacon" || state.scene === "corridor" || state.scene.startsWith("final")) return 0;
     return Math.max(0, state.maxCoin || 10);
   }
@@ -387,13 +387,19 @@
   }
 
   function coinInterval() {
-    if (state.scene === "tut-coins") return 8;
-    if (state.scene.startsWith("tut-")) return 28;
+    if (state.scene === "tut-coins") return 22;
+    if (state.scene.startsWith("tut-")) return 70;
     return 32;
   }
 
+  function coinBatch() {
+    if (state.scene === "tut-coins") return 2;
+    if (state.scene.startsWith("tut-")) return 1;
+    return 8;
+  }
+
   function swordOf(unit) {
-    if (!unit.weapon) return { x: unit.x, y: unit.y };
+    if (unit.weapon === false) return { x: unit.x, y: unit.y };
     return { x: unit.x + D[unit.dir][0], y: unit.y + D[unit.dir][1] };
   }
 
@@ -971,7 +977,7 @@
 
   function tutCoins(skipIntro = false) {
     state.inTut = 1;
-    state.maxCoin = 12;
+    state.maxCoin = 10;
     state.haveCoin = 1;
     state.enemyLimit = 0;
     state.mov = 0;
@@ -979,7 +985,7 @@
     makeGrid(15, 15);
     generateEmpty();
     Object.assign(state.player, { x: 2, y: 8, dir: 2, hp: 3, money: 0, left: false, weapon: true });
-    genCoin(12);
+    genCoin(10, 2);
     beginPlay("tut-coins");
     if (!skipIntro) say("那个声音", "先用 WASD 移动，方向键控制剑。收集 160 枚金币。");
     else say("那个声音", "继续收集金币。");
@@ -1001,15 +1007,20 @@
   function tutStatic(skipIntro = false) {
     if (state.stage >= 2) { tutMove(true); return; }
     clearEnemies();
+    if (!state.grid) {
+      makeGrid(15, 15);
+      generateEmpty();
+      Object.assign(state.player, { x: 2, y: 8, dir: 2, hp: 3, left: false, weapon: true });
+    }
     state.inTut = 1;
-    state.maxCoin = 8;
+    state.maxCoin = 6;
     state.haveCoin = 1;
     state.mov = 0;
     state.enemyLimit = 6;
     state.enemyEyesight = 15;
     state.sessionKill = 0;
     for (let i = 0; i < 6; i++) newEnemy(15);
-    genCoin(8);
+    genCoin(6, 1);
     beginPlay("tut-static");
     if (!skipIntro) say("那个声音", "你的行动永远先于魔物。让剑碰到它们。");
     startLoop();
@@ -1029,15 +1040,20 @@
   function tutMove(skipIntro = false) {
     if (state.stage >= 3) { tutBarrier(true); return; }
     clearEnemies();
+    if (!state.grid) {
+      makeGrid(15, 15);
+      generateEmpty();
+      Object.assign(state.player, { x: 2, y: 8, dir: 2, hp: 3, left: false, weapon: true });
+    }
     state.inTut = 1;
-    state.maxCoin = 8;
+    state.maxCoin = 6;
     state.haveCoin = 1;
     state.mov = 1;
     state.enemySpeed = 2;
     state.enemyLimit = 6;
     state.sessionKill = 0;
     for (let i = 0; i < 6; i++) newEnemy(15);
-    genCoin(8);
+    genCoin(6, 1);
     beginPlay("tut-move");
     if (!skipIntro) say("那个声音", "视野为面朝方向 ±60° 扇形。被看到时它们会径直走来。");
     startLoop();
@@ -1057,8 +1073,13 @@
   function tutBarrier(skipIntro = false) {
     if (state.stage >= 4) { tutBeacon(true); return; }
     clearEnemies();
+    if (!state.grid) {
+      makeGrid(15, 15);
+      generateEmpty();
+      Object.assign(state.player, { x: 2, y: 8, dir: 2, hp: 3, left: false, weapon: true });
+    }
     state.inTut = 1;
-    state.maxCoin = 8;
+    state.maxCoin = 6;
     state.haveCoin = 1;
     state.mov = 1;
     state.ableC = true;
@@ -1067,7 +1088,7 @@
     state.player.hp = 3;
     state.sessionKill = 0;
     for (let i = 0; i < 12; i++) newEnemy(15);
-    genCoin(8);
+    genCoin(6, 1);
     state.timerStart = Date.now();
     state.timerGoal = 60;
     state.timerKind = "survive";
