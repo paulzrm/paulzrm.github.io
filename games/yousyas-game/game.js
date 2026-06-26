@@ -5,6 +5,8 @@
   const VERSION = 2;
   const SECRET = "YG-WEB::the-voice-beyond-the-board::2026";
   const DEV_CODE = "paulzrm";
+  const COMPASS_PRICE = 30;
+  const HEAL_PRICE = 50;
   const TICK_MS = 100;
   const D = [[-1, 0], [0, 1], [1, 0], [0, -1], [0, 0]];
   const SWORD = ["|", "-", "|", "-"];
@@ -41,6 +43,7 @@
     paused: false,
     die: false,
     devMode: false,
+    shopOpen: false,
     grid: null,
     gridName: "",
     n: 0,
@@ -80,6 +83,7 @@
     timerGoal: 0,
     timerKind: "",
     route: null,
+    compassTarget: null,
     originalKills: 0,
     confirmRoute: null,
     speaker: "SYSTEM",
@@ -504,6 +508,37 @@
     return `${vertical}${horizontal || (vertical ? "" : "原地")}约 ${target.d} 步`;
   }
 
+  function explorationCellType() {
+    if (!(state.scene === "ember" || state.scene === "frost" || state.scene === "thunder")) return null;
+    return state.countKey >= state.nKey ? CELL.PALACE : CELL.KEY;
+  }
+
+  function explorationTargetLabel(cell = explorationCellType()) {
+    if (cell === CELL.PALACE) return "圣殿";
+    if (cell === CELL.KEY) return "钥匙";
+    return "目标";
+  }
+
+  function currentCompassTarget() {
+    const cell = explorationCellType();
+    if (!cell || !state.compassTarget || state.compassTarget.scene !== state.scene || state.compassTarget.cell !== cell) {
+      state.compassTarget = null;
+      return null;
+    }
+    const { x, y } = state.compassTarget;
+    if (state.grid?.[x]?.[y] !== cell) {
+      state.compassTarget = null;
+      return null;
+    }
+    return { ...state.compassTarget, d: manhattan(state.player, state.compassTarget) };
+  }
+
+  function compassObjectiveText() {
+    const target = currentCompassTarget();
+    if (!target) return "";
+    return ` · 罗盘：${target.label} ${directionText(target)}`;
+  }
+
   function tooNear(e) {
     const d = distEnemy(e, state.player);
     return state.inTut ? d < 5 : d < 10;
@@ -825,6 +860,7 @@
     state.mode = "play";
     state.scene = scene;
     state.paused = false;
+    state.shopOpen = false;
     state.die = false;
     state.sessionKill = 0;
     state.standardClock = 0;
@@ -855,7 +891,7 @@
   }
 
   function tick() {
-    if (state.mode !== "play" || locked || state.paused || state.die) return;
+    if (state.mode !== "play" || locked || state.paused || state.shopOpen || state.die) return;
     if (document.hidden || ui.save.open || ui.help.open) return;
     state.standardClock++;
     state.turn = state.standardClock;
@@ -1241,7 +1277,7 @@
     state.nKey = 4;
     generateMap();
     state.gridName = "「赤烬之地」";
-    Object.assign(state.player, { x: 40, y: 40, dir: 2, hp: 3, money: 0, left: false, weapon: true });
+    Object.assign(state.player, { x: 40, y: 40, dir: 2, hp: 3, money: skipIntro ? state.player.money : 0, left: false, weapon: true });
     for (let i = 0; i < 4; i++) genKey();
     genPalace();
     clearEnemies();
@@ -1330,7 +1366,7 @@
     state.nKey = 6;
     generateMaze(6);
     state.gridName = "「霜骸冰原」";
-    Object.assign(state.player, { x: 40, y: 40, dir: 2, hp: 3, money: 0, left: false, weapon: true });
+    Object.assign(state.player, { x: 40, y: 40, dir: 2, hp: 3, money: skipIntro ? state.player.money : 0, left: false, weapon: true });
     clearEnemies();
     for (let i = 0; i < 32; i++) newEnemy(12);
     for (let i = 0; i < 4; i++) genCoin();
@@ -1382,7 +1418,7 @@
     state.nKey = 8;
     generateMaze(8);
     state.gridName = "「雷鸣裂谷」";
-    Object.assign(state.player, { x: 40, y: 40, dir: 2, hp: 3, money: 0, left: false, weapon: true });
+    Object.assign(state.player, { x: 40, y: 40, dir: 2, hp: 3, money: skipIntro ? state.player.money : 0, left: false, weapon: true });
     clearEnemies();
     for (let i = 0; i < 36; i++) newEnemy(3);
     for (let i = 0; i < 4; i++) genCoin();
@@ -1652,10 +1688,7 @@
     if (s === "tut-barrier") return ["障碍试炼", `存活 60 秒`, (Date.now() - state.timerStart) / 60000];
     if (s === "tut-beacon") return ["信标试炼", `击破 ${state.sessionKill}/3`, state.sessionKill / 3];
     if (s === "ember" || s === "frost" || s === "thunder") {
-      const seekingPalace = state.countKey >= state.nKey;
-      const target = nearestCell(seekingPalace ? CELL.PALACE : CELL.KEY);
-      const label = seekingPalace ? "圣殿" : "最近钥匙";
-      return [state.gridName, `钥匙 ${state.countKey}/${state.nKey} · ${label}：${directionText(target)}`, state.countKey / state.nKey];
+      return [state.gridName, `钥匙 ${state.countKey}/${state.nKey}${compassObjectiveText()}`, state.countKey / state.nKey];
     }
     if (s.includes("shrine")) return ["圣殿试炼", `剩余 ${Math.max(0, state.timerGoal - Math.floor((Date.now() - state.timerStart) / 1000))} 秒`, 1 - (Date.now() - state.timerStart) / (state.timerGoal * 1000)];
     if (s === "corridor") return ["终焉回廊", "A/← 救赎　D/→ 权力", 0];
@@ -1805,8 +1838,85 @@
     return true;
   }
 
+  function shopChoices() {
+    choices([
+      { label: `购买罗盘提示（${COMPASS_PRICE} 金币）`, action: buyCompass },
+      { label: `补满生命（${HEAL_PRICE} 金币）`, action: buyHeal },
+      { label: "离开商店", action: closeShop },
+    ]);
+  }
+
+  function openShop() {
+    if (state.mode !== "play" || state.die || ui.save.open || ui.help.open) return false;
+    stopAll();
+    state.shopOpen = true;
+    say("商店", `金币 ${state.player.money}。罗盘会锁定当前最近的钥匙；钥匙收齐后会锁定圣殿。`);
+    shopChoices();
+    render();
+    return true;
+  }
+
+  function buyCompass() {
+    if (!state.shopOpen) return;
+    const cell = explorationCellType();
+    if (!cell) {
+      say("商店", "当前区域没有可供罗盘锁定的探索目标。");
+      shopChoices();
+      render();
+      return;
+    }
+    if (state.player.money < COMPASS_PRICE) {
+      say("商店", `金币不足。罗盘需要 ${COMPASS_PRICE} 金币。`);
+      shopChoices();
+      render();
+      return;
+    }
+    const target = nearestCell(cell);
+    if (!target) {
+      say("商店", `${explorationTargetLabel(cell)}未检测到。`);
+      shopChoices();
+      render();
+      return;
+    }
+    state.player.money -= COMPASS_PRICE;
+    state.compassTarget = { scene: state.scene, cell, x: target.x, y: target.y, label: explorationTargetLabel(cell) };
+    say("商店", `罗盘已锁定${state.compassTarget.label}：${directionText({ ...state.compassTarget, d: manhattan(state.player, state.compassTarget) })}。`);
+    shopChoices();
+    render();
+  }
+
+  function buyHeal() {
+    if (!state.shopOpen) return;
+    if (state.player.hp >= 3) {
+      say("商店", "生命已满，不需要治疗。");
+      shopChoices();
+      render();
+      return;
+    }
+    if (state.player.money < HEAL_PRICE) {
+      say("商店", `金币不足。补满生命需要 ${HEAL_PRICE} 金币。`);
+      shopChoices();
+      render();
+      return;
+    }
+    state.player.money -= HEAL_PRICE;
+    state.player.hp = 3;
+    say("商店", "生命已补满。");
+    shopChoices();
+    render();
+  }
+
+  function closeShop() {
+    if (!state.shopOpen) return;
+    state.shopOpen = false;
+    choices([]);
+    say("SYSTEM", "商店已关闭。");
+    render();
+  }
+
   function startHold(k) {
     k = normalizeKey(k);
+    if (k === "b") { if (state.shopOpen) closeShop(); else openShop(); return; }
     if (k === "y") { confirmCorridor(); return; }
     if (k === "c") { tryBarrier(); render(); return; }
     if (k === "f") { tryBeacon(); render(); return; }
@@ -1846,10 +1956,16 @@
 
   document.addEventListener("keydown", (e) => {
     const k = normalizeKey(e.key);
+    if (state.shopOpen) {
+      if (k === "b" || k === "Escape") closeShop();
+      e.preventDefault();
+      return;
+    }
+    if (k === "b" && !ui.save.open && !ui.help.open && openShop()) { e.preventDefault(); return; }
     if (k === "Enter" && !ui.save.open && !ui.help.open && devSkipTutorial()) { e.preventDefault(); return; }
     if (!ui.save.open && !ui.help.open && trackDeveloperMode(k)) { e.preventDefault(); return; }
     if ((k === " " || k === "p") && !ui.save.open && !ui.help.open) { e.preventDefault(); if (!e.repeat) togglePause(); return; }
-    const a = ["w", "a", "s", "d", "c", "f", "v", "y", "ArrowUp", "ArrowRight", "ArrowDown", "ArrowLeft"];
+    const a = ["w", "a", "s", "d", "b", "c", "f", "v", "y", "ArrowUp", "ArrowRight", "ArrowDown", "ArrowLeft"];
     if (!a.includes(k) || ui.save.open || ui.help.open) return;
     e.preventDefault();
     if (!e.repeat) startHold(k);
