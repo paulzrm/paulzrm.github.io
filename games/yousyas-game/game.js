@@ -4,6 +4,7 @@
   const SAVE_KEY = "yousyas-game-web-save-v2";
   const VERSION = 2;
   const SECRET = "YG-WEB::the-voice-beyond-the-board::2026";
+  const DEV_CODE = "paulzrm";
   const TICK_MS = 100;
   const D = [[-1, 0], [0, 1], [1, 0], [0, -1], [0, 0]];
   const SWORD = ["|", "-", "|", "-"];
@@ -39,6 +40,7 @@
     turn: 0,
     paused: false,
     die: false,
+    devMode: false,
     grid: null,
     gridName: "",
     n: 0,
@@ -91,6 +93,7 @@
   let typeTimer = null;
   let typing = { active: false, shown: "", full: "", token: 0 };
   let showEnemyRange = localStorage.getItem("yousyas-game-show-range") === "1";
+  let devBuffer = "";
 
   const rand = (n) => Math.floor(Math.random() * n);
   const shuffle = (a) => { for (let i = a.length - 1; i > 0; i--) { const j = rand(i + 1); [a[i], a[j]] = [a[j], a[i]]; } return a; };
@@ -460,7 +463,7 @@
     if (c === CELL.COIN) { player.money += 10; grid[x][y] = CELL.EMPTY; }
     if (c === CELL.KEY) { state.countKey++; grid[x][y] = CELL.EMPTY; }
     if (c === CELL.PALACE) state.touchPalace = 1;
-    if (c === CELL.LIGHT) { player.hp = Math.max(0, player.hp - 1); grid[x][y] = CELL.EMPTY; if (player.hp <= 0) handleDeath(); }
+    if (c === CELL.LIGHT) { grid[x][y] = CELL.EMPTY; if (damagePlayer()) handleDeath(); }
   }
 
   function pickupPlayer() {
@@ -663,6 +666,15 @@
     return 0;
   }
 
+  function damagePlayer(amount = 1) {
+    if (state.devMode) {
+      state.player.hp = 3;
+      return false;
+    }
+    state.player.hp = Math.max(0, state.player.hp - amount);
+    return state.player.hp <= 0;
+  }
+
   function checkCrash() {
     const { enemies, player, standardClock, lastUpdate, newEnemyTime, enemyLimit, enemyEyesight, lastGenerate } = state;
     if (standardClock - lastUpdate > state.updateTime) {
@@ -678,7 +690,11 @@
       const t = check(e, player);
       if (!t) continue;
       if (t === 1) { e.alive = false; state.countKill++; state.sessionKill++; }
-      else { player.hp--; e.alive = false; if (player.hp <= 0) return 1; }
+      else {
+        e.alive = false;
+        if (state.devMode) { state.countKill++; state.sessionKill++; }
+        else if (damagePlayer()) return 1;
+      }
     }
     state.enemies = state.enemies.filter((e) => e.alive);
     return 0;
@@ -839,9 +855,8 @@
       const stay = 6 - Math.floor((Date.now() - state.lastMove) / 1000);
       state.hudExtra = `再停留 ${Math.max(0, stay)} 秒就会受到伤害`;
       if (stay <= 0) {
-        state.player.hp--;
         state.lastMove = Date.now();
-        if (state.player.hp <= 0) { handleDeath(); return; }
+        if (damagePlayer()) { handleDeath(); return; }
       }
     }
     if (state.timerGoal) {
@@ -871,6 +886,13 @@
   }
 
   function handleDeath() {
+    if (state.devMode) {
+      state.die = false;
+      state.player.hp = 3;
+      say("SYSTEM", "开发者模式：死亡判定已忽略。");
+      render();
+      return;
+    }
     if (state.scene.startsWith("tut")) {
       if (state.scene === "tut-static" || state.scene === "tut-move") endGame(0, "找错人了", "那个声音：怎么，你连打木偶都能被木偶反杀？");
       else endGame(1, "技不如人", "那个声音：就这点水准，怎么能当上勇者？");
@@ -1612,7 +1634,7 @@
 
   function hud() {
     const p = state.player;
-    ui.hp.textContent = state.mode === "play" ? `${Math.max(0, p.hp)} / 3` : "—";
+    ui.hp.textContent = state.mode === "play" ? (state.devMode ? "∞ / 3" : `${Math.max(0, p.hp)} / 3`) : "—";
     ui.money.textContent = state.mode === "play" ? p.money : "—";
     ui.kills.textContent = state.mode === "play" ? state.countKill : "—";
     ui.chapter.textContent = CHAPTER[state.scene] || "序章";
@@ -1697,6 +1719,25 @@
   }
 
   function stopAll() { heldKeys.clear(); }
+
+  function trackDeveloperMode(k) {
+    if (typeof k !== "string" || k.length !== 1) return false;
+    const ch = k.toLowerCase();
+    if (!/^[a-z]$/.test(ch)) return false;
+    devBuffer = (devBuffer + ch).slice(-DEV_CODE.length);
+    if (devBuffer !== DEV_CODE) return false;
+    devBuffer = "";
+    state.devMode = !state.devMode;
+    if (state.devMode) {
+      state.die = false;
+      state.player.hp = 3;
+    }
+    stopAll();
+    say("SYSTEM", state.devMode ? "开发者模式已开启：无敌。" : "开发者模式已关闭。");
+    render();
+    return true;
+  }
+
   function startHold(k) {
     k = normalizeKey(k);
     if (k === "y") { confirmCorridor(); return; }
@@ -1738,6 +1779,7 @@
 
   document.addEventListener("keydown", (e) => {
     const k = normalizeKey(e.key);
+    if (!ui.save.open && !ui.help.open && trackDeveloperMode(k)) { e.preventDefault(); return; }
     if ((k === " " || k === "p") && !ui.save.open && !ui.help.open) { e.preventDefault(); if (!e.repeat) togglePause(); return; }
     const a = ["w", "a", "s", "d", "c", "f", "v", "y", "ArrowUp", "ArrowRight", "ArrowDown", "ArrowLeft"];
     if (!a.includes(k) || ui.save.open || ui.help.open) return;
