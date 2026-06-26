@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Yousya's Game · Web Edition</title>
   <link rel="stylesheet" href="../../assets/styles.css">
-  <link rel="stylesheet" href="./game.css?v=devmode-1">
+  <link rel="stylesheet" href="./game.css?v=devmode-2">
 </head>
 <body>
   <header class="shell nav">
@@ -41,6 +41,6 @@
   </main>
   <dialog class="game-modal" id="save-modal"><form method="dialog"><div class="modal-heading"><div><div class="eyebrow">SAVE TERMINAL</div><h2>存档管理</h2></div><button class="modal-close" value="cancel">×</button></div><p>关键进度会自动保存到浏览器。导出码使用 AES-GCM 加密并带完整性校验，可复制到其他设备导入。</p><textarea id="save-code" rows="6" spellcheck="false" placeholder="点击导出，或粘贴存档码"></textarea><div class="modal-actions"><button class="button" id="export-save" type="button">导出存档</button><button class="button primary" id="import-save" type="button">导入并读取</button><button class="button danger-button" id="clear-save" type="button">清除本地存档</button></div><p class="modal-status" id="save-status"></p></form></dialog>
   <dialog class="game-modal" id="help-modal"><form method="dialog"><div class="modal-heading"><div><div class="eyebrow">FIELD MANUAL</div><h2>操作说明</h2></div><button class="modal-close" value="cancel">×</button></div><ul><li>战役会随着教学逐步展开，界面只会提示当前已公开的操作。</li><li>游戏 tick 为 100ms，与原版控制台版节奏一致；按 Space / P 暂停。</li><li>敌人视野为面朝方向 ±60° 扇形；玩家行动永远先于魔物。</li><li>大陆探索需收集钥匙 K 并踩到圣殿 S；圣殿内坚持 90 秒。</li><li><b class="tile-enemy-weapon">- / |</b> 表示魔物武器，<b class="tile-path">·</b> 表示开启显示后的索敌路径，<b class="red-text">!</b> 表示魔物正在准备攻击。</li></ul><button class="button primary modal-full-button" value="ok">明白了</button></form></dialog>
-  <script src="./game.js?v=devmode-1"></script>
+  <script src="./game.js?v=devmode-2"></script>
 </body>
 </html>

@@ -1738,6 +1738,40 @@
     return true;
   }
 
+  function devSkipTutorial() {
+    if (!state.devMode || state.stage >= 6) return false;
+    stopAll();
+    if (typing.active) finishTyping();
+    locked = false;
+    state.mode = "story";
+    state.paused = false;
+    state.die = false;
+    state.stage = 5;
+    state.skipPlot = 0;
+    state.inTut = 0;
+    state.specialRule = 0;
+    state.timerGoal = 0;
+    state.timerKind = "";
+    state.hudExtra = "";
+    state.ableC = true;
+    state.ableF = true;
+    state.mov = 0;
+    state.enemyLimit = 0;
+    state.generateLimit = -1;
+    state.sessionKill = 0;
+    state.countKill = 0;
+    state.countKey = 0;
+    state.touchPalace = 0;
+    state.player.hp = 3;
+    state.player.left = false;
+    state.player.weapon = true;
+    clearEnemies();
+    choices([]);
+    saveLocal();
+    script([["SYSTEM", "开发者模式：已跳过全部教学关卡。", "进入大陆"]], prePlot);
+    return true;
+  }
+
   function startHold(k) {
     k = normalizeKey(k);
     if (k === "y") { confirmCorridor(); return; }
@@ -1779,6 +1813,7 @@
 
   document.addEventListener("keydown", (e) => {
     const k = normalizeKey(e.key);
+    if (k === "Enter" && !ui.save.open && !ui.help.open && devSkipTutorial()) { e.preventDefault(); return; }
     if (!ui.save.open && !ui.help.open && trackDeveloperMode(k)) { e.preventDefault(); return; }
     if ((k === " " || k === "p") && !ui.save.open && !ui.help.open) { e.preventDefault(); if (!e.repeat) togglePause(); return; }
     const a = ["w", "a", "s", "d", "c", "f", "v", "y", "ArrowUp", "ArrowRight", "ArrowDown", "ArrowLeft"];
