@@ -476,6 +476,34 @@
     return Math.floor(Math.hypot(a.x - b.x, a.y - b.y));
   }
 
+  function manhattan(a, b) {
+    return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
+  }
+
+  function nearestCell(cell) {
+    if (!state.grid) return null;
+    const { grid, n, m, player } = state;
+    let best = null;
+    for (let x = 1; x <= n; x++) {
+      for (let y = 1; y <= m; y++) {
+        if (grid[x][y] !== cell) continue;
+        const p = { x, y };
+        const d = manhattan(player, p);
+        if (!best || d < best.d) best = { x, y, d };
+      }
+    }
+    return best;
+  }
+
+  function directionText(target) {
+    if (!target) return "未检测到";
+    const dx = target.x - state.player.x;
+    const dy = target.y - state.player.y;
+    const vertical = dx < 0 ? "北" : dx > 0 ? "南" : "";
+    const horizontal = dy < 0 ? "西" : dy > 0 ? "东" : "";
+    return `${vertical}${horizontal || (vertical ? "" : "原地")}约 ${target.d} 步`;
+  }
+
   function tooNear(e) {
     const d = distEnemy(e, state.player);
     return state.inTut ? d < 5 : d < 10;
@@ -1623,7 +1651,12 @@
     if (s === "tut-move") return ["移动战斗", `击破 ${state.sessionKill}/10`, state.sessionKill / 10];
     if (s === "tut-barrier") return ["障碍试炼", `存活 60 秒`, (Date.now() - state.timerStart) / 60000];
     if (s === "tut-beacon") return ["信标试炼", `击破 ${state.sessionKill}/3`, state.sessionKill / 3];
-    if (s === "ember" || s === "frost" || s === "thunder") return [state.gridName, `钥匙 ${state.countKey}/${state.nKey}`, state.countKey / state.nKey];
+    if (s === "ember" || s === "frost" || s === "thunder") {
+      const seekingPalace = state.countKey >= state.nKey;
+      const target = nearestCell(seekingPalace ? CELL.PALACE : CELL.KEY);
+      const label = seekingPalace ? "圣殿" : "最近钥匙";
+      return [state.gridName, `钥匙 ${state.countKey}/${state.nKey} · ${label}：${directionText(target)}`, state.countKey / state.nKey];
+    }
     if (s.includes("shrine")) return ["圣殿试炼", `剩余 ${Math.max(0, state.timerGoal - Math.floor((Date.now() - state.timerStart) / 1000))} 秒`, 1 - (Date.now() - state.timerStart) / (state.timerGoal * 1000)];
     if (s === "corridor") return ["终焉回廊", "A/← 救赎　D/→ 权力", 0];
     if (s.startsWith("final")) return ["终局战斗", `敌军增援 ${state.generateLimit} · 场上 ${state.enemies.length}`, 1 - (state.generateLimit + state.enemies.length) / 100];
