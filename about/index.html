@@ -60,8 +60,11 @@
       </div>
 
       <h2>Awards</h2>
-      <p>按比赛实际举行日期倒序排列。</p>
-      <div class="awards-toolbar" id="award-filters">
+      <details class="awards-collapse">
+        <summary><span>查看竞赛奖项</span><small>按时间倒序，可按年份筛选</small></summary>
+        <div class="awards-inner">
+          <p>按比赛实际举行日期倒序排列。</p>
+          <div class="awards-toolbar" id="award-filters">
         <button class="filter-button active" data-year="all">全部</button>
         <button class="filter-button" data-year="2026">2026</button>
         <button class="filter-button" data-year="2025">2025</button>
@@ -99,7 +102,9 @@
         <div class="award" data-year="middle"><span class="award-year">2020-01-18</span><span class="award-name"><strong>NOI 冬令营</strong></span><span class="medal bronze">铜牌</span></div>
         <div class="award" data-year="middle"><span class="award-year">2019-11-16</span><span class="award-name"><strong>CSP-S</strong></span><span class="medal gold">一等奖</span></div>
         <div class="award" data-year="middle"><span class="award-year">2018-11-10</span><span class="award-name"><strong>NOIP 普及组</strong></span><span class="medal gold">一等奖</span></div>
-      </div>
+        </div>
+        </div>
+      </details>
     </article>
   </main>
 

@@ -15,7 +15,7 @@
   <main class="shell yousya-page">
     <section class="yousya-shell">
       <header class="yousya-heading">
-        <div><div class="eyebrow">GAME 03 · WEB EDITION</div><h1>Yousya's Game</h1><p>文字与字符画构成的实时剧情 RPG。即使停在原地，棋盘上的时间也仍会前进。</p></div>
+        <div><div class="eyebrow">GAME 03 · WEB EDITION</div><h1>Yousya's Game</h1><p>文字与字符画构成的实时剧情 RPG。保留原版控制台游戏的关卡、对话与多结局。</p></div>
         <div class="save-actions"><button class="button primary" id="pause-button">暂停</button><button class="button" id="save-button">存档管理</button><button class="button" id="help-button">操作说明</button></div>
       </header>
       <div class="game-layout">
@@ -39,8 +39,8 @@
       </div>
     </section>
   </main>
-  <dialog class="game-modal" id="save-modal"><form method="dialog"><div class="modal-heading"><div><div class="eyebrow">SAVE TERMINAL</div><h2>存档管理</h2></div><button class="modal-close" value="cancel">×</button></div><p>关键进度会自动保存到浏览器。导出码使用 AES-GCM 加密并带完整性校验，可复制到其他设备导入。</p><textarea id="save-code" rows="6" spellcheck="false" placeholder="点击导出，或粘贴存档码"></textarea><div class="modal-actions"><button class="button" id="export-save" type="button">导出存档</button><button class="button primary" id="import-save" type="button">导入并读取</button><button class="button danger-button" id="clear-save" type="button">清除本地存档</button></div><p class="modal-status" id="save-status"></p></form></dialog>
-  <dialog class="game-modal" id="help-modal"><form method="dialog"><div class="modal-heading"><div><div class="eyebrow">FIELD MANUAL</div><h2>操作说明</h2></div><button class="modal-close" value="cancel">×</button></div><ul><li>战役会随着教学逐步展开，界面只会提示当前已公开的操作。</li><li>游戏 tick 为 100ms，与原版控制台版节奏一致；按 Space 暂停。</li><li>按 B 打开商店；罗盘提示 30 金币，补满生命 50 金币。</li><li>敌人视野为面朝方向 ±60° 扇形；玩家行动永远先于魔物。</li><li>大陆探索需收集钥匙 K 并踩到圣殿 S；圣殿内坚持 90 秒。</li><li><b class="tile-enemy-weapon">- / |</b> 表示魔物武器，<b class="tile-path">·</b> 表示开启显示后的索敌路径，<b class="red-text">!</b> 表示魔物正在准备攻击。</li></ul><button class="button primary modal-full-button" value="ok">明白了</button></form></dialog>
+  <dialog class="game-modal" id="save-modal"><form method="dialog"><div class="modal-heading"><div><div class="eyebrow">SAVE TERMINAL</div><h2>存档管理</h2></div><button class="modal-close" value="cancel">×</button></div><p>关键进度会自动保存到浏览器。导出码会加密并校验完整性，可复制到其他设备导入。</p><textarea id="save-code" rows="6" spellcheck="false" placeholder="点击导出，或粘贴存档码"></textarea><div class="modal-actions"><button class="button" id="export-save" type="button">导出存档</button><button class="button primary" id="import-save" type="button">导入并读取</button><button class="button danger-button" id="clear-save" type="button">清除本地存档</button></div><p class="modal-status" id="save-status"></p></form></dialog>
+  <dialog class="game-modal" id="help-modal"><form method="dialog"><div class="modal-heading"><div><div class="eyebrow">FIELD MANUAL</div><h2>操作说明</h2></div><button class="modal-close" value="cancel">×</button></div><ul><li>战役会随着教学逐步展开，界面只会提示当前已公开的操作。</li><li>游戏会持续推进；按 Space 可随时暂停。</li><li>按 B 打开商店；罗盘提示 30 金币，补满生命 50 金币。</li><li>敌人视野为面朝方向 ±60° 扇形；玩家行动永远先于魔物。</li><li>大陆探索需收集钥匙 K 并踩到圣殿 S；圣殿内坚持 90 秒。</li><li><b class="tile-enemy-weapon">- / |</b> 表示魔物武器，<b class="tile-path">·</b> 表示开启显示后的索敌路径，<b class="red-text">!</b> 表示魔物正在准备攻击。</li></ul><button class="button primary modal-full-button" value="ok">明白了</button></form></dialog>
   <script src="./game.js?v=beacon-fix-2"></script>
 </body>
 </html>
